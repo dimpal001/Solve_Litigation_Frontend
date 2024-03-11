@@ -1,5 +1,5 @@
+import { NavLink, useLocation } from 'react-router-dom'
 import { Button } from '@chakra-ui/react'
-import { Link } from 'react-router-dom'
 import { Colors } from './Colors'
 import logo from '../assets/logo.svg'
 
@@ -8,9 +8,9 @@ const Navbar = () => {
     <div>
       <div className='h-[100px] justify-between w-full flex items-center'>
         <div className=''>
-          <Link to={'/'}>
+          <NavLink title='Solve Litigation' to={'/'}>
             <img style={{ width: '60px' }} src={logo} alt='Logo' />
-          </Link>
+          </NavLink>
         </div>
         <div className=''>
           <NavItems />
@@ -23,27 +23,60 @@ const Navbar = () => {
 const NavItems = () => {
   return (
     <>
-      <div className='flex gap-14 items-center'>
-        <Link to={'/'}>Home</Link>
-        <Link to={'/services'}>Services</Link>
-        <Link to={'/contact-us'}>Contact Us</Link>
-        <Link to={'/login'}>Login</Link>
-        <Link to={'/register'}>
-          <Button
-            variant='outline'
-            borderColor={Colors.primary}
-            borderWidth={2}
-            color={Colors.primary}
-            _hover={{
-              bgColor: Colors.primary,
-              color: 'white',
-            }}
-          >
-            Register
-          </Button>
-        </Link>
+      <div className='flex gap-14 text-base items-center'>
+        <NavItem title='Home Page' to={'/'}>
+          Home
+        </NavItem>
+        <NavItem title='Service Page' to={'/services'}>
+          Services
+        </NavItem>
+        <NavItem title='Contact Page' to={'/contact-us'}>
+          Contact Us
+        </NavItem>
+        <NavItem title='Login Page' to={'/login'}>
+          Login
+        </NavItem>
+        <NavItem title='Register Page' to={'/register'}>
+          <StyledButton>Register</StyledButton>
+        </NavItem>
       </div>
     </>
+  )
+}
+
+const NavItem = ({ to, title, children }) => {
+  const location = useLocation()
+  const isActive = location.pathname === to
+
+  return (
+    <NavLink
+      title={title}
+      to={to}
+      className={`hover:text-primary ${isActive ? 'text-primary' : ''}`}
+    >
+      {children}
+    </NavLink>
+  )
+}
+
+const StyledButton = ({ children }) => {
+  const location = useLocation()
+  const isActive = location.pathname === '/register'
+
+  return (
+    <Button
+      variant='outline'
+      borderColor={Colors.primary}
+      borderWidth={2}
+      color={isActive ? 'white' : Colors.primary}
+      bgColor={isActive ? Colors.primary : 'transparent'}
+      _hover={{
+        bgColor: Colors.primary,
+        color: 'white',
+      }}
+    >
+      {children}
+    </Button>
   )
 }
 

@@ -8,7 +8,7 @@ import Navbar from './Components/Navbar'
 
 const App = () => {
   return (
-    <div className='text-secondary text-xl varela-round-regular px-10 md:px-32'>
+    <div className='text-secondary text-xl varela-round-regular min-h-screen px-10 md:px-32'>
       {/* Navbar Section */}
       <BrowserRouter>
         <div>

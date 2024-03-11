@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Button, Center, Checkbox, Input } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
+import { Button, Center, Checkbox, Input, useToast } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
 import {
   MdKeyboardDoubleArrowLeft,
@@ -7,7 +7,9 @@ import {
 } from 'react-icons/md'
 import { PrimaryButton, SecondaryButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import AOS from 'aos'
+import 'aos/dist/aos.css'
 
 const RegisterPage = () => {
   const [selectedOption, setSelectedOption] = useState(null)
@@ -20,6 +22,8 @@ const RegisterPage = () => {
     confirmPassword: '',
     registrationType: '',
   })
+  const toast = useToast()
+  const navigate = useNavigate()
 
   const handleOptionClick = (option) => {
     setSelectedOption(option)
@@ -38,6 +42,27 @@ const RegisterPage = () => {
   }
 
   const handleSubmit = () => {
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: 'Password missmatched.',
+        description: 'Password and Confirm Password should be same.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+      return
+    }
+
+    toast({
+      title: 'Account created.',
+      description: "We've created your account for you.",
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+      position: 'top',
+    })
+    navigate('/login')
     console.log('Form data:', formData)
   }
 
@@ -63,9 +88,16 @@ const RegisterPage = () => {
     )
   }
 
+  useEffect(() => {
+    AOS.init()
+  }, [])
+
   return (
     <Center className='flex justify-center w-full'>
-      <div className='border-[1px] border-secondary w-[420px] p-10 rounded-xl'>
+      <div
+        data-aos='fade-up'
+        className='shadow-xl border w-[420px] p-10 rounded-xl'
+      >
         <div className='flex-col gap-10'>
           <Center>
             <img style={{ width: '100px' }} src={Logo} alt='' />
@@ -73,7 +105,7 @@ const RegisterPage = () => {
 
           {/* Before clicking next button  */}
           {!showSignUpForm ? (
-            <div>
+            <div data-aos='fade-up'>
               <p className='text-center font-extrabold pt-5'>Register for ?</p>
               <div className='text-center flex-col flex gap-3 p-1 py-4'>
                 <Button
@@ -138,9 +170,13 @@ const RegisterPage = () => {
 
           {/* After clicking next button  */}
           {showSignUpForm ? (
-            <div>
+            <div data-aos='fade-up'>
               <p className='text-center font-extrabold pt-5'>
                 Sign Up Information
+              </p>
+              <p className='text-center text-sm pt-1'>
+                Register for{' '}
+                <span className='text-primary'>{selectedOption}</span>
               </p>
               <div className='text-center flex-col flex gap-3 p-1 py-4'>
                 <Input
