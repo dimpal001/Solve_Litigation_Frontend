@@ -1,32 +1,101 @@
-import { useEffect, useState } from 'react'
-import { Center, Checkbox, Input, useToast } from '@chakra-ui/react'
+import { useContext, useEffect, useState } from 'react'
+import { Center, Checkbox, useToast } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
-import { PrimaryButton } from '../../Components/Customs'
+import { CustomInput, PrimaryButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import axios from 'axios'
+import { UserContext } from '../../UserContext'
+import { api } from '../../Components/Apis'
+import { MdRefresh } from 'react-icons/md'
 
 const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
-    email: '',
+    emailOrPhoneNumber: '',
     password: '',
-    confirmPassword: '',
-    registrationType: '',
+    captcha: '',
   })
   const toast = useToast()
+  const navigate = useNavigate()
+  const { setUser } = useContext(UserContext)
 
-  const handleLogin = () => {
-    toast({
-      title: '.',
-      description: "We've created your account for you.",
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-      position: 'top',
-    })
-    console.log('Form data:', formData)
+  const randomString = Math.random().toString(36).slice(8)
+  const [captcha, setCaptcha] = useState(randomString)
+
+  const refreshString = () => {
+    setCaptcha(Math.random().toString(36).slice(8))
+  }
+
+  const handleLogin = async () => {
+    try {
+      const enteredCaptcha = formData.captcha
+      if (enteredCaptcha !== captcha) {
+        toast({
+          title: 'Incorrect captcha entered',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        })
+        return
+      }
+      setIsLoading(true)
+      const response = await axios.post(
+        `${api}/api/solve_litigation/auth/login`,
+        formData
+      )
+      const { token, message, user } = response.data
+      sessionStorage.setItem('token', token)
+      sessionStorage.setItem('user', JSON.stringify(user))
+      setUser(user)
+      toast({
+        title: message,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+      console.log('Login successful:', user)
+      user.userType === 'admin'
+        ? navigate('/admin-dashboard/')
+        : navigate('/citations')
+    } catch (error) {
+      setIsLoading(false)
+      if (error.response) {
+        console.error('Login failed:', error.response.data.message)
+        toast({
+          title: error.response.data.message,
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        })
+      } else if (error.request) {
+        console.error('Server is not responding')
+        toast({
+          title: 'No response received from server',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        })
+      } else {
+        console.error('Error occurred while making request:', error.message)
+        toast({
+          title: 'Error occurred while making request',
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+          position: 'top',
+        })
+      }
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -38,37 +107,43 @@ const LoginPage = () => {
   }
 
   const isSubmitDisabled = () => {
-    const isEmailEmpty = formData.email.trim() === ''
+    const isEmailOrPhoneNumberEmpty = formData.emailOrPhoneNumber.trim() === ''
     const isPasswordEmpty = formData.password.trim() === ''
 
-    return isEmailEmpty || isPasswordEmpty
+    return isEmailOrPhoneNumberEmpty || isPasswordEmpty
   }
 
   useEffect(() => {
     AOS.init()
+    window.document.title = 'Login Form - Solve Litigation'
   }, [])
 
   return (
-    <Center className='flex justify-center w-full'>
+    <Center className='justify-center w-full'>
       <div
         data-aos='fade-up'
-        className='shadow-xl border w-[420px] p-10 rounded-xl'
+        className='shadow-xl max-sm:mt-20 border lg:w-[500px] p-10 rounded-xl'
       >
         <div className='flex-col gap-10'>
           <Center>
-            <img style={{ width: '100px' }} src={Logo} alt='' />
+            <img
+              className='max-sm:hidden'
+              style={{ width: '100px' }}
+              src={Logo}
+              alt=''
+            />
           </Center>
 
           <div>
             <p className='text-center font-extrabold pt-5'>Login here</p>
             <div className='text-center flex-col flex gap-3 p-1 py-4'>
-              <Input
-                name='email'
-                value={formData.email}
+              <CustomInput
+                name='emailOrPhoneNumber'
+                value={formData.emailOrPhoneNumber}
                 onChange={handleChange}
-                placeholder={'Email address'}
+                placeholder={'Email address or Phone number'}
               />
-              <Input
+              <CustomInput
                 type={isShowPassword ? 'text' : 'password'}
                 name='password'
                 value={formData.password}
@@ -85,8 +160,26 @@ const LoginPage = () => {
               >
                 Show Password
               </Checkbox>
-              <div className='w-full flex justify-between pt-7'>
+              <div>
+                <div className='flex items-center justify-center gap-5'>
+                  <p>{captcha}</p>
+                  <MdRefresh
+                    onClick={refreshString}
+                    color='red'
+                    className='cursor-pointer'
+                  />
+                </div>
+                <CustomInput
+                  name='captcha'
+                  value={formData.captcha}
+                  onChange={handleChange}
+                  placeholder={'Enter the captcha'}
+                />
+              </div>
+              <div className='w-full flex justify-between pt-3'>
                 <PrimaryButton
+                  isLoading={isLoading}
+                  loadingText={'Signing in...'}
                   width={'100%'}
                   title={'Login'}
                   onClick={handleLogin}

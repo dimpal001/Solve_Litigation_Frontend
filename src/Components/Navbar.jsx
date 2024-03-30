@@ -1,18 +1,78 @@
-import { NavLink, useLocation } from 'react-router-dom'
-import { Button } from '@chakra-ui/react'
-import { Colors } from './Colors'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.svg'
+import { useContext, useRef, useState } from 'react'
+import { UserContext } from '../UserContext'
+import { PrimaryOutlineButton } from './Customs'
+import ProfileMenu from './ProfileMenu'
+import ConfirmLogout from './ConfirmLogout'
+import {
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerOverlay,
+  useDisclosure,
+} from '@chakra-ui/react'
+import { CgMenuRight } from 'react-icons/cg'
+import { Colors } from './Colors'
 
 const Navbar = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { user } = useContext(UserContext)
+  const btnRef = useRef()
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+
+  const handleLogout = () => {
+    setIsLogoutModalOpen(true)
+  }
   return (
     <div>
-      <div className='h-[100px] justify-between w-full flex items-center'>
+      <div className='h-[100px] px-5 lg:px-32 justify-between w-full flex items-center'>
         <div className=''>
           <NavLink title='Solve Litigation' to={'/'}>
             <img style={{ width: '60px' }} src={logo} alt='Logo' />
           </NavLink>
         </div>
-        <div className=''>
+        {isLogoutModalOpen && (
+          <ConfirmLogout
+            isOpen={true}
+            onClose={() => setIsLogoutModalOpen(false)}
+          />
+        )}
+        <div className='lg:hidden flex gap-5'>
+          {!user ? (
+            <Link to={'/login'}>
+              <PrimaryOutlineButton title={'Login'} />
+            </Link>
+          ) : (
+            <PrimaryOutlineButton onClick={handleLogout} title={'Logout'} />
+          )}
+          <CgMenuRight
+            size={35}
+            color={Colors.primary}
+            ref={btnRef}
+            onClick={onOpen}
+          />
+          <Drawer
+            isOpen={isOpen}
+            placement='right'
+            onClose={onClose}
+            finalFocusRef={btnRef}
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton />
+
+              <DrawerBody>
+                <div className='py-10'>
+                  <NavItems onClose={onClose} />
+                </div>
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </div>
+
+        <div className='max-md:hidden'>
           <NavItems />
         </div>
       </div>
@@ -20,31 +80,66 @@ const Navbar = () => {
   )
 }
 
-const NavItems = () => {
+const NavItems = ({ onClose }) => {
+  const { user } = useContext(UserContext)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+
+  const handleLogout = () => {
+    setIsLogoutModalOpen(true)
+  }
+
+  const handleProfileSettingsClick = () => {
+    setIsMenuOpen(false)
+  }
+
   return (
     <>
-      <div className='flex gap-14 text-base items-center'>
-        <NavItem title='Home Page' to={'/'}>
+      <div className='flex max-md:flex-col gap-5 lg:gap-14 text-base items-center'>
+        <NavItem onClick={onClose} title='Home Page' to={'/'}>
           Home
         </NavItem>
-        <NavItem title='Service Page' to={'/services'}>
+        {user && user.userType === 'guest' && (
+          <NavItem onClick={onClose} title='Home Page' to={'/citations'}>
+            Citation
+          </NavItem>
+        )}
+        <NavItem onClick={onClose} title='Service Page' to={'/services'}>
           Services
         </NavItem>
-        <NavItem title='Contact Page' to={'/contact-us'}>
+        <NavItem onClick={onClose} title='Contact Page' to={'/contact-us'}>
           Contact Us
         </NavItem>
-        <NavItem title='Login Page' to={'/login'}>
-          Login
-        </NavItem>
-        <NavItem title='Register Page' to={'/register'}>
-          <StyledButton>Register</StyledButton>
-        </NavItem>
+        {!user ? (
+          <>
+            <NavItem onClick={onClose} title='Login Page' to={'/login'}>
+              Login
+            </NavItem>
+            <NavItem onClick={onClose} title='Register Page' to={'/register'}>
+              <PrimaryOutlineButton title={'Register'} />
+            </NavItem>
+          </>
+        ) : (
+          <ProfileMenu
+            user={user}
+            handleProfileSettingsClick={handleProfileSettingsClick}
+            handleLogout={handleLogout}
+            isMenuOpen={isMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
+          />
+        )}
       </div>
+      {isLogoutModalOpen && (
+        <ConfirmLogout
+          isOpen={true}
+          onClose={() => setIsLogoutModalOpen(false)}
+        />
+      )}
     </>
   )
 }
 
-const NavItem = ({ to, title, children }) => {
+const NavItem = ({ to, title, children, onClick }) => {
   const location = useLocation()
   const isActive = location.pathname === to
 
@@ -53,30 +148,10 @@ const NavItem = ({ to, title, children }) => {
       title={title}
       to={to}
       className={`hover:text-primary ${isActive ? 'text-primary' : ''}`}
+      onClick={onClick}
     >
       {children}
     </NavLink>
-  )
-}
-
-const StyledButton = ({ children }) => {
-  const location = useLocation()
-  const isActive = location.pathname === '/register'
-
-  return (
-    <Button
-      variant='outline'
-      borderColor={Colors.primary}
-      borderWidth={2}
-      color={isActive ? 'white' : Colors.primary}
-      bgColor={isActive ? Colors.primary : 'transparent'}
-      _hover={{
-        bgColor: Colors.primary,
-        color: 'white',
-      }}
-    >
-      {children}
-    </Button>
   )
 }
 

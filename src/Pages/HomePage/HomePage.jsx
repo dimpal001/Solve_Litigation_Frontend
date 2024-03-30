@@ -1,12 +1,21 @@
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '../../Components/Customs'
 import Image from '../../assets/hero_thumbnail.svg'
+import { useContext, useEffect } from 'react'
+import AOS from 'aos'
+import 'aos/dist/aos'
+import { UserContext } from '../../UserContext'
 const HomePage = () => {
+  const { user } = useContext(UserContext)
+  useEffect(() => {
+    window.document.title = 'Solve Litigation'
+    AOS.init()
+  }, [])
   return (
     <div>
-      <div className='flex gap-10'>
-        <div className='w-[50%]'>
-          <p className='text-5xl font-extrabold leading-tight py-10'>
+      <div className='lg:flex gap-10 px-10 lg:px-32'>
+        <div data-aos='fade-up' className='lg:w-[50%]'>
+          <p className='lg:text-5xl text-3xl font-extrabold leading-tight py-10'>
             Solve your legal challenges with Solve Litigation
           </p>
           <p className='text-lg pb-10'>
@@ -16,11 +25,14 @@ const HomePage = () => {
             or expert legal advice and services, our comprehensive tools and
             resources have got you covered.
           </p>
-          <Link to={'/register'}>
+          <Link to={user ? '/citations' : '/register'}>
             <PrimaryButton title={'Get Started'} />
           </Link>
         </div>
-        <div className='w-[50%] flex justify-center items-center'>
+        <div
+          data-aos='zoom-in-up'
+          className='lg:w-[50%] flex max-md:pt-10 justify-center items-center'
+        >
           <img style={{ width: '100%' }} src={Image} alt='' />
         </div>
       </div>

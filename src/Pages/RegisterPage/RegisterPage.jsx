@@ -1,26 +1,40 @@
 import { useEffect, useState } from 'react'
-import { Button, Center, Checkbox, Input, useToast } from '@chakra-ui/react'
+import { Button, Center, Checkbox, useToast } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
 import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
 } from 'react-icons/md'
-import { PrimaryButton, SecondaryButton } from '../../Components/Customs'
+import {
+  CustomInput,
+  PrimaryButton,
+  SecondaryButton,
+} from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { Link, useNavigate } from 'react-router-dom'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import StateData from './states-and-districts.json'
+import axios from 'axios'
+import { api } from '../../Components/Apis'
 
 const RegisterPage = () => {
   const [selectedOption, setSelectedOption] = useState(null)
   const [isClickedNext, setIsClickedNext] = useState(null)
+  const [selectedState, setSelectedState] = useState(null)
+  const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [isShowPassword, setIsShowPassword] = useState(false)
   const [showSignUpForm, setShowSignUpForm] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
+    fullName: '',
     email: '',
+    phoneNumber: '',
     password: '',
     confirmPassword: '',
     registrationType: '',
+    state: '',
+    district: '',
   })
   const toast = useToast()
   const navigate = useNavigate()
@@ -41,11 +55,12 @@ const RegisterPage = () => {
     setIsClickedNext(true)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    console.log(formData)
     if (formData.password !== formData.confirmPassword) {
       toast({
-        title: 'Password missmatched.',
-        description: 'Password and Confirm Password should be same.',
+        title: 'Password mismatched.',
+        description: 'Password and Confirm Password should be the same.',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -54,16 +69,34 @@ const RegisterPage = () => {
       return
     }
 
-    toast({
-      title: 'Account created.',
-      description: "We've created your account for you.",
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-      position: 'top',
-    })
-    navigate('/login')
-    console.log('Form data:', formData)
+    try {
+      setIsSubmitting(true)
+      const response = await axios.post(
+        `${api}/api/solve_litigation/auth/register`,
+        formData
+      )
+      const { message } = response.data
+      toast({
+        title: message,
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+      console.log(message)
+      navigate('/login')
+    } catch (error) {
+      console.error('Login failed:', error.response.data.message)
+      toast({
+        title: error.response.data.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleChange = (e) => {
@@ -90,20 +123,45 @@ const RegisterPage = () => {
 
   useEffect(() => {
     AOS.init()
+    console.log(StateData)
+    window.document.title = 'Registration Form - Solve Litigation'
   }, [])
+
+  const handleStateChange = (e) => {
+    const selectedState = e.target.value
+    setSelectedState(selectedState)
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      state: selectedState,
+    }))
+  }
+
+  const handleDistrictChange = (e) => {
+    const selectedDistrict = e.target.value
+    setSelectedDistrict(selectedDistrict)
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      district: selectedDistrict,
+    }))
+  }
 
   return (
     <Center className='flex justify-center w-full'>
       <div
         data-aos='fade-up'
-        className='shadow-xl border w-[420px] p-10 rounded-xl'
+        className='shadow-xl max-sm:mt-10 border lg:w-[500px] p-10 rounded-xl'
       >
         <div className='flex-col gap-10'>
           <Center>
-            <img style={{ width: '100px' }} src={Logo} alt='' />
+            <img
+              className='max-sm:hidden'
+              style={{ width: '100px' }}
+              src={Logo}
+              alt=''
+            />
           </Center>
 
-          {/* Before clicking next button  */}
+          {/* Before clicking the next button  */}
           {!showSignUpForm ? (
             <div data-aos='fade-up'>
               <p className='text-center font-extrabold pt-5'>Register for ?</p>
@@ -145,13 +203,13 @@ const RegisterPage = () => {
                 </Button>
                 <div className='w-full flex justify-between pt-7'>
                   <SecondaryButton
-                    width={'35%'}
+                    width={{ base: '45%', md: '35%' }}
                     leftIcon={<MdKeyboardDoubleArrowLeft />}
                     title={'Previous'}
                     isDisabled={!isClickedNext}
                   />
                   <SecondaryButton
-                    width={'35%'}
+                    width={{ base: '45%', md: '35%' }}
                     rightIcon={<MdKeyboardDoubleArrowRight />}
                     title={'Next'}
                     isDisabled={!selectedOption}
@@ -160,7 +218,7 @@ const RegisterPage = () => {
                 </div>
               </div>
               <p className='text-center text-base pt-5'>
-                Already registered ?{' '}
+                Already registered?{' '}
                 <Link className='text-primary hover:underline' to={'/login'}>
                   Login
                 </Link>
@@ -168,7 +226,7 @@ const RegisterPage = () => {
             </div>
           ) : null}
 
-          {/* After clicking next button  */}
+          {/* After clicking the next button  */}
           {showSignUpForm ? (
             <div data-aos='fade-up'>
               <p className='text-center font-extrabold pt-5'>
@@ -179,26 +237,84 @@ const RegisterPage = () => {
                 <span className='text-primary'>{selectedOption}</span>
               </p>
               <div className='text-center flex-col flex gap-3 p-1 py-4'>
-                <Input
-                  name='email'
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder={'Email address'}
-                />
-                <Input
-                  type={isShowPassword ? 'text' : 'password'}
-                  name='password'
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder={'Password'}
-                />
-                <Input
-                  type={isShowPassword ? 'text' : 'password'}
-                  name='confirmPassword'
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder={'Confirm Password'}
-                />
+                <div>
+                  <CustomInput
+                    type='text'
+                    name='fullName'
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder={'Full Name'}
+                  />
+                </div>
+                <div className='flex max-sm:flex-col gap-3'>
+                  <CustomInput
+                    type='email'
+                    name='email'
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder={'Email address'}
+                  />
+                  <CustomInput
+                    type='number'
+                    name='phoneNumber'
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    placeholder={'Phone Number'}
+                  />
+                </div>
+                <div className='flex max-sm:flex-col gap-3'>
+                  <CustomInput
+                    type='text'
+                    name='state'
+                    placeholder={'State name'}
+                    list='state'
+                    onChange={handleStateChange}
+                    value={selectedState}
+                  />
+                  <datalist id='state'>
+                    {StateData.states.map((state, index) => (
+                      <option key={index} value={state.state}>
+                        {state.state}
+                      </option>
+                    ))}
+                  </datalist>
+                  <CustomInput
+                    isDisabled={selectedState ? false : true}
+                    type='text'
+                    name='district'
+                    placeholder='District name'
+                    list='district'
+                    onChange={handleDistrictChange}
+                    value={selectedDistrict}
+                  />
+                  <datalist id='district'>
+                    {(
+                      StateData.states.find(
+                        (state) => state.state === selectedState
+                      )?.districts || []
+                    ).map((district, index) => (
+                      <option key={index} value={district}>
+                        {district}
+                      </option>
+                    ))}
+                  </datalist>
+                </div>
+                <div className='flex max-sm:flex-col gap-3'>
+                  <CustomInput
+                    type={isShowPassword ? 'text' : 'password'}
+                    name='password'
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder={'Password'}
+                  />
+                  <CustomInput
+                    type={isShowPassword ? 'text' : 'password'}
+                    name='confirmPassword'
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder={'Confirm Password'}
+                  />
+                </div>
                 <Checkbox
                   style={{
                     bgColor: Colors.secondary,
@@ -209,9 +325,9 @@ const RegisterPage = () => {
                 >
                   Show Password
                 </Checkbox>
-                <div className='w-full flex justify-between pt-7'>
+                <div className='w-full flex justify-between pt-3'>
                   <SecondaryButton
-                    width={'40%'}
+                    width={{ base: '45%', md: '35%' }}
                     leftIcon={<MdKeyboardDoubleArrowLeft />}
                     title={'Previous'}
                     onClick={() => {
@@ -221,8 +337,10 @@ const RegisterPage = () => {
                     }}
                   />
                   <PrimaryButton
-                    width={'40%'}
+                    width={{ base: '45%', md: '35%' }}
                     title={'Submit'}
+                    isLoading={isSubmitting}
+                    loadingText={'Submitting...'}
                     onClick={handleSubmit}
                     isDisabled={isSubmitDisabled()}
                   />
