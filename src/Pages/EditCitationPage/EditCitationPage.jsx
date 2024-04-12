@@ -1,6 +1,6 @@
-import { Input } from '@chakra-ui/react'
-import { PrimaryButton, PrimaryOutlineButton } from '../../Components/Customs'
-import { FaRegEdit, FaSearch } from 'react-icons/fa'
+import { Input, Select, InputGroup, InputRightElement, InputLeftElement } from '@chakra-ui/react'
+import { PrimaryOutlineButton } from '../../Components/Customs'
+import { FaArrowRight, FaRegEdit, FaSearch } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
@@ -68,30 +68,42 @@ const EditCitationPage = () => {
   }, [])
 
   return (
-    <div>
+    <div data-aos='fade-up'>
       <div>
-        <p className='text-2xl text-center font-extrabold'>Edit Citation</p>
-        <div className='flex justify-center py-5 items-center gap-2'>
-          <Input
-            width={'20%'}
-            borderRadius={'base'}
-            placeholder='Enter citaion number'
-          />
-          <PrimaryButton leftIcon={<FaSearch />} />
-        </div>
-        <div className='flex gap-3'>
-          <PrimaryOutlineButton
-            bgColor={citationType === 'pending' ? Colors.primary : null}
-            color={citationType === 'pending' ? 'white' : null}
-            onClick={() => handleChangeCitaionType('pending')}
-            title={'Pending Citaion'}
-          />
-          <PrimaryOutlineButton
-            color={citationType === 'approved' ? 'white' : null}
-            bgColor={citationType === 'approved' ? Colors.primary : null}
-            onClick={() => handleChangeCitaionType('approved')}
-            title={'Approved Citaion'}
-          />
+        <p className='text-3xl text-center font-extrabold'>Edit Citation</p>
+        <div className='flex py-3 justify-between'>
+          <div className='flex gap-3'>
+            <PrimaryOutlineButton
+              bgColor={citationType === 'pending' ? Colors.primary : null}
+              color={citationType === 'pending' ? 'white' : null}
+              onClick={() => handleChangeCitaionType('pending')}
+              title={'Pending Citaion'}
+            />
+            <PrimaryOutlineButton
+              color={citationType === 'approved' ? 'white' : null}
+              bgColor={citationType === 'approved' ? Colors.primary : null}
+              onClick={() => handleChangeCitaionType('approved')}
+              title={'Approved Citaion'}
+            />
+            <div>
+              <Select borderRadius={3} _hover={{ bgColor: Colors.primary, color: 'white' }} color={Colors.primary} borderColor={Colors.primary}>
+                <option value="all">All</option>
+                <option value="order">Order Citation</option>
+                <option value="act">Acts Citation</option>
+              </Select>
+            </div>
+          </div>
+          <div>
+            <InputGroup>
+              <InputLeftElement pointerEvents='none'>
+                <FaSearch color={Colors.primary} />
+              </InputLeftElement>
+              <Input rounded={'sm'} type='text' placeholder='Search with advotace name' />
+              <InputRightElement>
+                <FaArrowRight color={Colors.primary} />
+              </InputRightElement>
+            </InputGroup>
+          </div>
         </div>
         <div>
           {isLoading ? (
@@ -100,13 +112,13 @@ const EditCitationPage = () => {
             <div className='py-3 flex flex-col gap-y-3'>
               {pendingCitations &&
                 pendingCitations.map((data, index) => (
-                  <div key={index}>
+                  <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
               {approvedCitations &&
                 approvedCitations.map((data, index) => (
-                  <div key={index}>
+                  <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
@@ -129,10 +141,10 @@ const Citation = ({ data }) => {
           <p className='text-lg'>{data.title}</p>
         </div>
         <div className='w-[20%] flex justify-end items-center'>
+          <p className='text-primary text-base px-2 capitalize'>{data.type}</p>
           <p
-            className={`text-sm px-2 ${
-              data.status === 'approved' ? 'text-green-600' : 'text-orange-600'
-            } capitalize`}
+            className={`text-base px-2 ${data.status === 'approved' ? 'text-green-600' : 'text-orange-600'
+              } capitalize`}
           >
             {data.status}
           </p>

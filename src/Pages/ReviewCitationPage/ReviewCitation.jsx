@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -7,14 +7,20 @@ import SingleCitationPage from './SingleCitationPage'
 import {
   GreenPrimaryButton,
   PrimaryOutlineButton,
+  RedButton,
 } from '../../Components/Customs'
 import { FaRegEdit } from 'react-icons/fa'
 import { useToast } from '@chakra-ui/react'
+import { UserContext } from '../../UserContext'
+import { MdDeleteOutline } from 'react-icons/md'
+import DeleteCitationModal from './DeleteCitationModal'
 
 const ReviewCitation = () => {
+  const { user } = useContext(UserContext)
   const { id } = useParams()
   const [citation, setCitation] = useState(null)
   const [isApproving, setIsApproving] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const navigate = useNavigate()
   const toast = useToast()
 
@@ -92,7 +98,7 @@ const ReviewCitation = () => {
                   title={'Edit'}
                 />
               </Link>
-              {citation.status === 'pending' && (
+              {user.userType === 'admin' && citation.status === 'pending' && (
                 <GreenPrimaryButton
                   isLoading={isApproving}
                   loadingText={'Approving...'}
@@ -100,7 +106,13 @@ const ReviewCitation = () => {
                   title={'Approve'}
                 />
               )}
+              {user.userType === 'admin' && (
+                <RedButton onClick={() => setIsDeleteModalOpen(true)} leftIcon={<MdDeleteOutline size={20} />} title={'Delete'} />
+              )}
             </div>
+            {isDeleteModalOpen && (
+              <DeleteCitationModal isOpen={true} onClose={() => setIsDeleteModalOpen(false)} />
+            )}
           </div>
         ) : (
           <Loading title={'Loading...'} />

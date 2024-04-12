@@ -1,16 +1,45 @@
+import axios from 'axios'
 import { PrimaryButton } from '../../Components/Customs'
 import { FaFilePdf } from 'react-icons/fa'
 import { FiPrinter } from 'react-icons/fi'
 import { IoIosMail } from 'react-icons/io'
 import { MdMarkEmailRead } from 'react-icons/md'
+import { api } from '../../Components/Apis'
 
 const SingleCitationPage = ({ data }) => {
+  const generatePDF = async () => {
+    try {
+      const htmlContent = document.getElementById('citation-pdf').innerHTML
+
+      const response = await axios.post(
+        `${api}/api/solve_litigation/citation/citation-pdf`,
+        {
+          htmlContent: htmlContent,
+        },
+        {
+          responseType: 'blob',
+        }
+      )
+
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', 'generated.pdf')
+      document.body.appendChild(link) // Append the link to document body
+      link.click()
+      document.body.removeChild(link)
+    } catch (error) {
+      console.error('Error generating pdf:', error)
+    }
+  }
+
   return (
     <div>
-      <div className='border max-sm:mx-3 shadow-2xl rounded-md lg:mx-20 lg:my-5 p-6 lg:p-10'>
+      <div className='border max-sm:mx-3 shadow-2xl my-3 rounded-md lg:mx-20 lg:my-5 p-2 lg:p-10'>
         <div className='flex max-sm:grid grid-cols-2 gap-3 pb-5 justify-center'>
           <PrimaryButton
             leftIcon={<FaFilePdf size={18} />}
+            onClick={generatePDF}
             title={'Download'}
           />
           <PrimaryButton leftIcon={<FiPrinter size={20} />} title={'Print'} />
@@ -23,8 +52,17 @@ const SingleCitationPage = ({ data }) => {
             title={'Send to mail'}
           />
         </div>
-        <div>
-          <p className='text-center font-extrabold'>{data.citationNo}</p>
+        <div id='citation-pdf' style={{ padding: '10px', fontSize: 16 }}>
+          <p
+            className='text-center font-extrabold'
+            style={{
+              textAlign: 'center',
+              fontWeight: '700',
+              fontSize: '1.5rem',
+            }}
+          >
+            {data.citationNo}
+          </p>
           <p className='text-center text-3xl py-2'>{data.title}</p>
           <p className='text-center capitalize'>{data.institutionName}</p>
           <p className='text-center text-lg capitalize'>

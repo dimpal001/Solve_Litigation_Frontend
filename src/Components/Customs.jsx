@@ -1,6 +1,7 @@
 import { Button, Input, Spinner } from '@chakra-ui/react'
 import { Colors } from './Colors'
 
+
 export const PrimaryButton = ({
   title,
   rightIcon,
@@ -82,18 +83,22 @@ export const PrimaryOutlineButton = ({
   onClick,
   size,
   isLoading,
+  value,
   loadingText,
   bgColor,
+  onChange,
   color,
 }) => {
   return (
     <>
       <Button
+        value={value}
         className='capitalize'
         loadingText={loadingText}
         isLoading={isLoading}
         borderRadius={3}
         variant={'outline'}
+        onChange={onChange}
         bgColor={bgColor}
         size={size}
         borderColor={Colors.primary}

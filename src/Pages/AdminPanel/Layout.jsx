@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import AdminHeader from './AdminHeader'
 import { PrimaryButton } from '../../Components/Customs'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { useToast } from '@chakra-ui/react'
 import { UserContext } from '../../UserContext'
 
@@ -10,6 +10,10 @@ const Layout = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
   const toast = useToast()
+
+  useEffect(() => {
+    window.document.title = 'Admin Panel - Solve Litigation'
+  }, [])
 
   const handleLogout = () => {
     setUser(null)

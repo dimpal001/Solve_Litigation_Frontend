@@ -22,24 +22,26 @@ const Navbar = () => {
   const btnRef = useRef()
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
+
   const handleLogout = () => {
     setIsLogoutModalOpen(true)
   }
   return (
     <div>
-      <div className='h-[100px] px-5 lg:px-32 justify-between w-full flex items-center'>
+      <div className='h-[100px] bg-white border px-5 lg:px-32 justify-between w-full flex items-center'>
         <div className=''>
           <NavLink title='Solve Litigation' to={'/'}>
             <img style={{ width: '60px' }} src={logo} alt='Logo' />
           </NavLink>
         </div>
+
         {isLogoutModalOpen && (
           <ConfirmLogout
             isOpen={true}
             onClose={() => setIsLogoutModalOpen(false)}
           />
         )}
-        <div className='lg:hidden flex gap-5'>
+        <div className='md:hidden flex gap-5'>
           {!user ? (
             <Link to={'/login'}>
               <PrimaryOutlineButton title={'Login'} />

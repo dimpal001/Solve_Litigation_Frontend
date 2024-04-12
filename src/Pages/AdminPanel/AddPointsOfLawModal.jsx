@@ -54,7 +54,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
     try {
       if (pointsOfLaw === '') {
         toast({
-          title: 'Points of Law cannot be empty.',
+          title: 'Point of Law cannot be empty.',
           status: 'error',
           duration: 3000,
           isClosable: true,
@@ -80,10 +80,11 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
       fetchPOL()
 
       toast({
-        title: 'Points of law added successfully',
+        title: 'Point of law added successfully',
         status: 'success',
         duration: 3000,
         isClosable: true,
+        position: 'top-right',
       })
 
       setPointsOfLaw('')
@@ -94,7 +95,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
         title: error.response.data.message,
         status: 'error',
         duration: 3000,
-        position: 'top',
+        position: 'top-right',
         isClosable: true,
       })
     } finally {
@@ -125,10 +126,11 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
       fetchPOL()
 
       toast({
-        title: 'Selected points of law deleted successfully',
+        title: 'Selected point of law deleted successfully',
         status: 'success',
         duration: 3000,
         isClosable: true,
+        position: 'top-right',
       })
 
       setSelectedPOLIds([])
@@ -137,7 +139,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
         title: error.response.data.message,
         status: 'error',
         duration: 3000,
-        position: 'top',
+        position: 'top-right',
         isClosable: true,
       })
     } finally {
@@ -160,7 +162,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
       <Modal isOpen={isOpen} size={'sm'} onClose={onClose}>
         <ModalOverlay />
         <ModalContent borderRadius={0} className='pb-5'>
-          <ModalHeader>Add a Points of Law</ModalHeader>
+          <ModalHeader>Add a Point of Law</ModalHeader>
           <ModalCloseButton />
           <ModalBody className='p-lg flex flex-col gap-3'>
             {listPOL.length !== 0 && (
@@ -185,6 +187,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
             {selectedPOLIds.length > 0 && (
               <Button
                 colorScheme='red'
+                borderRadius={'sm'}
                 onClick={handleDeleteSelectedPOLs}
                 isLoading={isLoading}
                 loadingText={'Deleting...'}

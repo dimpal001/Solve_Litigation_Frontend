@@ -3,11 +3,13 @@ import { LinkButton, PrimaryButton } from '../../Components/Customs'
 import { Divider } from '@chakra-ui/react'
 import { Colors } from '../../Components/Colors'
 import ConfirmLogout from '../../Components/ConfirmLogout'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Logo from '../../assets/logo.svg'
+import { UserContext } from '../../UserContext'
 
 const Sidebar = () => {
   const location = useLocation()
+  const { user } = useContext(UserContext)
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
   const isPageActive = (pathname) => {
@@ -22,9 +24,8 @@ const Sidebar = () => {
     <div>
       <div className='flex flex-col h-full fixed bg-slate-900 p-3 w-60 text-white'>
         <div className='flex flex-col items-center py-5 justify-center'>
-          {/* <p className='font-extrabold text-2xl'>Solve Litigation</p> */}
           <img src={Logo} width={'50px'} alt='' />
-          <p className='text-sm text-primary font-extrabold'>Admin Panel</p>
+          <p className='text-sm capitalize text-primary font-extrabold'>{user.userType} Panel</p>
         </div>
         <Divider />
         <div className='flex-1 pt-5 gap-y-4 flex flex-col'>
@@ -56,13 +57,22 @@ const Sidebar = () => {
               bgColor={isPageActive('edit-citation') ? Colors.primary : ''}
             />
           </Link>
-          <Link to={'/admin-dashboard/create-staff'}>
+          <Link to={'/admin-dashboard/study-materials'}>
             <LinkButton
-              title={'Create Staff'}
+              title={'Study Materials'}
               width={'100%'}
-              bgColor={isPageActive('create-staff') ? Colors.primary : ''}
+              bgColor={isPageActive('study-materials') ? Colors.primary : ''}
             />
           </Link>
+          {user.userType === 'admin' && (
+            <Link to={'/admin-dashboard/manage-staff'}>
+              <LinkButton
+                title={'Manage Staff'}
+                width={'100%'}
+                bgColor={isPageActive('manage-staff') ? Colors.primary : ''}
+              />
+            </Link>
+          )}
           <Link to={'/admin-dashboard/citation-activity'}>
             <LinkButton
               title={'Citation Activity'}

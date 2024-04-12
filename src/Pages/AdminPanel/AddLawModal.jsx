@@ -80,10 +80,11 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
       fetchLaw()
 
       toast({
-        title: 'Points of law added successfully',
+        title: 'Law added successfully',
         status: 'success',
         duration: 3000,
         isClosable: true,
+        position: 'top-right',
       })
 
       setLaw('')
@@ -94,7 +95,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
         title: error.response.data.message,
         status: 'error',
         duration: 3000,
-        position: 'top',
+        position: 'top-right',
         isClosable: true,
       })
     } finally {
@@ -129,6 +130,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
         status: 'success',
         duration: 3000,
         isClosable: true,
+        position: 'top-right',
       })
 
       setSelectedLawIds([])
@@ -137,7 +139,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
         title: error.response.data.message,
         status: 'error',
         duration: 3000,
-        position: 'top',
+        position: 'top-right',
         isClosable: true,
       })
     } finally {
@@ -185,6 +187,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
             {selectedLawIds.length > 0 && (
               <Button
                 colorScheme='red'
+                borderRadius={'sm'}
                 onClick={handleDeleteSelectedPOLs}
                 isLoading={isLoading}
                 loadingText={'Deleting...'}

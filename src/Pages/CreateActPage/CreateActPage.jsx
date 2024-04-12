@@ -7,24 +7,27 @@ import {
 } from '../../Components/Customs'
 import { MdDeleteForever } from 'react-icons/md'
 import { MdOutlineCloudUpload } from 'react-icons/md'
+import { FiChevronDown } from 'react-icons/fi'
 import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   useToast,
 } from '@chakra-ui/react'
 import { Colors } from '../../Components/Colors'
-import ReviewCitationModal from './ReviewCitationModal'
+import ReviewCitationModal from './ReviewActModal'
 import ResetAllModal from './ResetAllModal'
-import ActField from '../CreateActPage/ActsField'
-import ReviewActModal from '../CreateActPage/ReviewActModal'
-import { FaArrowLeft } from 'react-icons/fa'
-import { IoCreateOutline } from "react-icons/io5";
+import ActField from './ActsField'
 
-const CreateCitation = () => {
+const CreateAct = () => {
   const toast = useToast()
-  const [selectedType, setSelectedType] = useState('citation')
+  const [selectedType, setSelectedType] = useState('')
   const [reviewModelOpen, setReviewModelOpen] = useState(false)
   const [resetModelOpen, setResetModelOpen] = useState(false)
   const [data, setData] = useState({
     institutionName: '',
+    apellateType: '', // Initialize with an empty string
     caseNo: '',
     partyNameAppealant: '',
     partyNameRespondent: '',
@@ -34,10 +37,8 @@ const CreateCitation = () => {
     judgeName: '',
     headNote: '',
     referedJudgements: '',
-    apellates: [],
     laws: [],
     pointOfLaw: [],
-    notification: '',
     equivalentCitations: '',
     advocatePetitioner: '',
     advocateRespondent: '',
@@ -45,6 +46,7 @@ const CreateCitation = () => {
     overRuled: false,
   })
 
+  // Update apellateType whenever selectedType changes
   useEffect(() => {
     setData((prevData) => ({
       ...prevData,
@@ -63,7 +65,7 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.caseNo === '' && selectedType != 'act') {
+    if (data.caseNo === '') {
       toast({
         title: 'Case No. is required',
         status: 'error',
@@ -73,7 +75,7 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.partyNameAppealant === '' && selectedType != 'act') {
+    if (data.partyNameAppealant === '') {
       toast({
         title: 'Party Name Appealant is required',
         status: 'error',
@@ -83,7 +85,7 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.partyNameRespondent === '' && selectedType != 'act') {
+    if (data.partyNameRespondent === '') {
       toast({
         title: 'Party Name Respondent is required',
         status: 'error',
@@ -113,7 +115,7 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.dateOfOrder === '' && selectedType != 'act') {
+    if (data.dateOfOrder === '') {
       toast({
         title: 'Date of Order is required',
         status: 'error',
@@ -123,7 +125,7 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.judgeName === '' && selectedType != 'act') {
+    if (data.judgeName === '') {
       toast({
         title: 'Judge Name is required',
         status: 'error',
@@ -133,7 +135,7 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.laws.length === 0 && selectedType != 'act') {
+    if (data.laws.length === 0) {
       toast({
         title: 'Law is required',
         status: 'error',
@@ -143,7 +145,7 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.pointOfLaw.length === 0 && selectedType != 'act') {
+    if (data.pointOfLaw.length === 0) {
       toast({
         title: 'Point of Law is required',
         status: 'error',
@@ -162,7 +164,8 @@ const CreateCitation = () => {
   }
 
   const handleReset = () => {
-    setSelectedType('citation')
+    // Reset all fields to their initial values
+    setSelectedType('')
     setData({
       institutionName: '',
       apellateType: '',
@@ -175,7 +178,6 @@ const CreateCitation = () => {
       judgeName: '',
       headNote: '',
       referedJudgements: '',
-      apellates: [],
       laws: [],
       pointOfLaw: [],
       equivalentCitations: '',
@@ -188,31 +190,56 @@ const CreateCitation = () => {
 
   return (
     <div className='px-7'>
-      {selectedType === 'act' && (
-        <div>
-          <FaArrowLeft title='Go to previous page' size={20} onClick={() => handleReset()} className='cursor-pointer' color={Colors.primary} />
-        </div>
-      )}
-      <p className='text-3xl font-extrabold pb-5 text-center'>
-        Create {selectedType === 'citation' ? 'Citation' : 'Act'}
-      </p>
+      <p className='text-4xl pb-5 text-center'>Create Citation</p>
       <div className='flex justify-center gap-x-5'>
-        {selectedType === 'citation' && (
-          <PrimaryOutlineButton leftIcon={<IoCreateOutline size={20} />}
-            onClick={() => setSelectedType('act')}
-            title={'Create Act'}
-          />
-        )}
-      </div>
-      {reviewModelOpen && selectedType != 'act' && (
-        <ReviewCitationModal
-          data={data}
-          isOpen={true}
-          onClose={() => setReviewModelOpen(false)}
+        <Menu>
+          <MenuButton>
+            <PrimaryOutlineButton
+              bgColor={
+                (selectedType === 'corporate' ||
+                  selectedType === 'service' ||
+                  selectedType === 'civil' ||
+                  selectedType === 'taxation') &&
+                Colors.primary
+              }
+              color={
+                selectedType === 'corporate' ||
+                selectedType === 'service' ||
+                selectedType === 'civil' ||
+                selectedType === 'taxation'
+                  ? 'white'
+                  : null
+              }
+              title={
+                selectedType === 'criminal' || selectedType === ''
+                  ? 'Civil'
+                  : selectedType
+              }
+              rightIcon={<FiChevronDown />}
+            />
+          </MenuButton>
+          <MenuList>
+            <MenuItem onClick={() => setSelectedType('civil')}>Civil</MenuItem>
+            <MenuItem onClick={() => setSelectedType('corporate')}>
+              Corporate
+            </MenuItem>
+            <MenuItem onClick={() => setSelectedType('service')}>
+              Service
+            </MenuItem>
+            <MenuItem onClick={() => setSelectedType('taxation')}>
+              Taxation
+            </MenuItem>
+          </MenuList>
+        </Menu>
+        <PrimaryOutlineButton
+          bgColor={selectedType === 'criminal' && Colors.primary}
+          color={selectedType === 'criminal' ? 'white' : null}
+          onClick={() => setSelectedType('criminal')}
+          title={'Criminal'}
         />
-      )}
-      {reviewModelOpen && selectedType === 'act' && (
-        <ReviewActModal
+      </div>
+      {reviewModelOpen && (
+        <ReviewCitationModal
           data={data}
           isOpen={true}
           onClose={() => setReviewModelOpen(false)}
@@ -225,27 +252,33 @@ const CreateCitation = () => {
           onClose={() => setResetModelOpen(false)}
         />
       )}
-      <div>
-        {selectedType === 'act' ? (
-          <ActField data={data} setData={setData} />
-        ) : (
-          <CitationField data={data} setData={setData} />
-        )}
-        <div className='pt-10 pb-20 flex gap-5'>
-          <PrimaryButton
-            title={'Upload Citation'}
-            onClick={handleReview}
-            leftIcon={<MdOutlineCloudUpload size={20} />}
-          />
-          <RedButton
-            title={'Reset All'}
-            onClick={handleResetModalOpen}
-            leftIcon={<MdDeleteForever size={20} />}
-          />
+      {selectedType !== '' ? (
+        <div>
+          {selectedType === 'act' ? (
+            <ActField data={data} setData={setData} />
+          ) : (
+            <CitationField data={data} setData={setData} />
+          )}
+          <div className='pt-10 pb-20 flex gap-5'>
+            <PrimaryButton
+              title={'Upload Citation'}
+              onClick={handleReview}
+              leftIcon={<MdOutlineCloudUpload size={20} />}
+            />
+            <RedButton
+              title={'Reset All'}
+              onClick={handleResetModalOpen}
+              leftIcon={<MdDeleteForever size={20} />}
+            />
+          </div>
         </div>
-      </div>
+      ) : (
+        <p className='text-center text-primary py-5'>
+          Select an apellate type to create a citation
+        </p>
+      )}
     </div>
   )
 }
 
-export default CreateCitation
+export default CreateAct

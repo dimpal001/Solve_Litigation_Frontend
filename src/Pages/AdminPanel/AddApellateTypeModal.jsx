@@ -15,18 +15,18 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 
-const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
+const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
   const toast = useToast()
-  const [courts, setCourts] = useState('')
+  const [apellateTypes, setApellateTypes] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [listCourt, setListCourt] = useState([])
-  const [selectedCourtIds, setSelectedCourtIds] = useState([])
+  const [selectedApellateIds, setSelectedApellateIds] = useState([])
 
   const fetchCourts = async () => {
     const token = sessionStorage.getItem('token')
     try {
       const response = await axios.get(
-        `${api}/api/solve_litigation/contents/court-list`,
+        `${api}/api/solve_litigation/contents/apellate-list`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -52,9 +52,9 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
   const handleAddingCourt = async () => {
     const token = sessionStorage.getItem('token')
     try {
-      if (courts === '') {
+      if (apellateTypes === '') {
         toast({
-          title: 'Court name cannot be empty.',
+          title: 'Apellate type cannot be empty.',
           status: 'error',
           duration: 3000,
           isClosable: true,
@@ -66,8 +66,8 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
       setIsLoading(true)
 
       const response = await axios.post(
-        `${api}/api/solve_litigation/contents/add-courts`,
-        { name: courts.toLocaleLowerCase() },
+        `${api}/api/solve_litigation/contents/add-apellate`,
+        { name: apellateTypes.toLocaleLowerCase() },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,14 +80,13 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
       fetchCourts()
 
       toast({
-        title: 'Court (Institution) added successfully',
+        title: 'Points of law added successfully',
         status: 'success',
         duration: 3000,
         isClosable: true,
-        position: 'top-right',
       })
 
-      setCourts('')
+      setApellateTypes('')
 
       setIsLoading(false)
     } catch (error) {
@@ -95,7 +94,7 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
         title: error.response.data.message,
         status: 'error',
         duration: 3000,
-        position: 'top-right',
+        position: 'top',
         isClosable: true,
       })
     } finally {
@@ -109,12 +108,12 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
     try {
       setIsLoading(true)
 
-      console.log(selectedCourtIds)
+      console.log(selectedApellateIds)
 
       const response = await axios.delete(
-        `${api}/api/solve_litigation/contents/delete-court`,
+        `${api}/api/solve_litigation/contents/delete-apellate`,
         {
-          data: { ids: selectedCourtIds },
+          data: { ids: selectedApellateIds },
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -126,14 +125,15 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
       fetchCourts()
 
       toast({
-        title: 'Court(s) deleted successfully',
+        title: 'Apellate(s) deleted successfully',
         status: 'success',
         duration: 3000,
         isClosable: true,
         position: 'top-right'
+
       })
 
-      setSelectedCourtIds([])
+      setSelectedApellateIds([])
     } catch (error) {
       toast({
         title: error.response.data.message,
@@ -151,9 +151,11 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
   const handleCheckboxChange = (event, id) => {
     const isChecked = event.target.checked
     if (isChecked) {
-      setSelectedCourtIds([...selectedCourtIds, id])
+      setSelectedApellateIds([...selectedApellateIds, id])
     } else {
-      setSelectedCourtIds(selectedCourtIds.filter((polId) => polId !== id))
+      setSelectedApellateIds(
+        selectedApellateIds.filter((polId) => polId !== id)
+      )
     }
   }
 
@@ -162,7 +164,7 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
       <Modal isOpen={isOpen} size={'sm'} onClose={onClose}>
         <ModalOverlay />
         <ModalContent borderRadius={0} className='pb-5'>
-          <ModalHeader>Add Court ( Institution )</ModalHeader>
+          <ModalHeader>Add Apellate Type</ModalHeader>
           <ModalCloseButton />
           <ModalBody className='p-lg flex flex-col gap-3'>
             {listCourt.length !== 0 && (
@@ -176,7 +178,7 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
                   <Checkbox
                     key={item._id}
                     className='capitalize'
-                    isChecked={selectedCourtIds.includes(item._id)}
+                    isChecked={selectedApellateIds.includes(item._id)}
                     onChange={(e) => handleCheckboxChange(e, item._id)}
                   >
                     {item.name}
@@ -184,7 +186,7 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
                 ))
               )}
             </div>
-            {selectedCourtIds.length > 0 && (
+            {selectedApellateIds.length > 0 && (
               <Button
                 borderRadius={'sm'}
                 colorScheme='red'
@@ -196,13 +198,13 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
               </Button>
             )}
           </ModalBody>
-          {selectedCourtIds.length === 0 && (
+          {selectedApellateIds.length === 0 && (
             <ModalBody>
               <FormControl className='flex gap-3'>
                 <CustomInput
-                  placeholder='Enter a Points of Law to add'
-                  value={courts}
-                  onChange={(e) => setCourts(e.target.value)}
+                  placeholder='Enter a apellate type to add'
+                  value={apellateTypes}
+                  onChange={(e) => setApellateTypes(e.target.value)}
                 />
                 <PrimaryButton
                   isLoading={isLoading}
@@ -219,4 +221,4 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
   )
 }
 
-export default AddCourtModal
+export default AddApellateTypeModal

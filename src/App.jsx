@@ -18,6 +18,11 @@ import CitationsPage from './Pages/CitationsPage/CitationsPage'
 import ReviewCitation from './Pages/ReviewCitationPage/ReviewCitation'
 import EditCitation from './Pages/EditCitationPage/EditCitation'
 import ViewCitation from './Pages/ViewCitationPage/ViewCitation'
+import StudyMaterialDashboard from './Pages/StudyMaterials/StudyMaterialDashboard'
+import CreateStaffpage from './Pages/ManageStaff/CreateStaffpage'
+import ManageStaffPage from './Pages/ManageStaff/ManageStaffPage'
+import StaffList from './Pages/ManageStaff/StaffList'
+import Headroom from 'react-headroom'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -26,9 +31,11 @@ const App = () => {
     <div className='text-secondary text-xl varela-round-regular min-h-screen'>
       {/* Navbar Section */}
       <BrowserRouter>
-        {(!user || user.userType !== 'admin') && (
+        {(!user || user.userType === 'guest') && (
           <div>
-            <Navbar />
+            <Headroom>
+              <Navbar />
+            </Headroom>
           </div>
         )}
 
@@ -40,14 +47,14 @@ const App = () => {
               element={
                 !user ? (
                   <HomePage />
-                ) : user && user.userType === 'admin' ? (
+                ) : user && (user.userType === 'admin' || user.userType === 'staff') ? (
                   <Navigate to='/admin-dashboard' />
                 ) : (
                   <HomePage />
                 )
               }
             />
-            {user && user.userType === 'admin' && (
+            {user && (user.userType === 'admin' || user.userType === 'staff') && (
               <Route path='/admin-dashboard/' element={<Layout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route
@@ -58,12 +65,19 @@ const App = () => {
                   path='review-citation/:id'
                   element={<ReviewCitation />}
                 />
+                <Route path='manage-staff/create-staff' element={<CreateStaffpage />} />
+                <Route path='manage-staff/staff-list' element={<StaffList />} />
+                <Route path='manage-staff' element={<ManageStaffPage />} />
                 <Route
                   path='create-citation'
                   element={<CreateCitationPage />}
                 />
                 <Route path='edit-citation' element={<EditCitationPage />} />
                 <Route path='edit-citation/:id' element={<EditCitation />} />
+                <Route
+                  path='study-materials'
+                  element={<StudyMaterialDashboard />}
+                />
                 <Route
                   path='profile-settings'
                   element={<ProfileSettingsPage />}

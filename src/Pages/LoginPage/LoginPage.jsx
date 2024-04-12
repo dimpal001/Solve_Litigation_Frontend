@@ -50,8 +50,12 @@ const LoginPage = () => {
       )
       const { token, message, user } = response.data
       sessionStorage.setItem('token', token)
+      const expirationTime = new Date().getTime() + 10 * 1000;
       sessionStorage.setItem('user', JSON.stringify(user))
+      sessionStorage.setItem('tokenExpiration', expirationTime);
+
       setUser(user)
+
       toast({
         title: message,
         status: 'success',
@@ -59,10 +63,11 @@ const LoginPage = () => {
         isClosable: true,
         position: 'top',
       })
-      console.log('Login successful:', user)
-      user.userType === 'admin'
+
+      user.userType === 'admin' || user.userType === 'staff'
         ? navigate('/admin-dashboard/')
         : navigate('/citations')
+
     } catch (error) {
       setIsLoading(false)
       if (error.response) {

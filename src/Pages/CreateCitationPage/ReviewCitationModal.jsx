@@ -20,9 +20,11 @@ import { MdModeEditOutline, MdOutlineCloudUpload } from 'react-icons/md'
 import { useContext } from 'react'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
+import { useNavigate } from 'react-router-dom'
 const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   const { user } = useContext(UserContext)
   const toast = useToast()
+  const navigate = useNavigate()
 
   const handleUplaod = async () => {
     try {
@@ -52,6 +54,7 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
         })
         onClose()
       }
+      navigate('/admin-dashboard/review-citation')
     } catch (error) {
       // Handle any errors that occur during the upload process
       console.error('Error uploading citation:', error)

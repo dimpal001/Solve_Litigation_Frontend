@@ -15,9 +15,9 @@ const CitationField = ({ data, setData }) => {
   const [listLaw, setListLaw] = useState([])
   const [listPOL, setListPOL] = useState([])
   const [listCourt, setListCourt] = useState([])
+  const [listApellate, setListApellate] = useState([])
   const {
     institutionName,
-    apellateType,
     caseNo,
     partyNameAppealant,
     partyNameRespondent,
@@ -27,6 +27,7 @@ const CitationField = ({ data, setData }) => {
     judgeName,
     headNote,
     referedJudgements,
+    apellates,
     laws,
     pointOfLaw,
     equivalentCitations,
@@ -87,6 +88,23 @@ const CitationField = ({ data, setData }) => {
     }
   }
 
+  const fetchApellate = async () => {
+    try {
+      const token = sessionStorage.getItem('token')
+      const response = await axios.get(
+        `${api}/api/solve_litigation/contents/apellate-list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      setListApellate(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target
     setData((prevData) => ({ ...prevData, [name]: checked }))
@@ -96,6 +114,7 @@ const CitationField = ({ data, setData }) => {
     fetchLaw()
     fetchCourt()
     fetchPOL()
+    fetchApellate()
   }, [])
 
   const capitalizeString = (str) => {
@@ -128,12 +147,6 @@ const CitationField = ({ data, setData }) => {
         </Select>
       </FormControl>
 
-      <FormControl>
-        <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>Apellate Type *</span>
-        </FormLabel>
-        <Input value={apellateType} className='capitalize' />
-      </FormControl>
       <FormControl>
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Case No *</span>
@@ -259,6 +272,32 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
+      </FormControl>
+      <FormControl>
+        <FormLabel className='text-red-500'>
+          <span className='text-lg font-extrabold'>Apellate Types *</span>
+        </FormLabel>
+        <div className='flex gap-5 capitalize'>
+          {listApellate.map((apellate, index) => (
+            <Checkbox
+              key={index}
+              name={`law_${apellate._id}`}
+              isChecked={apellates.includes(apellate.name)}
+              onChange={(e) => {
+                const { checked } = e.target
+                const apellateName = apellate.name
+                setData((prevData) => ({
+                  ...prevData,
+                  apellates: checked
+                    ? [...prevData.apellates, apellateName] // Store the name in the array
+                    : prevData.apellates.filter((name) => name !== apellateName), // Remove the name from the array
+                }))
+              }}
+            >
+              {apellate.name}
+            </Checkbox>
+          ))}
+        </div>
       </FormControl>
       <FormControl>
         <FormLabel className='text-red-500'>
