@@ -86,6 +86,20 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
                 </p>
                 <p className='capitalize text-lg'>{data.institutionName}</p>
               </div>
+              {data.index && (
+                <div>
+                  <p className='text-sm font-extrabold text-primary'>
+                    Index
+                  </p>
+                  <p className='text-lg text-justify'>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: data.index,
+                      }}
+                    />
+                  </p>
+                </div>
+              )}
               <div>
                 <p className='text-sm font-extrabold text-primary'>Title</p>
                 <p className='capitalize text-lg'>{data.title}</p>

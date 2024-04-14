@@ -18,6 +18,7 @@ const CitationField = ({ data, setData }) => {
   const [listApellate, setListApellate] = useState([])
   const {
     institutionName,
+    index,
     caseNo,
     partyNameAppealant,
     partyNameRespondent,
@@ -145,6 +146,21 @@ const CitationField = ({ data, setData }) => {
             </option>
           ))}
         </Select>
+      </FormControl>
+
+      <FormControl>
+        <FormLabel>
+          <span className='text-lg font-extrabold'>Index</span>
+        </FormLabel>
+        <Editor
+          value={index}
+          onChange={(newContent) =>
+            setData((prevData) => ({
+              ...prevData,
+              index: newContent,
+            }))
+          }
+        />
       </FormControl>
 
       <FormControl>

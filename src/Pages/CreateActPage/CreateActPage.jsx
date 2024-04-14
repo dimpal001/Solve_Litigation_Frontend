@@ -27,7 +27,8 @@ const CreateAct = () => {
   const [resetModelOpen, setResetModelOpen] = useState(false)
   const [data, setData] = useState({
     institutionName: '',
-    apellateType: '', // Initialize with an empty string
+    index: '',
+    apellateType: '',
     caseNo: '',
     partyNameAppealant: '',
     partyNameRespondent: '',
@@ -204,9 +205,9 @@ const CreateAct = () => {
               }
               color={
                 selectedType === 'corporate' ||
-                selectedType === 'service' ||
-                selectedType === 'civil' ||
-                selectedType === 'taxation'
+                  selectedType === 'service' ||
+                  selectedType === 'civil' ||
+                  selectedType === 'taxation'
                   ? 'white'
                   : null
               }

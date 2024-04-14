@@ -31,6 +31,7 @@ const LoginPage = () => {
   }
 
   const handleLogin = async () => {
+    refreshString()
     try {
       const enteredCaptcha = formData.captcha
       if (enteredCaptcha !== captcha) {

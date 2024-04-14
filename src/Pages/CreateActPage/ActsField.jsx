@@ -6,7 +6,7 @@ import Editor from '../CreateCitationPage/Editor'
 
 const ActField = ({ data, setData }) => {
   const [listCourt, setListCourt] = useState([])
-  const { institutionName, title, judgments, notification } = data
+  const { institutionName, index, title, judgments, notification } = data
 
   const fetchCourt = async () => {
     try {
@@ -58,6 +58,22 @@ const ActField = ({ data, setData }) => {
           ))}
         </Select>
       </FormControl>
+
+      <FormControl>
+        <FormLabel>
+          <span className='text-lg font-extrabold'>Index</span>
+        </FormLabel>
+        <Editor
+          value={index}
+          onChange={(newContent) =>
+            setData((prevData) => ({
+              ...prevData,
+              index: newContent,
+            }))
+          }
+        />
+      </FormControl>
+
       <FormControl>
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>

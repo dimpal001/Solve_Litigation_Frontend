@@ -81,12 +81,20 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                 </p>
                 <p className='capitalize text-lg'>{data.institutionName}</p>
               </div>
-              <div>
-                <p className='text-sm font-extrabold text-primary'>
-                  Apellate Type
-                </p>
-                <p className='capitalize text-lg'>{data.apellateType}</p>
-              </div>
+              {data.index && (
+                <div>
+                  <p className='text-sm font-extrabold text-primary'>
+                    Index
+                  </p>
+                  <p className='text-lg text-justify'>
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: data.index,
+                      }}
+                    />
+                  </p>
+                </div>
+              )}
               <div>
                 <p className='text-sm font-extrabold text-primary'>Case No</p>
                 <p className='capitalize text-lg'>{data.caseNo}</p>
@@ -165,6 +173,19 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                   <p className='capitalize text-lg'>{data.referedJudgements}</p>
                 </div>
               )}
+              <div>
+                <p className='text-sm font-extrabold text-primary'>Apellates</p>
+                <div>
+                  {data.apellates.map((apellate, index) => (
+                    <div className='flex gap-2' key={index}>
+                      <VscDebugBreakpointLog className='mt-[2px]' />
+                      <p className='capitalize'>{apellate}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className='capitalize text-lg'>{data.law}</p>
+              </div>
+
               <div>
                 <p className='text-sm font-extrabold text-primary'>Law</p>
                 <div>

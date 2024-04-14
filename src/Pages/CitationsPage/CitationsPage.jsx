@@ -193,8 +193,8 @@ const CitationsPage = () => {
           </p>
         )}
         <div className='lg:flex gap-x-8 max-md:px-3 py-3'>
-          <div className='lg:w-[25%] max-lg:hidden border p-2 max-md:mb-3 rounded-sm'>
-            <div className='grid grid-cols-2 gap-3 max-lg:grid-cols-3'>
+          <div className='lg:w-[55%] max-lg:hidden p-2 max-md:mb-3 rounded-sm'>
+            <div className='flex flex-wrap justify-between gap-3'>
               {fetchingApellates && fetchingApellates.map((data, index) => (
                 <PrimaryOutlineButton key={index}
                   onClick={() => handleChangeApellate(data.name)}
@@ -204,11 +204,11 @@ const CitationsPage = () => {
                 />
               ))}
             </div>
-            <div className='flex flex-col justify-center max-md:py-2 gap-3'>
+            <div className='flex justify-between max-md:py-2 gap-3 py-3'>
               {fetchingLaws.length !== 0 && (
                 <div>
                   <p className='text-sm'>Select a law</p>
-                  <div className='flex flex-col gap-2'>
+                  <div className='flex flex-col items-start gap-2'>
                     {fetchingLaws.map((law, index) => (
                       <PrimaryOutlineButton
                         value={law}
@@ -223,8 +223,8 @@ const CitationsPage = () => {
 
               {fetchingPOL.length !== 0 && (
                 <div>
-                  <p className='text-sm'>Select a point of law</p>
-                  <div className='flex flex-col gap-2'>
+                  <p className='text-sm text-end'>Select a point of law</p>
+                  <div className='flex flex-col items-end gap-2'>
                     {fetchingPOL.map((POL, index) => (
                       <PrimaryOutlineButton
                         value={POL}
@@ -294,7 +294,7 @@ const CitationsPage = () => {
               </ModalHeader>
             </ModalContent>
           </Modal>
-          <div className='lg:w-[75%]'>
+          <div className='lg:w-[45%]'>
             {isLoading ? (
               <Loading />
             ) : (

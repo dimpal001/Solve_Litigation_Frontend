@@ -25,6 +25,7 @@ const CreateCitation = () => {
   const [resetModelOpen, setResetModelOpen] = useState(false)
   const [data, setData] = useState({
     institutionName: '',
+    index: '',
     caseNo: '',
     partyNameAppealant: '',
     partyNameRespondent: '',

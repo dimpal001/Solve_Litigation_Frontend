@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
-import { PrimaryOutlineButton } from '../../Components/Customs'
+import { GreenPrimaryButton, PrimaryOutlineButton } from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link } from 'react-router-dom'
 import { MdPreview } from 'react-icons/md'
 import { Colors } from '../../Components/Colors'
-import { Select, InputGroup, InputLeftElement, Input, InputRightElement } from '@chakra-ui/react'
+import { InputGroup, InputLeftElement, Input, InputRightElement } from '@chakra-ui/react'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
+import FilterCitationModal from './FilterCitationModal'
 
 const ReviewCitationPage = () => {
   const [pendingCitations, setPendingCitations] = useState([])
   const [approvedCitations, setApprovedCitations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [citationType, setCitationType] = useState('pending')
 
   const fetchPendingCitation = async () => {
@@ -91,11 +93,7 @@ const ReviewCitationPage = () => {
                   title={'Approved Citaion'}
                 />
                 <div>
-                  <Select borderRadius={3} _hover={{ bgColor: Colors.primary, color: 'white' }} color={Colors.primary} borderColor={Colors.primary}>
-                    <option value="all">All</option>
-                    <option value="order">Order Citation</option>
-                    <option value="act">Acts Citation</option>
-                  </Select>
+                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter citation'} />
                 </div>
               </div>
               <div>
@@ -110,6 +108,9 @@ const ReviewCitationPage = () => {
                 </InputGroup>
               </div>
             </div>
+            {isFilterModalOpen && (
+              <FilterCitationModal isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
+            )}
             {citationType === 'pending' && pendingCitations.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
