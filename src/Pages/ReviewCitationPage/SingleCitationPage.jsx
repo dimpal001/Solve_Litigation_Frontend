@@ -85,12 +85,14 @@ const SingleCitationPage = ({ data }) => {
   return (
     <div>
       <div>
-        <Link to={'/admin-dashboard/review-citation'}>
-          <div className='flex items-baseline gap-1 hover:gap-3 delay-[0.05s] transition-all'>
-            <FaArrowLeft size={20} className='pt-[5px] cursor-pointer' color={Colors.primary} />
-            <p className='text-primary'>Back</p>
-          </div>
-        </Link>
+        {user.userType !== 'guest' && (
+          <Link to={'/admin-dashboard/review-citation'}>
+            <div className='flex items-baseline gap-1 hover:gap-3 delay-[0.05s] transition-all'>
+              <FaArrowLeft size={20} className='pt-[5px] cursor-pointer' color={Colors.primary} />
+              <p className='text-primary'>Back</p>
+            </div>
+          </Link>
+        )}
       </div>
       <div className='max-sm:mx-3 border my-3 rounded-sm bg-slate-50 lg:my-5 p-2 lg:p-10'>
         {user.userType === 'admin' && (
