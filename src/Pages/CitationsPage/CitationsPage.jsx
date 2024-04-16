@@ -1,4 +1,4 @@
-import { IconButton, Input, InputGroup, InputLeftElement, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
+import { IconButton, Input, Avatar, Badge, Button, InputGroup, InputLeftElement, InputRightElement, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 import axios from 'axios'
@@ -170,14 +170,14 @@ const CitationsPage = () => {
 
   return (
     <div>
-      <div className='md:px-32  py-3'>
-        <div className='flex justify-center pb-5'>
+      <div className='md:px-32 py-3'>
+        <div className='flex justify-center lg:pb-3'>
           <div className='flex gap-2 lg:w-[50%]'>
             <InputGroup>
               <InputLeftElement pointerEvents='none'>
                 <FaSearch color={Colors.primary} />
               </InputLeftElement>
-              <Input rounded={'sm'} type='text' placeholder='Search with advotace name' />
+              <Input rounded={'sm'} type='text' placeholder='Search here ...' />
               <InputRightElement>
                 <FaArrowRight color={Colors.primary} />
               </InputRightElement>
@@ -187,13 +187,8 @@ const CitationsPage = () => {
             </div>
           </div>
         </div>
-        {filteredCitations.length === 0 ? null : (
-          <p className='text-center lg:hidden text-sm'>
-            {fetchingCitations.length} result found
-          </p>
-        )}
-        <div className='lg:flex gap-x-8 max-md:px-3 py-3'>
-          <div className='lg:w-[55%] max-lg:hidden p-2 max-md:mb-3 rounded-sm'>
+        <div className='lg:flex flex-row-reverse gap-x-8 md:px-3 py-3'>
+          <div className='lg:w-[50%] max-lg:hidden p-2 max-md:mb-3 rounded-sm'>
             <div className='flex flex-wrap justify-between gap-3'>
               {fetchingApellates && fetchingApellates.map((data, index) => (
                 <PrimaryOutlineButton key={index}
@@ -245,29 +240,42 @@ const CitationsPage = () => {
                 <ModalCloseButton />
                 <ModalBody>
                   <div className='lg:w-[25%] p-2 max-md:mb-3 rounded-sm'>
-                    <p className='text-sm font-light py-1'>Select an apellate type</p>
+                    <p className='text-base font-medium py-1'>Select an apellate type</p>
                     <div className='grid grid-cols-2 gap-3 max-lg:grid-cols-3'>
                       {fetchingApellates && fetchingApellates.map((data, index) => (
-                        <PrimaryOutlineButton key={index}
+                        <Button key={index}
+                          _focus={{
+                            bgColor: Colors.primary,
+                            textColor: 'white'
+                          }}
+                          size={'10px'} px={'8px'}
+                          py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                          fontSize={14}
+                          bgColor={selectedApellate === data.name && Colors.primary}
+                          color={selectedApellate === data.name && 'white'}
                           onClick={() => handleChangeApellate(data.name)}
-                          bgColor={selectedApellate === data.name ? Colors.primary : null}
-                          color={selectedApellate === data.name ? 'white' : null}
-                          title={data.name}
-                        />
+                        >{data.name}</Button>
                       ))}
                     </div>
                     <div className='flex flex-col justify-center max-md:py-2 gap-3'>
                       {fetchingLaws.length !== 0 && (
                         <div>
-                          <p className='text-sm font-light py-1'>Select a law</p>
-                          <div className='flex flex-col gap-2'>
+                          <div className='h-[1px] bg-slate-200'></div>
+                          <p className='text-base font-medium py-1'>Select a law</p>
+                          <div className='flex flex-wrap gap-2'>
                             {fetchingLaws.map((law, index) => (
-                              <PrimaryOutlineButton
-                                value={law}
+                              <Button key={index}
+                                _focus={{
+                                  bgColor: Colors.primary,
+                                  textColor: 'white'
+                                }}
+                                size={'10px'} px={'8px'}
+                                py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                                fontSize={14} value={law}
+                                bgColor={selectedLaw === law && Colors.primary}
+                                color={selectedLaw === law && 'white'}
                                 onClick={(e) => handleChangeLaw(e.target.value)}
-                                key={index}
-                                title={law}
-                              />
+                              >{law}</Button>
                             ))}
                           </div>
                         </div>
@@ -275,15 +283,26 @@ const CitationsPage = () => {
 
                       {fetchingPOL.length !== 0 && (
                         <div>
-                          <p className='text-sm font-light py-1'>Select a point of law</p>
-                          <div className='flex flex-col gap-2'>
+                          <div className='h-[1px] bg-slate-200'></div>
+                          <p className='text-base font-medium py-1'>Select a point of law</p>
+                          <div className='flex flex-wrap gap-2'>
                             {fetchingPOL.map((POL, index) => (
-                              <PrimaryOutlineButton
-                                value={POL}
+                              // <PrimaryOutlineButton
+                              //   value={POL}
+                              //   onClick={(e) => handleChangePOL(e.target.value)}
+                              //   key={index}
+                              //   title={POL}
+                              // />
+                              <Button key={index}
+                                _focus={{
+                                  bgColor: Colors.primary,
+                                  textColor: 'white'
+                                }}
+                                size={'10px'} px={'8px'}
+                                py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                                fontSize={14} value={POL}
                                 onClick={(e) => handleChangePOL(e.target.value)}
-                                key={index}
-                                title={POL}
-                              />
+                              >{POL}</Button>
                             ))}
                           </div>
                         </div>
@@ -294,7 +313,7 @@ const CitationsPage = () => {
               </ModalHeader>
             </ModalContent>
           </Modal>
-          <div className='lg:w-[45%]'>
+          <div className='lg:w-[50%]'>
             {isLoading ? (
               <Loading />
             ) : (
@@ -302,20 +321,20 @@ const CitationsPage = () => {
                 <div>
                   {fetchingCitations.length !== 0 ? (
                     <div>
-                      <div className='flex gap-3 pb-3'>
-                        <PrimaryOutlineButton
+                      <div className='flex max-md:px-3 gap-3 pb-3'>
+                        <PrimaryOutlineButton size={'sm'}
                           bgColor={selectedFilter === 'all' && Colors.primary}
                           color={selectedFilter === 'all' && 'white'}
                           onClick={handleFilterAll}
                           title={'All'}
                         />
-                        <PrimaryOutlineButton
+                        <PrimaryOutlineButton size={'sm'}
                           bgColor={selectedFilter === 'hc' && Colors.primary}
                           color={selectedFilter === 'hc' && 'white'}
                           onClick={handleFilterHighCourt}
                           title={'High Court'}
                         />
-                        <PrimaryOutlineButton
+                        <PrimaryOutlineButton size={'sm'}
                           bgColor={selectedFilter === 'sc' && Colors.primary}
                           color={selectedFilter === 'sc' && 'white'}
                           onClick={handleFilterSupremeCourt}
@@ -328,8 +347,7 @@ const CitationsPage = () => {
                         ))}
                     </div>
                   ) : (
-                    <div className='flex flex-col gap-2'>
-                      <p className='text-primary'>Latest Citations</p>
+                    <div className='flex flex-col gap-3'>
                       {last10Citations.map((citation, index) => (
                         <Citation key={index} data={citation} />
                       ))}
@@ -346,20 +364,40 @@ const CitationsPage = () => {
 }
 
 const Citation = ({ data }) => {
+  const sanitizeHTML = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.documentElement.textContent + '...';
+  };
+
   return (
     <div>
       <Link to={`/detailed-citation/${data._id}`}>
-        <div className='border hover:bg-primary hover:text-white cursor-pointer border-slate-300 flex p-2 rounded-sm'>
-          <div className='lf:w-[20%] w-[40%] flex items-center'>
-            <p className='text-lg overflow-hidden pl-3'>{data.citationNo}</p>
+        <div className='p-2 max-sm:px-5 hover:bg-slate-50 lg:border-b max-md:bg-slate-50'>
+          <div className='flex items-center'>
+            <div>
+              <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />
+            </div>
+            <div className='px-2'>
+              <p className='text-base capitalize'>{data.institutionName}</p>
+              <p className='text-xs'>{`Ordered on ${new Date(data.dateOfOrder).toLocaleDateString()}`}</p>
+            </div>
           </div>
-          <div className='lg:w-[80%] w-[60%] flex items-center'>
-            <p className='text-lg overflow-hidden'>{data.title}</p>
+          <div>
+            <p className='text-primary py-1'>{data.title}</p>
+          </div>
+          <div>
+            <p className='text-sm' dangerouslySetInnerHTML={{ __html: sanitizeHTML(data.judgments) }} />
+          </div>
+          <div className='flex gap-2 py-1'>
+            {data.laws.map((law, index) => (
+              <Badge bgColor={'gray.200'} key={index} fontSize={10} px={2}>{law}</Badge>
+            ))}
           </div>
         </div>
       </Link>
     </div>
-  )
-}
+  );
+};
+
 
 export default CitationsPage

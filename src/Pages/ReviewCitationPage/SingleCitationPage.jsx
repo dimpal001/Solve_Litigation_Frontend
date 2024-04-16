@@ -1,12 +1,23 @@
 import axios from 'axios'
-import { PrimaryButton } from '../../Components/Customs'
-import { FaFilePdf } from 'react-icons/fa'
-import { FiPrinter } from 'react-icons/fi'
+import { GreenPrimaryButton, PrimaryButton, PrimaryOutlineButton, RedButton } from '../../Components/Customs'
+import { FaArrowLeft, FaFilePdf, FaRegEdit } from 'react-icons/fa'
+import { FiCheckSquare, FiPrinter } from 'react-icons/fi'
 import { IoIosMail } from 'react-icons/io'
-import { MdMarkEmailRead } from 'react-icons/md'
+import { MdMarkEmailRead, MdOutlineDeleteOutline } from 'react-icons/md'
+import { useToast } from '@chakra-ui/react'
 import { api } from '../../Components/Apis'
+import { Link, useNavigate } from 'react-router-dom'
+import { Colors } from '../../Components/Colors'
+import { useContext, useState } from 'react'
+import DeleteCitationModal from './DeleteCitationModal'
+import { UserContext } from '../../UserContext'
 
 const SingleCitationPage = ({ data }) => {
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isApproving, setIsApproving] = useState(false)
+  const toast = useToast()
+  const { user } = useContext(UserContext)
+  const navigate = useNavigate()
   const generatePDF = async () => {
     try {
       const htmlContent = document.getElementById('citation-pdf').innerHTML
@@ -33,10 +44,70 @@ const SingleCitationPage = ({ data }) => {
     }
   }
 
+  const handleApprove = async () => {
+    try {
+      setIsApproving(true)
+
+      const token = sessionStorage.getItem('token')
+
+      const response = await axios.put(
+        `${api}/api/solve_litigation/citation/approve-citation/${data._id}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      toast({
+        title: response.data.message,
+        status: 'success',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      })
+    } catch (error) {
+      toast({
+        title: error.response.data.message,
+        status: 'error',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      })
+      navigate('/admin-dashboard/review-citation/')
+    } finally {
+      setIsApproving(false)
+      navigate('/admin-dashboard/review-citation/')
+    }
+  }
+
   return (
     <div>
-      <div className='border max-sm:mx-3 shadow-2xl my-3 rounded-md lg:mx-20 lg:my-5 p-2 lg:p-10'>
-        <div className='flex max-sm:grid grid-cols-2 gap-3 pb-5 justify-center'>
+      <div>
+        <Link to={'/admin-dashboard/review-citation'}>
+          <div className='flex items-baseline gap-1 hover:gap-3 delay-[0.05s] transition-all'>
+            <FaArrowLeft size={20} className='pt-[5px] cursor-pointer' color={Colors.primary} />
+            <p className='text-primary'>Back</p>
+          </div>
+        </Link>
+      </div>
+      <div className='max-sm:mx-3 border my-3 rounded-sm bg-slate-50 lg:my-5 p-2 lg:p-10'>
+        {user.userType === 'admin' && (
+          <div className='flex gap-5'>
+            <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
+              <PrimaryOutlineButton leftIcon={<FaRegEdit size={18} />} title={'Edit'} />
+            </Link>
+            <RedButton leftIcon={<MdOutlineDeleteOutline size={20} />} onClick={() => setIsDeleteModalOpen(true)} title={'Delete'} />
+            {data.status === 'pending' && (
+              <GreenPrimaryButton leftIcon={<FiCheckSquare size={18} />} onClick={handleApprove} isLoading={isApproving} loadingText={'Approving...'} title={'Approve'} />
+            )}
+            {isDeleteModalOpen && (
+              <DeleteCitationModal isOpen={true} onClose={() => setIsDeleteModalOpen(false)} />
+            )}
+          </div>
+        )}
+        {/* <div className='flex max-sm:grid grid-cols-2 gap-3 pb-5 justify-center'>
           <PrimaryButton
             leftIcon={<FaFilePdf size={18} />}
             onClick={generatePDF}
@@ -51,7 +122,7 @@ const SingleCitationPage = ({ data }) => {
             leftIcon={<IoIosMail size={23} />}
             title={'Send to mail'}
           />
-        </div>
+        </div> */}
         <div id='citation-pdf' style={{ padding: '10px', fontSize: 16 }}>
           <p
             className='text-center font-extrabold'

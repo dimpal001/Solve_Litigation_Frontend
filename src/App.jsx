@@ -74,6 +74,7 @@ const App = () => {
                 />
                 <Route path='edit-citation' element={<EditCitationPage />} />
                 <Route path='edit-citation/:id' element={<EditCitation />} />
+                <Route path='detailed-citation/:id' element={<ViewCitation />} />
                 <Route
                   path='study-materials'
                   element={<StudyMaterialDashboard />}
@@ -93,7 +94,7 @@ const App = () => {
               />
             )}
             {user && <Route path='/citations' element={<CitationsPage />} />}
-            {user && (
+            {user && user.userType === 'guest' && (
               <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             )}
             <Route path='/services' element={<ServicesPage />} />

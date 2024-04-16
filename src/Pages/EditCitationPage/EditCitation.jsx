@@ -6,12 +6,37 @@ import { useEffect, useState } from 'react'
 import Loading from '../../Components/Loading'
 import { PrimaryButton } from '../../Components/Customs'
 import { FaCheck } from 'react-icons/fa'
+import { useToast } from '@chakra-ui/react'
+import ActField from '../CreateActPage/ActsField'
 
 const EditCitation = () => {
   const { id } = useParams()
+  const toast = useToast()
   const navigate = useNavigate()
-  const [citation, setCitation] = useState(null)
   const [isUpdating, setIsUpdating] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [data, setData] = useState({
+    institutionName: '',
+    index: '',
+    caseNo: '',
+    partyNameAppealant: '',
+    partyNameRespondent: '',
+    title: '',
+    judgments: '',
+    dateOfOrder: '',
+    judgeName: '',
+    headNote: '',
+    referedJudgements: '',
+    apellates: [],
+    laws: [],
+    pointOfLaw: [],
+    notification: '',
+    equivalentCitations: '',
+    advocatePetitioner: '',
+    advocateRespondent: '',
+    reportable: false,
+    overRuled: false,
+  })
 
   const fetchCitation = async () => {
     try {
@@ -24,28 +49,64 @@ const EditCitation = () => {
           },
         }
       )
-      setCitation(response.data.citation)
+      setData(response.data.citation)
     } catch (error) {
       console.error(error)
+    } finally {
+      setIsLoading(false)
     }
   }
   useEffect(() => {
     fetchCitation()
   }, [])
 
-  const handleUpdate = () => {
-    setIsUpdating(true)
-    navigate('/admin-dashboard/edit-citation')
-  }
+  const handleUpdate = async () => {
+    setIsUpdating(true);
+    try {
+      const token = sessionStorage.getItem('token');
+      const response = await axios.put(
+        `${api}/api/solve_litigation/citation/update-citation/${id}`,
+        { citationData: data },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast({
+        title: response.data.message,
+        status: 'success',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      })
+      navigate('/admin-dashboard/review-citation');
+    } catch (error) {
+      toast({
+        title: error.response.data.error,
+        status: 'error',
+        duration: 3000,
+        position: 'top',
+        isClosable: true,
+      })
+    } finally {
+      setIsUpdating(false)
+    }
+  };
+
 
   return (
     <div>
       <div>
-        <p className='text-2xl text-center font-extrabold'>Edit Citation</p>
+        <p className='text-2xl text-center font-extrabold'>Edit {data && data.type === 'act' && 'Act'} Citation</p>
         <div>
-          {citation ? (
+          {!isLoading ? (
             <div>
-              <CitationField data={citation} />
+              {data.type === 'act' ? (
+                <ActField data={data} setData={setData} />
+              ) : (
+                <CitationField data={data} setData={setData} />
+              )}
               <div className='flex justify-center pt-5 pb-10'>
                 <PrimaryButton
                   title={'Update Citaion'}

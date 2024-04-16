@@ -2,16 +2,15 @@ import {
     Modal,
     ModalOverlay,
     ModalContent,
-    ModalHeader,
+    ModalHeader, Button,
     ModalBody,
     ModalCloseButton,
 } from '@chakra-ui/react'
-import { PrimaryOutlineButton } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useState } from 'react'
 import { Colors } from '../../Components/Colors'
-const FilterCitationModal = ({ isOpen, onClose }) => {
+const FilterCitationModal = ({ isOpen, onClose, setCitationType, setFilterCitations, setPendingCitations, setApprovedCitations }) => {
     const [courts, setCourts] = useState([])
     const [years, setYears] = useState([])
     const [months, setMonths] = useState([])
@@ -130,9 +129,12 @@ const FilterCitationModal = ({ isOpen, onClose }) => {
                     Authorization: `Bearer ${token}`,
                 },
             })
-
-
+            setPendingCitations([])
+            setApprovedCitations([])
+            setCitationType('')
             await setCitations(response.data.citations);
+            await setFilterCitations(response.data.citations)
+            onClose()
             console.log(citations)
 
         } catch (error) {
@@ -152,15 +154,34 @@ const FilterCitationModal = ({ isOpen, onClose }) => {
                             <div>
                                 <p className='text-sm'>Select court type</p>
                                 <div className='flex gap-3'>
-                                    <PrimaryOutlineButton color={selectedCourtType === 'high court' && 'white'} bgColor={selectedCourtType === 'high court' && Colors.primary} onClick={() => {
-                                        handleFetchCourtOrYear('high court')
-                                    }} size={'sm'} title={'High Court'} />
-                                    <PrimaryOutlineButton color={selectedCourtType === 'supreme court' && 'white'} bgColor={selectedCourtType === 'supreme court' && Colors.primary} onClick={() => {
-                                        handleFetchCourtOrYear('supreme court')
-                                    }} size={'sm'} title={'Supreme Court'} />
-                                    <PrimaryOutlineButton color={selectedCourtType === 'tribunal' && 'white'} bgColor={selectedCourtType === 'tribunal' && Colors.primary} onClick={() => {
-                                        handleFetchCourtOrYear('tribunal')
-                                    }} size={'sm'} title={'Trubunal'} />
+                                    <Button size={'sm'} color={selectedCourtType === 'high court' && 'white'}
+                                        bgColor={selectedCourtType === 'high court' && Colors.primary}
+                                        _focus={{
+                                            bgColor: Colors.primary,
+                                            color: 'white'
+                                        }}
+                                        rounded={'sm'} onClick={() => {
+                                            handleFetchCourtOrYear('high court')
+                                        }} >High Court</Button>
+
+                                    <Button size={'sm'} color={selectedCourtType === 'supreme court' && 'white'}
+                                        bgColor={selectedCourtType === 'supreme court' && Colors.primary}
+                                        _focus={{
+                                            bgColor: Colors.primary,
+                                            color: 'white'
+                                        }}
+                                        rounded={'sm'} onClick={() => {
+                                            handleFetchCourtOrYear('supreme court')
+                                        }} >Supreme Court</Button>
+                                    <Button size={'sm'} color={selectedCourtType === 'tribunal' && 'white'}
+                                        bgColor={selectedCourtType === 'tribunal' && Colors.primary}
+                                        _focus={{
+                                            bgColor: Colors.primary,
+                                            color: 'white'
+                                        }}
+                                        rounded={'sm'} onClick={() => {
+                                            handleFetchCourtOrYear('tribunal')
+                                        }} >Trubunal</Button>
                                 </div>
                             </div>
                             {courts.length > 0 && (
@@ -168,14 +189,17 @@ const FilterCitationModal = ({ isOpen, onClose }) => {
                                     <p className='text-sm'>Select a court</p>
                                     <div className='flex flex-wrap gap-3'>
                                         {courts.map((court, index) => (
-                                            <PrimaryOutlineButton
+                                            <Button key={index}
                                                 color={selectedCourt === court.name && 'white'}
                                                 bgColor={selectedCourt === court.name && Colors.primary}
-                                                key={index}
                                                 onClick={() => handleFetchYears(court.name)}
                                                 size={'sm'}
-                                                title={court.name}
-                                            />
+                                                rounded={'sm'}
+                                                _focus={{ bgColor: Colors.primary, color: 'white' }}
+                                                textTransform={'capitalize'}
+                                            >
+                                                {court.name}
+                                            </Button>
                                         ))}
                                     </div>
                                 </div>
@@ -185,14 +209,17 @@ const FilterCitationModal = ({ isOpen, onClose }) => {
                                     <p className='text-sm'>Select a year</p>
                                     <div className='flex flex-wrap gap-3'>
                                         {years.map((year, index) => (
-                                            <PrimaryOutlineButton
+                                            <Button key={index}
                                                 color={selectedYear === year.year && 'white'}
                                                 bgColor={selectedYear === year.year && Colors.primary}
-                                                key={index}
                                                 onClick={() => handleFetchMonths(year.year)}
                                                 size={'sm'}
-                                                title={year.year}
-                                            />
+                                                rounded={'sm'}
+                                                _focus={{ bgColor: Colors.primary, color: 'white' }}
+                                                textTransform={'capitalize'}
+                                            >
+                                                {year.year}
+                                            </Button>
                                         ))}
                                     </div>
                                 </div>
@@ -202,15 +229,17 @@ const FilterCitationModal = ({ isOpen, onClose }) => {
                                     <p className='text-sm'>Select a month</p>
                                     <div className='flex flex-wrap gap-3'>
                                         {months.map((month, index) => (
-                                            <PrimaryOutlineButton
+                                            <Button key={index}
                                                 color={selectedMonth === month.month && 'white'}
                                                 bgColor={selectedMonth === month.month && Colors.primary}
-                                                key={index}
                                                 onClick={() => handleFetchDays(month.month)}
                                                 size={'sm'}
-                                                title={month.monthName}
-                                            />
-
+                                                rounded={'sm'}
+                                                _focus={{ bgColor: Colors.primary, color: 'white' }}
+                                                textTransform={'capitalize'}
+                                            >
+                                                {month.month}
+                                            </Button>
                                         ))}
                                     </div>
                                 </div>
@@ -220,15 +249,17 @@ const FilterCitationModal = ({ isOpen, onClose }) => {
                                     <p className='text-sm'>Select a day</p>
                                     <div className='flex flex-wrap gap-3'>
                                         {days.map((day, index) => (
-                                            <PrimaryOutlineButton
+                                            <Button key={index}
                                                 color={selectedDay === day.day && 'white'}
                                                 bgColor={selectedDay === day.day && Colors.primary}
-                                                key={index}
                                                 onClick={() => handleFetchCitations(day.day)}
                                                 size={'sm'}
-                                                title={day.day}
-                                            />
-
+                                                rounded={'sm'}
+                                                _focus={{ bgColor: Colors.primary, color: 'white' }}
+                                                textTransform={'capitalize'}
+                                            >
+                                                {day.day}
+                                            </Button>
                                         ))}
                                     </div>
                                 </div>

@@ -4,21 +4,22 @@ import { GreenPrimaryButton, PrimaryOutlineButton } from '../../Components/Custo
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link } from 'react-router-dom'
-import { MdPreview } from 'react-icons/md'
 import { Colors } from '../../Components/Colors'
-import { InputGroup, InputLeftElement, Input, InputRightElement } from '@chakra-ui/react'
+import { InputGroup, InputLeftElement, Badge, Avatar, Input, InputRightElement } from '@chakra-ui/react'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import FilterCitationModal from './FilterCitationModal'
 
 const ReviewCitationPage = () => {
   const [pendingCitations, setPendingCitations] = useState([])
   const [approvedCitations, setApprovedCitations] = useState([])
+  const [filterCitations, setFilterCitations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [citationType, setCitationType] = useState('pending')
 
   const fetchPendingCitation = async () => {
     try {
+      setFilterCitations([])
       const token = sessionStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/pending-citations`,
@@ -37,6 +38,7 @@ const ReviewCitationPage = () => {
 
   const approvedCitaion = async () => {
     try {
+      setFilterCitations([])
       const token = sessionStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/approved-citations`,
@@ -67,7 +69,6 @@ const ReviewCitationPage = () => {
 
   useEffect(() => {
     fetchPendingCitation()
-    console.log(pendingCitations)
   }, [])
 
   return (
@@ -109,7 +110,7 @@ const ReviewCitationPage = () => {
               </div>
             </div>
             {isFilterModalOpen && (
-              <FilterCitationModal isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
+              <FilterCitationModal setCitationType={setCitationType} setApprovedCitations={setApprovedCitations} setPendingCitations={setPendingCitations} setFilterCitations={setFilterCitations} isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
             )}
             {citationType === 'pending' && pendingCitations.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
@@ -117,18 +118,26 @@ const ReviewCitationPage = () => {
             {citationType === 'approved' && approvedCitations.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
-            {pendingCitations &&
-              pendingCitations.map((data, index) => (
-                <div data-aos='fade-up' key={index}>
-                  <Citation data={data} />
-                </div>
-              ))}
-            {approvedCitations &&
-              approvedCitations.map((data, index) => (
-                <div data-aos='fade-up' key={index}>
-                  <Citation data={data} />
-                </div>
-              ))}
+            <div className='grid grid-cols-2 gap-5'>
+              {filterCitations &&
+                filterCitations.map((data, index) => (
+                  <div data-aos='fade-up' key={index}>
+                    <Citation data={data} />
+                  </div>
+                ))}
+              {pendingCitations &&
+                pendingCitations.map((data, index) => (
+                  <div data-aos='fade-up' key={index}>
+                    <Citation data={data} />
+                  </div>
+                ))}
+              {approvedCitations &&
+                approvedCitations.map((data, index) => (
+                  <div data-aos='fade-up' key={index}>
+                    <Citation data={data} />
+                  </div>
+                ))}
+            </div>
           </div>
         )}
       </div>
@@ -137,33 +146,31 @@ const ReviewCitationPage = () => {
 }
 
 const Citation = ({ data }) => {
+
   return (
     <div>
-      <div className='border border-slate-300 flex p-2 rounded-sm'>
-        <div className='w-[20%] flex items-center'>
-          <p className='text-lg pl-3'>{data.citationNo}</p>
-        </div>
-        <div className='w-[80%] flex items-center'>
-          <p className='text-lg'>{data.title}</p>
-        </div>
-        <div className='w-[20%] flex justify-end items-center'>
-          <p className='text-primary text-base px-2 capitalize'>{data.type} </p>
-          <p
-            className={`text-base px-2 ${data.status === 'approved' ? 'text-green-600' : 'text-orange-600'
-              } capitalize`}
-          >
-            {data.status}
-          </p>
-          <Link to={`/admin-dashboard/review-citation/${data._id}`}>
-            <PrimaryOutlineButton
-              leftIcon={<MdPreview size={20} />}
-              title={'Review'}
-            />
-          </Link>
-        </div>
+      <div className='p-2 max-sm:px-5 z-[1] border rounded-sm border-slate-100 bg-slate-50 cursor-auto hover:bg-slate-100'>
+        <Link to={`/admin-dashboard/detailed-citation/${data._id}`}>
+          <div className='flex items-center'>
+            <div>
+              <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />
+            </div>
+            <div className='px-2'>
+              <p className='text-base capitalize'>{data.citationNo}</p>
+              <p className='text-xs'>Last modified : {new Date(data.lastModifiedDate).toLocaleDateString()}</p>
+            </div>
+          </div>
+          <div>
+            <p className='text-primary py-1'>{data.title}</p>
+          </div>
+          <div className='flex gap-2 py-1'>
+            <Badge bgColor={data.status === 'pending' ? 'orange.300' : 'green.400'} color={'white'} px={2}>{data.status}</Badge>
+            <Badge bgColor={Colors.primary} color={'white'} px={2}>{data.type}</Badge>
+          </div>
+        </Link>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default ReviewCitationPage
