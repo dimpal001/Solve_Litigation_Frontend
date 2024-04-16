@@ -182,13 +182,13 @@ const CitationsPage = () => {
                 <FaArrowRight color={Colors.primary} />
               </InputRightElement>
             </InputGroup>
-            <div className='lg:hidden'>
+            <div className=''>
               <IconButton onClick={() => setIsFilterModalOpen(true)} rounded={'sm'} bgColor={Colors.primary} color={'white'} icon={<LuSettings2 size={23} />} />
             </div>
           </div>
         </div>
-        <div className='lg:flex flex-row-reverse gap-x-8 md:px-3 py-3'>
-          <div className='lg:w-[50%] max-lg:hidden p-2 max-md:mb-3 rounded-sm'>
+        <div className='lg:flex w-full gap-x-8 md:px-3 py-3'>
+          {/* <div className='lg:w-[50%] max-lg:hidden p-2 max-md:mb-3 rounded-sm'>
             <div className='flex flex-wrap justify-between gap-3'>
               {fetchingApellates && fetchingApellates.map((data, index) => (
                 <PrimaryOutlineButton key={index}
@@ -232,88 +232,81 @@ const CitationsPage = () => {
                 </div>
               )}
             </div>
-          </div>
-          <Modal size={'sm'} isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)}>
+          </div> */}
+          <Modal size={{ base: 'sm', lg: 'xl' }} isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)}>
             <ModalOverlay />
             <ModalContent rounded={0} >
-              <ModalHeader>
-                <ModalCloseButton />
-                <ModalBody>
-                  <div className='lg:w-[25%] p-2 max-md:mb-3 rounded-sm'>
-                    <p className='text-base font-medium py-1'>Select an apellate type</p>
-                    <div className='grid grid-cols-2 gap-3 max-lg:grid-cols-3'>
-                      {fetchingApellates && fetchingApellates.map((data, index) => (
-                        <Button key={index}
-                          _focus={{
-                            bgColor: Colors.primary,
-                            textColor: 'white'
-                          }}
-                          size={'10px'} px={'8px'}
-                          py={'7px'} textTransform={'capitalize'} rounded={'sm'}
-                          fontSize={14}
-                          bgColor={selectedApellate === data.name && Colors.primary}
-                          color={selectedApellate === data.name && 'white'}
-                          onClick={() => handleChangeApellate(data.name)}
-                        >{data.name}</Button>
-                      ))}
-                    </div>
-                    <div className='flex flex-col justify-center max-md:py-2 gap-3'>
-                      {fetchingLaws.length !== 0 && (
-                        <div>
-                          <div className='h-[1px] bg-slate-200'></div>
-                          <p className='text-base font-medium py-1'>Select a law</p>
-                          <div className='flex flex-wrap gap-2'>
-                            {fetchingLaws.map((law, index) => (
-                              <Button key={index}
-                                _focus={{
-                                  bgColor: Colors.primary,
-                                  textColor: 'white'
-                                }}
-                                size={'10px'} px={'8px'}
-                                py={'7px'} textTransform={'capitalize'} rounded={'sm'}
-                                fontSize={14} value={law}
-                                bgColor={selectedLaw === law && Colors.primary}
-                                color={selectedLaw === law && 'white'}
-                                onClick={(e) => handleChangeLaw(e.target.value)}
-                              >{law}</Button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {fetchingPOL.length !== 0 && (
-                        <div>
-                          <div className='h-[1px] bg-slate-200'></div>
-                          <p className='text-base font-medium py-1'>Select a point of law</p>
-                          <div className='flex flex-wrap gap-2'>
-                            {fetchingPOL.map((POL, index) => (
-                              // <PrimaryOutlineButton
-                              //   value={POL}
-                              //   onClick={(e) => handleChangePOL(e.target.value)}
-                              //   key={index}
-                              //   title={POL}
-                              // />
-                              <Button key={index}
-                                _focus={{
-                                  bgColor: Colors.primary,
-                                  textColor: 'white'
-                                }}
-                                size={'10px'} px={'8px'}
-                                py={'7px'} textTransform={'capitalize'} rounded={'sm'}
-                                fontSize={14} value={POL}
-                                onClick={(e) => handleChangePOL(e.target.value)}
-                              >{POL}</Button>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
+              <ModalHeader>Filter Citations</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <div className='p-2 max-md:mb-3 rounded-sm'>
+                  <p className='text-base font-medium py-1'>Select an apellate type</p>
+                  <div className='flex flex-wrap gap-5'>
+                    {fetchingApellates && fetchingApellates.map((data, index) => (
+                      <Button key={index}
+                        _focus={{
+                          bgColor: Colors.primary,
+                          textColor: 'white'
+                        }}
+                        size={'10px'} px={'8px'}
+                        py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                        fontSize={14}
+                        bgColor={selectedApellate === data.name && Colors.primary}
+                        color={selectedApellate === data.name && 'white'}
+                        onClick={() => handleChangeApellate(data.name)}
+                      >{data.name}</Button>
+                    ))}
                   </div>
-                </ModalBody>
-              </ModalHeader>
+                  <div className='flex flex-col justify-center max-md:py-2 gap-3'>
+                    {fetchingLaws.length !== 0 && (
+                      <div>
+                        <div className='h-[1px] my-5 bg-slate-200'></div>
+                        <p className='text-base font-medium py-1'>Select a law</p>
+                        <div className='flex flex-wrap gap-2'>
+                          {fetchingLaws.map((law, index) => (
+                            <Button key={index}
+                              _focus={{
+                                bgColor: Colors.primary,
+                                textColor: 'white'
+                              }}
+                              size={'10px'} px={'8px'}
+                              py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                              fontSize={14} value={law}
+                              bgColor={selectedLaw === law && Colors.primary}
+                              color={selectedLaw === law && 'white'}
+                              onClick={(e) => handleChangeLaw(e.target.value)}
+                            >{law}</Button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {fetchingPOL.length !== 0 && (
+                      <div>
+                        <div className='h-[1px] my-5 bg-slate-200'></div>
+                        <p className='text-base font-medium py-1'>Select a point of law</p>
+                        <div className='flex flex-wrap gap-2'>
+                          {fetchingPOL.map((POL, index) => (
+                            <Button key={index}
+                              _focus={{
+                                bgColor: Colors.primary,
+                                textColor: 'white'
+                              }}
+                              size={'10px'} px={'8px'}
+                              py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                              fontSize={14} value={POL}
+                              onClick={(e) => handleChangePOL(e.target.value)}
+                            >{POL}</Button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </ModalBody>
             </ModalContent>
           </Modal>
-          <div className='lg:w-[50%]'>
+          <div className='w-full lg:px-[200px]'>
             {isLoading ? (
               <Loading />
             ) : (
@@ -351,6 +344,9 @@ const CitationsPage = () => {
                       {last10Citations.map((citation, index) => (
                         <Citation key={index} data={citation} />
                       ))}
+                      <div className='flex justify-center'>
+                        <p className='text-center text-primary text-base hover:bg-primary hover:text-white p-1 rounded-sm transition-all delay-[0.05s] px-3 cursor-pointer' >Load more</p>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -372,7 +368,7 @@ const Citation = ({ data }) => {
   return (
     <div>
       <Link to={`/detailed-citation/${data._id}`}>
-        <div className='p-2 max-sm:px-5 hover:bg-slate-50 lg:border-b max-md:bg-slate-50'>
+        <div className='p-2 max-sm:px-5 hover:bg-slate-50 lg:border-b bg-slate-50'>
           <div className='flex items-center'>
             <div>
               <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />

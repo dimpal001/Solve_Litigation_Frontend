@@ -94,7 +94,7 @@ const SingleCitationPage = ({ data }) => {
           </Link>
         )}
       </div>
-      <div className='max-sm:mx-3 border my-3 rounded-sm bg-slate-50 lg:my-5 p-2 lg:p-10'>
+      <div className='max-sm:mx-3 my-3 rounded-sm bg-slate-50 lg:my-5 p-2 lg:p-10'>
         {user.userType === 'admin' && (
           <div className='flex gap-5'>
             <Link to={`/admin-dashboard/edit-citation/${data._id}`}>

@@ -1,12 +1,14 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { api } from '../../Components/Apis'
 import SingleCitationPage from '../ReviewCitationPage/SingleCitationPage'
 import Loading from '../../Components/Loading'
+import { UserContext } from '../../UserContext'
 
 const ViewCitation = () => {
   const { id } = useParams()
+  const { user } = useContext(UserContext)
   const [citation, setCitation] = useState(null)
 
   const fetchCitation = async () => {
@@ -32,7 +34,7 @@ const ViewCitation = () => {
     <div>
       <div>
         {citation ? (
-          <div>
+          <div className={`${user.userType === 'guest' && 'lg:px-[260px]'}`}>
             <SingleCitationPage data={citation} />
           </div>
         ) : (

@@ -96,13 +96,16 @@ const ReviewCitationPage = () => {
                 <div>
                   <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter citation'} />
                 </div>
+                <div className='flex items-center'>
+                  {/* <input title='Select a date of order' type="date" className='w-[38px] focus:rounded-sm focus:outline-none hover:outline-none border p-1 rounded-sm hover:bg-primary hover:text-white' id="" /> */}
+                </div>
               </div>
               <div>
                 <InputGroup>
                   <InputLeftElement pointerEvents='none'>
                     <FaSearch color={Colors.primary} />
                   </InputLeftElement>
-                  <Input rounded={'sm'} type='text' placeholder='Search with advotace name' />
+                  <Input rounded={'sm'} type='text' placeholder='Search here...' />
                   <InputRightElement>
                     <FaArrowRight color={Colors.primary} />
                   </InputRightElement>
