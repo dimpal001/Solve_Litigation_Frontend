@@ -85,13 +85,13 @@ const EditCitationPage = () => {
               onClick={() => handleChangeCitaionType('approved')}
               title={'Approved Citaion'}
             />
-            <div>
+            {/* <div>
               <Select borderRadius={3} _hover={{ bgColor: Colors.primary, color: 'white' }} color={Colors.primary} borderColor={Colors.primary}>
                 <option value="all">All</option>
                 <option value="order">Order Citation</option>
                 <option value="act">Acts Citation</option>
               </Select>
-            </div>
+            </div> */}
           </div>
           <div>
             <InputGroup>

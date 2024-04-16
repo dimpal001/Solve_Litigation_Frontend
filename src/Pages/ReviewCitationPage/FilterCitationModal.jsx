@@ -181,7 +181,7 @@ const FilterCitationModal = ({ isOpen, onClose, setCitationType, setFilterCitati
                                         }}
                                         rounded={'sm'} onClick={() => {
                                             handleFetchCourtOrYear('tribunal')
-                                        }} >Trubunal</Button>
+                                        }} >Tribunal</Button>
                                 </div>
                             </div>
                             {courts.length > 0 && (
