@@ -32,19 +32,23 @@ const FilterCitationModal = ({ isOpen, onClose, setCitationType, setFilterCitati
         setYears([])
         setMonths([])
         setDays([])
-        if (court === 'supreme court') {
+        if (court === 'the supreme court of india') {
             setCourts([])
+            setSelectedCourt(court)
         }
         try {
             const token = sessionStorage.getItem('token')
-            const response = await axios.get(`${api}/api/solve_litigation/filter/${court === 'supreme court' ? 'get-year/' + court : (court === 'tribunal' ? 'get-tribunal' : 'get-highCourt')}`, {
+            const response = await axios.get(`${api}/api/solve_litigation/filter/${court === 'the supreme court of india' ? 'get-year/' + court : (court === 'tribunal' ? 'get-tribunal' : 'get-highCourt')}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             })
 
-            if (court !== 'supreme court') {
+            if (court !== 'the supreme court of india') {
                 await setCourts(response.data.courts);
+            }
+            else {
+                await setYears(response.data.years);
             }
 
             console.log(courts)
@@ -164,14 +168,14 @@ const FilterCitationModal = ({ isOpen, onClose, setCitationType, setFilterCitati
                                             handleFetchCourtOrYear('high court')
                                         }} >High Court</Button>
 
-                                    <Button size={'sm'} color={selectedCourtType === 'supreme court' && 'white'}
-                                        bgColor={selectedCourtType === 'supreme court' && Colors.primary}
+                                    <Button size={'sm'} color={selectedCourtType === 'the supreme court of india' && 'white'}
+                                        bgColor={selectedCourtType === 'the supreme court of india' && Colors.primary}
                                         _focus={{
                                             bgColor: Colors.primary,
                                             color: 'white'
                                         }}
                                         rounded={'sm'} onClick={() => {
-                                            handleFetchCourtOrYear('supreme court')
+                                            handleFetchCourtOrYear('the supreme court of india')
                                         }} >Supreme Court</Button>
                                     <Button size={'sm'} color={selectedCourtType === 'tribunal' && 'white'}
                                         bgColor={selectedCourtType === 'tribunal' && Colors.primary}

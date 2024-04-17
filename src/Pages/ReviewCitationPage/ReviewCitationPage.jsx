@@ -1,21 +1,40 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 import { GreenPrimaryButton, PrimaryOutlineButton } from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Colors } from '../../Components/Colors'
-import { InputGroup, InputLeftElement, Badge, Avatar, Input, InputRightElement } from '@chakra-ui/react'
+import { InputGroup, useToast, InputLeftElement, Badge, Avatar, Input, InputRightElement } from '@chakra-ui/react'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import FilterCitationModal from './FilterCitationModal'
+import { UserContext } from '../../UserContext'
 
 const ReviewCitationPage = () => {
+  const { setUser } = useContext(UserContext)
+  const navigate = useNavigate()
+  const toast = useToast()
   const [pendingCitations, setPendingCitations] = useState([])
   const [approvedCitations, setApprovedCitations] = useState([])
   const [filterCitations, setFilterCitations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [citationType, setCitationType] = useState('pending')
+
+  const handleLogout = () => {
+    setUser(null)
+    sessionStorage.removeItem('jwtToken')
+    sessionStorage.removeItem('user')
+    navigate('/')
+    toast({
+      title: 'Session Expired !',
+      description: 'Please login again',
+      status: 'error',
+      duration: 10000,
+      isClosable: true,
+      position: 'top',
+    })
+  }
 
   const fetchPendingCitation = async () => {
     try {
@@ -32,6 +51,9 @@ const ReviewCitationPage = () => {
       setPendingCitations(response.data.pendingCitations)
       setIsLoading(false)
     } catch (error) {
+      if (error.response.status === 401) {
+        handleLogout()
+      }
       console.log(error)
     }
   }

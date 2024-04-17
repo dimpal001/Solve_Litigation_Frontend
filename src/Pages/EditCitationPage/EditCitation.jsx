@@ -98,22 +98,22 @@ const EditCitation = () => {
   return (
     <div>
       <div>
-        <p className='text-2xl text-center font-extrabold'>Edit {data && data.type === 'act' && 'Act'} Citation</p>
+        <p className='text-3xl text-center font-extrabold'>Edit {data && data.type === 'act' && 'Act'} Citation</p>
         <div>
           {!isLoading ? (
-            <div>
+            <div className='px-16'>
               {data.type === 'act' ? (
                 <ActField data={data} setData={setData} />
               ) : (
                 <CitationField data={data} setData={setData} />
               )}
-              <div className='flex justify-center pt-5 pb-10'>
+              <div className='pt-5 pb-10'>
                 <PrimaryButton
                   title={'Update Citaion'}
                   isLoading={isUpdating}
                   onClick={handleUpdate}
                   loadingText={'Updating...'}
-                  rightIcon={<FaCheck size={20} />}
+                  leftIcon={<FaCheck size={17} />}
                 />
               </div>
             </div>

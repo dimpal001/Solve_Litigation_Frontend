@@ -1,17 +1,22 @@
 import {
   FormControl,
   FormLabel,
-  Select,
+  Select, useToast,
   Checkbox,
   Input,
   Textarea,
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Editor from './Editor'
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../../UserContext'
 
 const CitationField = ({ data, setData }) => {
+  const { setUser } = useContext(UserContext)
+  const navigate = useNavigate()
+  const toast = useToast()
   const [listLaw, setListLaw] = useState([])
   const [listPOL, setListPOL] = useState([])
   const [listCourt, setListCourt] = useState([])
@@ -37,6 +42,21 @@ const CitationField = ({ data, setData }) => {
     reportable,
     overRuled,
   } = data
+
+  const handleLogout = () => {
+    setUser(null)
+    sessionStorage.removeItem('jwtToken')
+    sessionStorage.removeItem('user')
+    navigate('/')
+    toast({
+      title: 'Session Expired !',
+      description: 'Please login again',
+      status: 'error',
+      duration: 10000,
+      isClosable: true,
+      position: 'top',
+    })
+  }
 
   const fetchLaw = async () => {
     try {
@@ -68,6 +88,9 @@ const CitationField = ({ data, setData }) => {
       )
       setListCourt(response.data)
     } catch (error) {
+      if (error.response.status === 401) {
+        handleLogout()
+      }
       console.error('Error fetching court:', error)
     }
   }
@@ -123,14 +146,14 @@ const CitationField = ({ data, setData }) => {
   }
 
   return (
-    <div className='flex flex-col gap-y-7 border my-3 p-10 shadow-2xl rounded-md'>
+    <div className='flex flex-col gap-y-7 my-3 p-10 border border-slate-100 rounded-sm bg-slate-50'>
       <FormControl>
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>
             Court (Institution) Name *
           </span>
         </FormLabel>
-        <Select
+        <Select rounded={'sm'} bgColor={'white'}
           value={institutionName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -167,7 +190,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Case No *</span>
         </FormLabel>
-        <Textarea
+        <Textarea rounded={'sm'} bgColor={'white'}
           value={caseNo}
           onChange={(e) =>
             setData((prevData) => ({ ...prevData, caseNo: e.target.value }))
@@ -208,7 +231,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
         </FormLabel>
-        <Input
+        <Input rounded={'sm'} bgColor={'white'}
           value={title}
           onChange={(e) =>
             setData((prevData) => ({
@@ -236,7 +259,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Date of Order *</span>
         </FormLabel>
-        <Input
+        <Input rounded={'sm'} bgColor={'white'}
           type='date'
           value={dateOfOrder}
           onChange={(e) =>
@@ -251,7 +274,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Judge Name *</span>
         </FormLabel>
-        <Input
+        <Input rounded={'sm'} bgColor={'white'}
           value={judgeName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -279,7 +302,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Refered Judgements</span>
         </FormLabel>
-        <Textarea
+        <Textarea rounded={'sm'} bgColor={'white'}
           value={referedJudgements}
           onChange={(e) =>
             setData((prevData) => ({
@@ -293,7 +316,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Apellate Types *</span>
         </FormLabel>
-        <div className='flex gap-5 capitalize'>
+        <div className='flex gap-5 flex-wrap capitalize'>
           {listApellate.map((apellate, index) => (
             <Checkbox
               key={index}
@@ -319,7 +342,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Law *</span>
         </FormLabel>
-        <div className='flex flex-col gap-y-2 capitalize'>
+        <div className='flex gap-5 flex-wrap capitalize'>
           {listLaw.map((law, index) => (
             <Checkbox
               key={index}
@@ -345,7 +368,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Point of Law *</span>
         </FormLabel>
-        <div className='flex flex-col gap-y-5 capitalize'>
+        <div className='flex gap-5 flex-wrap  capitalize'>
           {listPOL.map((pol) => (
             <Checkbox
               key={pol._id}
@@ -371,7 +394,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Equivalent Citations</span>
         </FormLabel>
-        <Input
+        <Input rounded={'sm'} bgColor={'white'}
           value={equivalentCitations}
           onChange={(e) =>
             setData((prevData) => ({
@@ -385,7 +408,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Advocate Petitioner</span>
         </FormLabel>
-        <Textarea
+        <Textarea rounded={'sm'} bgColor={'white'}
           value={advocatePetitioner}
           onChange={(e) =>
             setData((prevData) => ({
@@ -399,7 +422,7 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Advocate Respondent</span>
         </FormLabel>
-        <Textarea
+        <Textarea rounded={'sm'} bgColor={'white'}
           value={advocateRespondent}
           onChange={(e) =>
             setData((prevData) => ({

@@ -134,6 +134,17 @@ const CreateCitation = () => {
       })
       return 0
     }
+    if (data.apellates.length === 0 && selectedType != 'act') {
+      toast({
+        title: 'Law is required',
+        status: 'error',
+        duration: 4000,
+        position: 'top',
+        isClosable: true,
+      })
+      return 0
+    }
+
     if (data.laws.length === 0 && selectedType != 'act') {
       toast({
         title: 'Law is required',
@@ -164,6 +175,7 @@ const CreateCitation = () => {
 
   const handleReset = () => {
     setSelectedType('citation')
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setData({
       institutionName: '',
       apellateType: '',
@@ -226,7 +238,7 @@ const CreateCitation = () => {
           onClose={() => setResetModelOpen(false)}
         />
       )}
-      <div>
+      <div className='px-10'>
         {selectedType === 'act' ? (
           <ActField data={data} setData={setData} />
         ) : (

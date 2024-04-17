@@ -2,8 +2,6 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
   Checkbox,
@@ -21,6 +19,7 @@ import { useContext } from 'react'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
 import { useNavigate } from 'react-router-dom'
+
 const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   const { user } = useContext(UserContext)
   const toast = useToast()
@@ -29,7 +28,6 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   const handleUplaod = async () => {
     try {
       const token = sessionStorage.getItem('token')
-      // Make an HTTP POST request to the server endpoint
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/upload-citation`,
         {
@@ -43,7 +41,6 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
         }
       )
 
-      // Upon successful upload, display a success message
       if (response.status === 201) {
         toast({
           title: response.data.message,
@@ -56,10 +53,13 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
       }
       navigate('/admin-dashboard/review-citation')
     } catch (error) {
-      // Handle any errors that occur during the upload process
-      console.error('Error uploading citation:', error)
-      // Display an error message
-      alert('Error uploading citation. Please try again later.')
+      toast({
+        title: error.response.data.error,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
     }
   }
   return (
@@ -69,12 +69,12 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
         <ModalContent
           style={{ maxHeight: '520px', overflow: 'scroll', paddingInline: 80 }}
         >
-          <ModalHeader>
-            <span className='text-3xl'>Review and upload</span>
-          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <div className='flex flex-col gap-y-5 border border-slate-900 p-7'>
+            <div className='flex mx-[200px] flex-col bg-slate-100 rounded-sm gap-6 p-7'>
+              <div>
+                <p className='text-3xl font-extrabold text-center underline'>Review and upload</p>
+              </div>
               <div>
                 <p className='text-sm font-extrabold text-primary'>
                   Court Name
@@ -188,7 +188,7 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
 
               <div>
                 <p className='text-sm font-extrabold text-primary'>Law</p>
-                <div>
+                <div className='flex flex-wrap gap-3'>
                   {data.laws.map((law, index) => (
                     <div className='flex gap-2' key={index}>
                       <VscDebugBreakpointLog className='mt-[2px]' />
@@ -201,13 +201,15 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
               <div>
                 <p className='text-sm font-extrabold text-primary'>
                   Point of Law
-                </p>
-                {data.pointOfLaw.map((pointOfLaw, index) => (
-                  <div className='flex gap-2' key={index}>
-                    <VscDebugBreakpointLog className='mt-[2px]' />
-                    <p className='capitalize'>{pointOfLaw}</p>
-                  </div>
-                ))}
+                </p >
+                <div className='flex flex-wrap gap-3'>
+                  {data.pointOfLaw.map((pointOfLaw, index) => (
+                    <div className='flex gap-2' key={index}>
+                      <VscDebugBreakpointLog className='mt-[2px]' />
+                      <p className='capitalize'>{pointOfLaw}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
               {data.equivalentCitations && (
                 <div>
@@ -251,21 +253,20 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                 </p>
                 <Checkbox isChecked={data.overRuled === true ? true : false} />
               </div>
+              <div className='flex gap-5 justify-end'>
+                <PrimaryRedOutlineButton
+                  leftIcon={<MdModeEditOutline size={20} />}
+                  onClick={onClose}
+                  title={'Edit'}
+                />
+                <PrimaryButton
+                  onClick={handleUplaod}
+                  rightIcon={<MdOutlineCloudUpload size={20} />}
+                  title={'Upload'}
+                />
+              </div>
             </div>
           </ModalBody>
-
-          <ModalFooter className='flex gap-5'>
-            <PrimaryRedOutlineButton
-              leftIcon={<MdModeEditOutline size={20} />}
-              onClick={onClose}
-              title={'Edit'}
-            />
-            <PrimaryButton
-              onClick={handleUplaod}
-              rightIcon={<MdOutlineCloudUpload size={20} />}
-              title={'Upload'}
-            />
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>

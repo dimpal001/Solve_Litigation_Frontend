@@ -320,11 +320,12 @@ export const CustomInput = ({
   list,
   id,
   isDisabled,
-  size,
+  size, bgColor
 }) => {
   return (
     <>
       <Input
+        bgColor={bgColor}
         size={size}
         borderRadius={3}
         type={type}

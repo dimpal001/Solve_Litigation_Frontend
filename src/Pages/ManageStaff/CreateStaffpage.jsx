@@ -95,11 +95,11 @@ const CreateStaffpage = () => {
       </div>
       <div>
         <form>
-          <div className='border rounded-sm p-7 mx-20'>
+          <div className='border border-slate-100 bg-slate-50 rounded-sm p-7 mx-44'>
             <div className='grid grid-cols-2 gap-x-8 gap-y-4'>
               <FormControl>
                 <FormLabel>Full name</FormLabel>
-                <CustomInput
+                <CustomInput bgColor={'white'}
                   placeholder={'Enter full name'}
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
@@ -107,7 +107,7 @@ const CreateStaffpage = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Address</FormLabel>
-                <CustomInput
+                <CustomInput bgColor={'white'}
                   placeholder={'Enter full address'}
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -115,7 +115,7 @@ const CreateStaffpage = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Email address</FormLabel>
-                <CustomInput
+                <CustomInput bgColor={'white'}
                   placeholder={'Enter email address'}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -123,7 +123,7 @@ const CreateStaffpage = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Phone number</FormLabel>
-                <CustomInput
+                <CustomInput bgColor={'white'}
                   placeholder={'Enter phone number'}
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
@@ -131,7 +131,7 @@ const CreateStaffpage = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Password</FormLabel>
-                <CustomInput
+                <CustomInput bgColor={'white'}
                   type={showPassword ? 'text' : 'password'}
                   placeholder={'Enter password'}
                   value={password}
@@ -140,7 +140,7 @@ const CreateStaffpage = () => {
               </FormControl>
               <FormControl>
                 <FormLabel>Confirm Password</FormLabel>
-                <CustomInput
+                <CustomInput bgColor={'white'}
                   type={showPassword ? 'text' : 'password'}
                   placeholder={'Enter confirm password'}
                   value={confirmPassword}

@@ -34,14 +34,14 @@ const ActField = ({ data, setData }) => {
   }
 
   return (
-    <div className='flex flex-col gap-y-7 border my-3 p-10 shadow-2xl rounded-md'>
+    <div className='flex flex-col border border-slate-100 gap-y-7 my-3 p-10 bg-slate-50 rounded-sm'>
       <FormControl>
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>
             Court (Institution) Name *
           </span>
         </FormLabel>
-        <Select
+        <Select rounded={'sm'} bgColor={'white'}
           value={institutionName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -78,7 +78,7 @@ const ActField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
         </FormLabel>
-        <Input
+        <Input rounded={'sm'} bgColor={'white'}
           value={title}
           onChange={(e) =>
             setData((prevData) => ({

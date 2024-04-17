@@ -1,18 +1,37 @@
-import { Input, Select, InputGroup, Avatar, Badge, InputRightElement, InputLeftElement } from '@chakra-ui/react'
+import { Input, InputGroup, useToast, Avatar, Badge, InputRightElement, InputLeftElement } from '@chakra-ui/react'
 import { PrimaryOutlineButton } from '../../Components/Customs'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 import { Colors } from '../../Components/Colors'
+import { UserContext } from '../../UserContext'
 
 const EditCitationPage = () => {
+  const { setUser } = useContext(UserContext)
+  const navigate = useNavigate()
+  const toast = useToast()
   const [pendingCitations, setPendingCitations] = useState([])
   const [approvedCitations, setApprovedCitations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [citationType, setCitationType] = useState('pending')
+
+  const handleLogout = () => {
+    setUser(null)
+    sessionStorage.removeItem('jwtToken')
+    sessionStorage.removeItem('user')
+    navigate('/')
+    toast({
+      title: 'Session Expired !',
+      description: 'Please login again',
+      status: 'error',
+      duration: 10000,
+      isClosable: true,
+      position: 'top',
+    })
+  }
 
   const fetchPendingCitation = async () => {
     try {
@@ -28,6 +47,9 @@ const EditCitationPage = () => {
       setPendingCitations(response.data.pendingCitations)
       setIsLoading(false)
     } catch (error) {
+      if (error.response.status === 401) {
+        handleLogout()
+      }
       console.log(error)
     }
   }

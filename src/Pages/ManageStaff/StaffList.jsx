@@ -3,7 +3,7 @@ import {
     Thead,
     Tbody,
     Tr,
-    Th,
+    Th, useToast,
     Td,
     TableCaption,
     TableContainer,
@@ -11,18 +11,38 @@ import {
 import { PrimaryOutlineButton } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Colors } from '../../Components/Colors'
 import DeleteUserModal from './DeleteUserModal'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaArrowLeft } from 'react-icons/fa'
+import { UserContext } from '../../UserContext'
 const StaffList = () => {
+    const { setUser } = useContext(UserContext)
+    const navigate = useNavigate()
+    const toast = useToast()
     const [isFetching, setIsFetching] = useState(false)
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [selectedFilter, setSelectedFilter] = useState('all')
     const [selectedUser, setSelectedUser] = useState('')
     const [fetchingList, setFetchingList] = useState([])
     const [filteredList, setFilteredList] = useState([])
+
+    const handleLogout = () => {
+        setUser(null)
+        sessionStorage.removeItem('jwtToken')
+        sessionStorage.removeItem('user')
+        navigate('/')
+        toast({
+            title: 'Session Expired !',
+            description: 'Please login again',
+            status: 'error',
+            duration: 10000,
+            isClosable: true,
+            position: 'top',
+        })
+    }
+
     const fetchUserList = async () => {
         try {
             setIsFetching(true)
@@ -38,6 +58,9 @@ const StaffList = () => {
             setFilteredList(response.data)
             console.log('data', fetchingList)
         } catch (error) {
+            if (error.response.status === 401) {
+                handleLogout()
+            }
             console.log(error)
         } finally {
             setIsFetching(false)
