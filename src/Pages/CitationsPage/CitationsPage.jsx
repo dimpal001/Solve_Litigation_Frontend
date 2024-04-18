@@ -344,9 +344,9 @@ const CitationsPage = () => {
                       {last10Citations.map((citation, index) => (
                         <Citation key={index} data={citation} />
                       ))}
-                      <div className='flex justify-center'>
+                      {/* <div className='flex justify-center'>
                         <p className='text-center text-primary text-base hover:bg-primary hover:text-white p-1 rounded-sm transition-all delay-[0.05s] px-3 cursor-pointer' >Load more</p>
-                      </div>
+                      </div> */}
                     </div>
                   )}
                 </div>
@@ -384,7 +384,7 @@ const Citation = ({ data }) => {
           <div>
             <p className='text-sm' dangerouslySetInnerHTML={{ __html: sanitizeHTML(data.judgments) }} />
           </div>
-          <div className='flex gap-2 py-1'>
+          <div className='flex overflow-x-scroll gap-2 py-1'>
             {data.laws.map((law, index) => (
               <Badge bgColor={'gray.200'} key={index} fontSize={10} px={2}>{law}</Badge>
             ))}
