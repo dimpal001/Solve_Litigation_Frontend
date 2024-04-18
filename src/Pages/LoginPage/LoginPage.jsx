@@ -122,6 +122,10 @@ const LoginPage = () => {
   useEffect(() => {
     AOS.init()
     window.document.title = 'Login Form - Solve Litigation'
+    scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }, [])
 
   return (

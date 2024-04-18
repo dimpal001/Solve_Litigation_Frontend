@@ -13,7 +13,14 @@ const HomePage = () => {
   }, [])
   return (
     <div>
-      <div className='lg:flex lg:h-[600px] max-sm:pb-[100px] items-center gap-10 px-10 lg:px-32'>
+      <div className='lg:flex flex-row-reverse lg:h-[600px] max-sm:pb-[100px] items-center gap-10 px-10 lg:px-32'>
+        <div
+          data-aos='zoom-in-up'
+          className='lg:w-[50%] flex max-md:pt-10 justify-center relative z-[5] items-center'
+        >
+          <img style={{ width: '100%' }} className='relative z-[3]' src={Image} alt='' />
+          <div className='absolute h-[200px] lg:right-[120px] filter blur-[150px] lg:blur-[200px] rounded-full w-[200px] z-[2] bg-primary'></div>
+        </div>
         <div data-aos='fade-up' className='lg:w-[50%]'>
           <div className='py-10'>
             <p className='lg:text-3xl text-lg py-2 font-extrabold leading-tight'>
@@ -31,13 +38,6 @@ const HomePage = () => {
           <Link to={user ? '/citations' : '/register'}>
             <PrimaryButton title={'Get Started'} />
           </Link>
-        </div>
-        <div
-          data-aos='zoom-in-up'
-          className='lg:w-[50%] flex max-md:pt-10 justify-center relative z-[5] items-center'
-        >
-          <img style={{ width: '100%' }} className='relative z-[3]' src={Image} alt='' />
-          <div className='absolute h-[200px] lg:right-[120px] filter blur-[200px] rounded-full w-[200px] z-[2] bg-primary'></div>
         </div>
       </div>
     </div>

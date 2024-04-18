@@ -125,6 +125,10 @@ const RegisterPage = () => {
     AOS.init()
     console.log(StateData)
     window.document.title = 'Registration Form - Solve Litigation'
+    scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    })
   }, [])
 
   const handleStateChange = (e) => {
