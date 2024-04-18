@@ -183,7 +183,7 @@ const RegisterPage = () => {
                 >
                   Legal Research
                 </Button>
-                <Button
+                <Button isDisabled
                   onClick={() => handleOptionClick('Legal Advice and Services')}
                   color={
                     selectedOption === 'Legal Advice and Services'
@@ -199,7 +199,7 @@ const RegisterPage = () => {
                     Colors.secondary
                   }
                 >
-                  Legal Advice and Services
+                  Study materials ( Student )
                 </Button>
                 <div className='w-full flex justify-between pt-7'>
                   <SecondaryButton

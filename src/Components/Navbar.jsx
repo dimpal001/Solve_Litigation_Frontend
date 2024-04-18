@@ -28,7 +28,7 @@ const Navbar = () => {
   }
   return (
     <div>
-      <div className='h-[100px] bg-white border px-5 lg:px-32 justify-between w-full flex items-center'>
+      <div className={`h-[100px] bg-white ${user && 'border'} px-5 lg:px-32 justify-between w-full flex items-center`}>
         <div className=''>
           <NavLink title='Solve Litigation' to={'/'}>
             <img style={{ width: '60px' }} src={logo} alt='Logo' />

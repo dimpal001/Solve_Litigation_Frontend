@@ -23,6 +23,7 @@ import CreateStaffpage from './Pages/ManageStaff/CreateStaffpage'
 import ManageStaffPage from './Pages/ManageStaff/ManageStaffPage'
 import StaffList from './Pages/ManageStaff/StaffList'
 import Headroom from 'react-headroom'
+import Footer from './Components/Footer'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -40,7 +41,7 @@ const App = () => {
         )}
 
         {/* Body Section  */}
-        <div>
+        <div className='min-h-screen'>
           <Routes>
             <Route
               path='/'
@@ -101,6 +102,9 @@ const App = () => {
             <Route path='/contact-us' element={<ContactUsPage />} />
             <Route path='/*' element={<Error404 />} />
           </Routes>
+        </div>
+        <div>
+          <Footer />
         </div>
 
         {/* Footer Section  */}

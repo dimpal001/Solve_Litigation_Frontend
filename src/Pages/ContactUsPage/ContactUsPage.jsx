@@ -1,7 +1,7 @@
 const ContactUsPage = () => {
   return (
-    <div>
-      <div className='lg:px-32'>ContactUsPage</div>
+    <div className="min-h-[500px] flex justify-center items-center">
+      <div className='lg:px-32'>Not available</div>
     </div>
   )
 }
