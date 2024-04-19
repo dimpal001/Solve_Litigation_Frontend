@@ -104,7 +104,9 @@ const App = () => {
           </Routes>
         </div>
         <div>
-          <Footer />
+          {user && user.userType === 'guest' && (
+            <Footer />
+          )}
         </div>
 
         {/* Footer Section  */}
