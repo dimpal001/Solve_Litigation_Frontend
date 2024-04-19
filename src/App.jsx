@@ -103,10 +103,8 @@ const App = () => {
             <Route path='/*' element={<Error404 />} />
           </Routes>
         </div>
-        <div>
-          {user && user.userType === 'guest' && (
-            <Footer />
-          )}
+        <div className={`${user && user.userType === 'admin' && 'hidden'} ${user && user.userType === 'staff' && 'hidden'}`}>
+          <Footer />
         </div>
 
         {/* Footer Section  */}

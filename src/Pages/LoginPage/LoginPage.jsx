@@ -146,31 +146,32 @@ const LoginPage = () => {
 
           <div>
             <p className='text-center font-extrabold pt-5'>Login here</p>
-            <div className='text-center flex-col flex gap-3 p-1 py-4'>
-              <CustomInput
-                name='emailOrPhoneNumber'
-                value={formData.emailOrPhoneNumber}
-                onChange={handleChange}
-                placeholder={'Email address or Phone number'}
-              />
-              <CustomInput
-                type={isShowPassword ? 'text' : 'password'}
-                name='password'
-                value={formData.password}
-                onChange={handleChange}
-                placeholder={'Password'}
-              />
-              <Checkbox
-                style={{
-                  bgColor: Colors.secondary,
-                }}
-                onChange={() => {
-                  setIsShowPassword(!isShowPassword)
-                }}
-              >
-                Show Password
-              </Checkbox>
-              {/* <div>
+            <div >
+              <form className='text-center flex-col flex gap-3 p-1 py-4'>
+                <CustomInput
+                  name='emailOrPhoneNumber'
+                  value={formData.emailOrPhoneNumber}
+                  onChange={handleChange}
+                  placeholder={'Email address or Phone number'}
+                />
+                <CustomInput
+                  type={isShowPassword ? 'text' : 'password'}
+                  name='password'
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder={'Password'}
+                />
+                <Checkbox
+                  style={{
+                    bgColor: Colors.secondary,
+                  }}
+                  onChange={() => {
+                    setIsShowPassword(!isShowPassword)
+                  }}
+                >
+                  Show Password
+                </Checkbox>
+                {/* <div>
                 <div className='flex items-center justify-center gap-5'>
                   <p>{captcha}</p>
                   <MdRefresh
@@ -186,22 +187,23 @@ const LoginPage = () => {
                   placeholder={'Enter the captcha'}
                 />
               </div> */}
-              <div className='w-full flex justify-between pt-3'>
-                <PrimaryButton
-                  isLoading={isLoading}
-                  loadingText={'Signing in...'}
-                  width={'100%'}
-                  title={'Login'}
-                  onClick={handleLogin}
-                  isDisabled={isSubmitDisabled()}
-                />
-              </div>
-              <p className='text-center text-base pt-5'>
-                Don&apos;t have an account ?{' '}
-                <Link className='text-primary hover:underline' to={'/register'}>
-                  Register
-                </Link>
-              </p>
+                <div className='w-full flex justify-between pt-3'>
+                  <PrimaryButton type={'submit'}
+                    isLoading={isLoading}
+                    loadingText={'Signing in...'}
+                    width={'100%'}
+                    title={'Login'}
+                    onClick={handleLogin}
+                    isDisabled={isSubmitDisabled()}
+                  />
+                </div>
+                <p className='text-center text-base pt-5'>
+                  Don&apos;t have an account ?{' '}
+                  <Link className='text-primary hover:underline' to={'/register'}>
+                    Register
+                  </Link>
+                </p>
+              </form>
             </div>
           </div>
         </div>

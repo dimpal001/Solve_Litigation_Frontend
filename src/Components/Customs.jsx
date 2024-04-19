@@ -4,6 +4,7 @@ import { Colors } from './Colors'
 
 export const PrimaryButton = ({
   title,
+  type,
   rightIcon,
   leftIcon,
   width,
@@ -15,7 +16,7 @@ export const PrimaryButton = ({
 }) => {
   return (
     <>
-      <Button
+      <Button type={type}
         loadingText={loadingText}
         isLoading={isLoading}
         borderRadius={3}
