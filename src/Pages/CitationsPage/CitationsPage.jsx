@@ -12,6 +12,7 @@ import { LuSettings2 } from "react-icons/lu";
 const CitationsPage = () => {
   const [selectedApellate, setSelectedApellate] = useState(null)
   const [selectedLaw, setSelectedLaw] = useState(null)
+  const [selectedPOL, setSelectedPOL] = useState(null)
   const [fetchingLaws, setFetchingLaws] = useState([])
   const [fetchingApellates, setFetchingApellates] = useState([])
   const [last10Citations, setLast10Citations] = useState([])
@@ -41,6 +42,7 @@ const CitationsPage = () => {
   const handleChangePOL = async (pol) => {
     setIsFilterModalOpen(false)
     setSelectedFilter('all')
+    setSelectedPOL(pol)
     setIsLoading(true)
     await fetchCitations(pol)
   }
@@ -171,6 +173,35 @@ const CitationsPage = () => {
   return (
     <div>
       <div className='md:px-32 py-3'>
+        <div className='flex max-lg:hidden justify-center gap-5 pb-5'>
+          {fetchingApellates && fetchingApellates.map((data, index) => (
+            <Button key={index}
+              _focus={{
+                bgColor: Colors.primary,
+                textColor: 'white'
+              }}
+              _hover={{
+                bgColor: Colors.primary,
+                textColor: 'white'
+              }}
+              size={{ base: '10px', lg: 'md' }} px={'8px'}
+              py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+              fontSize={14}
+              bgColor={selectedApellate === data.name && Colors.primary}
+              color={selectedApellate === data.name && 'white'}
+              onClick={() => handleChangeApellate(data.name)}
+            >{data.name}</Button>
+          ))}
+          <Button
+            _focus={{
+              bgColor: Colors.primary,
+              textColor: 'white'
+            }}
+            size={{ base: '10px', lg: 'md' }} px={'8px'}
+            py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+            fontSize={14} isDisabled
+          >Acts</Button>
+        </div>
         <div className='flex justify-center lg:pb-3'>
           <div className='flex gap-2 lg:w-[50%]'>
             <InputGroup>
@@ -182,57 +213,12 @@ const CitationsPage = () => {
                 <FaArrowRight color={Colors.primary} />
               </InputRightElement>
             </InputGroup>
-            <div className=''>
+            <div className='lg:hidden'>
               <IconButton onClick={() => setIsFilterModalOpen(true)} rounded={'sm'} bgColor={Colors.primary} color={'white'} icon={<LuSettings2 size={23} />} />
             </div>
           </div>
         </div>
-        <div className='lg:flex w-full gap-x-8 md:px-3 py-3'>
-          {/* <div className='lg:w-[50%] max-lg:hidden p-2 max-md:mb-3 rounded-sm'>
-            <div className='flex flex-wrap justify-between gap-3'>
-              {fetchingApellates && fetchingApellates.map((data, index) => (
-                <PrimaryOutlineButton key={index}
-                  onClick={() => handleChangeApellate(data.name)}
-                  bgColor={selectedApellate === data.name ? Colors.primary : null}
-                  color={selectedApellate === data.name ? 'white' : null}
-                  title={data.name}
-                />
-              ))}
-            </div>
-            <div className='flex justify-between max-md:py-2 gap-3 py-3'>
-              {fetchingLaws.length !== 0 && (
-                <div>
-                  <p className='text-sm'>Select a law</p>
-                  <div className='flex flex-col items-start gap-2'>
-                    {fetchingLaws.map((law, index) => (
-                      <PrimaryOutlineButton
-                        value={law}
-                        onClick={(e) => handleChangeLaw(e.target.value)}
-                        key={index}
-                        title={law}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {fetchingPOL.length !== 0 && (
-                <div>
-                  <p className='text-sm text-end'>Select a point of law</p>
-                  <div className='flex flex-col items-end gap-2'>
-                    {fetchingPOL.map((POL, index) => (
-                      <PrimaryOutlineButton
-                        value={POL}
-                        onClick={(e) => handleChangePOL(e.target.value)}
-                        key={index}
-                        title={POL}
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div> */}
+        <div className='lg:flex w-full py-3'>
           <Modal size={{ base: 'sm', lg: 'xl' }} isOpen={isFilterModalOpen} onClose={() => setIsFilterModalOpen(false)}>
             <ModalOverlay />
             <ModalContent rounded={0} >
@@ -306,12 +292,12 @@ const CitationsPage = () => {
               </ModalBody>
             </ModalContent>
           </Modal>
-          <div className='w-full lg:px-[200px]'>
+          <div className='w-full'>
             {isLoading ? (
               <Loading />
             ) : (
-              <div>
-                <div>
+              <div className='flex justify-between gap-10 w-full'>
+                <div className='lg:w-[60%]'>
                   {fetchingCitations.length !== 0 ? (
                     <div>
                       <div className='flex max-md:px-3 gap-3 pb-3'>
@@ -341,12 +327,69 @@ const CitationsPage = () => {
                     </div>
                   ) : (
                     <div className='flex flex-col gap-3'>
-                      {last10Citations.map((citation, index) => (
-                        <Citation key={index} data={citation} />
-                      ))}
+                      <div>
+                        {last10Citations.length > 0 && (
+                          <p className='px-2 py-3 text-primary text-2xl'>Latest Citations</p>
+                        )}
+                        {last10Citations.map((citation, index) => (
+                          <Citation key={index} data={citation} />
+                        ))}
+                      </div>
                       {/* <div className='flex justify-center'>
                         <p className='text-center text-primary text-base hover:bg-primary hover:text-white p-1 rounded-sm transition-all delay-[0.05s] px-3 cursor-pointer' >Load more</p>
                       </div> */}
+                    </div>
+                  )}
+                </div>
+                <div className='flex max-lg:hidden lg:w-[40%] w-full justify-between'>
+                  {fetchingLaws.length !== 0 && (
+                    <div>
+                      <p className='text-lg font-medium py-1'>Select a law</p>
+                      <div className='flex flex-col gap-2'>
+                        {fetchingLaws.map((law, index) => (
+                          <Button key={index}
+                            _focus={{
+                              bgColor: Colors.primary,
+                              textColor: 'white'
+                            }}
+                            _hover={{
+                              bgColor: Colors.primary,
+                              textColor: 'white'
+                            }}
+                            size={{ base: '10px', lg: 'md' }} px={'8px'}
+                            py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                            fontSize={14} value={law}
+                            bgColor={selectedLaw === law && Colors.primary}
+                            color={selectedLaw === law && 'white'}
+                            onClick={(e) => handleChangeLaw(e.target.value)}
+                          >{law}</Button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {fetchingPOL.length !== 0 && (
+                    <div>
+                      <p className='text-lg font-medium py-1'>Select a point of law</p>
+                      <div className='flex flex-col gap-2'>
+                        {fetchingPOL.map((POL, index) => (
+                          <Button key={index}
+                            _focus={{
+                              bgColor: Colors.primary,
+                              textColor: 'white'
+                            }}
+                            _hover={{
+                              bgColor: Colors.primary,
+                              textColor: 'white'
+                            }}
+                            size={{ base: '10px', lg: 'md' }} px={'8px'}
+                            bgColor={selectedPOL === POL && Colors.primary}
+                            color={selectedPOL === POL && 'white'}
+                            py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                            fontSize={14} value={POL}
+                            onClick={(e) => handleChangePOL(e.target.value)}
+                          >{POL}</Button>
+                        ))}
+                      </div>
                     </div>
                   )}
                 </div>
