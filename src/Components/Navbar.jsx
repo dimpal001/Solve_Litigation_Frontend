@@ -103,7 +103,7 @@ const NavItems = ({ onClose }) => {
         </NavItem>
         {user && user.userType === 'guest' && (
           <NavItem onClick={onClose} title='Home Page' to={'/citations'}>
-            Citation
+            Judgments
           </NavItem>
         )}
         <NavItem onClick={onClose} title='Service Page' to={'/services'}>

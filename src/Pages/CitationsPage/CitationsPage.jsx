@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import { LuSettings2 } from "react-icons/lu";
 
 const CitationsPage = () => {
-  const [selectedApellate, setSelectedApellate] = useState(null)
+  const [selectedApellate, setSelectedApellate] = useState('latest')
   const [selectedLaw, setSelectedLaw] = useState(null)
   const [selectedPOL, setSelectedPOL] = useState(null)
   const [fetchingLaws, setFetchingLaws] = useState([])
@@ -24,6 +24,7 @@ const CitationsPage = () => {
   const [selectedFilter, setSelectedFilter] = useState('all')
 
   const handleChangeApellate = async (apellate) => {
+    setLast10Citations([])
     setSelectedFilter('all')
     setFetchingLaws([])
     setFetchingPOL([])
@@ -170,10 +171,27 @@ const CitationsPage = () => {
     setFilteredCitations(fetchingCitations)
   }
 
+  const handleLatest = () => {
+    fetchLast10Citations()
+    setSelectedApellate('latest')
+  }
+
   return (
     <div>
       <div className='md:px-32 py-3'>
         <div className='flex max-lg:hidden justify-center gap-5 pb-5'>
+          <Button
+            _focus={{
+              bgColor: Colors.primary,
+              textColor: 'white'
+            }}
+            bgColor={selectedApellate === 'latest' && Colors.primary}
+            color={selectedApellate === 'latest' && 'white'}
+            onClick={handleLatest}
+            size={{ base: '10px', lg: 'md' }} px={'8px'}
+            py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+            fontSize={14}
+          >Latest</Button>
           {fetchingApellates && fetchingApellates.map((data, index) => (
             <Button key={index}
               _focus={{
@@ -296,7 +314,7 @@ const CitationsPage = () => {
             {isLoading ? (
               <Loading />
             ) : (
-              <div className='flex justify-between gap-10 w-full'>
+              <div className='flex flex-row-reverse justify-between gap-10 w-full'>
                 <div className='lg:w-[60%]'>
                   {fetchingCitations.length !== 0 ? (
                     <div>
@@ -329,7 +347,7 @@ const CitationsPage = () => {
                     <div className='flex flex-col gap-3'>
                       <div>
                         {last10Citations.length > 0 && (
-                          <p className='px-2 py-3 text-primary text-2xl'>Latest Citations</p>
+                          <p className='px-2 py-3 text-primary text-2xl'>Latest Judgments</p>
                         )}
                         {last10Citations.map((citation, index) => (
                           <Citation key={index} data={citation} />
