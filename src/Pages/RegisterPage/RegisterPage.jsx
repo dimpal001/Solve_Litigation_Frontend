@@ -1,17 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Button, Center, Checkbox, useToast } from '@chakra-ui/react'
+import { Center, Checkbox, useToast } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
-import {
-  MdKeyboardDoubleArrowLeft,
-  MdKeyboardDoubleArrowRight,
-} from 'react-icons/md'
 import {
   CustomInput,
   PrimaryButton,
-  SecondaryButton,
 } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import StateData from './states-and-districts.json'
@@ -19,12 +14,9 @@ import axios from 'axios'
 import { api } from '../../Components/Apis'
 
 const RegisterPage = () => {
-  const [selectedOption, setSelectedOption] = useState(null)
-  const [isClickedNext, setIsClickedNext] = useState(null)
   const [selectedState, setSelectedState] = useState(null)
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [isShowPassword, setIsShowPassword] = useState(false)
-  const [showSignUpForm, setShowSignUpForm] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
@@ -38,22 +30,6 @@ const RegisterPage = () => {
   })
   const toast = useToast()
   const navigate = useNavigate()
-
-  const handleOptionClick = (option) => {
-    setSelectedOption(option)
-
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      registrationType: option,
-    }))
-  }
-
-  const handleNextClick = () => {
-    console.log('Next button clicked with selected option:', selectedOption)
-
-    setShowSignUpForm(true)
-    setIsClickedNext(true)
-  }
 
   const handleSubmit = async () => {
     console.log(formData)
@@ -165,193 +141,111 @@ const RegisterPage = () => {
             />
           </Center>
 
-          {/* Before clicking the next button  */}
-          {!showSignUpForm ? (
-            <div data-aos='fade-up'>
-              <p className='text-center font-extrabold pt-5'>Register for ?</p>
-              <div className='text-center flex-col flex gap-3 p-1 py-4'>
-                <Button
-                  onClick={() => handleOptionClick('Legal Research')}
-                  color={
-                    selectedOption === 'Legal Research'
-                      ? 'white'
-                      : Colors.secondary
-                  }
-                  _hover={{
-                    bgColor: Colors.secondary,
-                    color: 'white',
-                  }}
-                  bgColor={
-                    selectedOption === 'Legal Research' && Colors.secondary
-                  }
-                >
-                  Legal Research
-                </Button>
-                <Button isDisabled
-                  onClick={() => handleOptionClick('Legal Advice and Services')}
-                  color={
-                    selectedOption === 'Legal Advice and Services'
-                      ? 'white'
-                      : Colors.secondary
-                  }
-                  _hover={{
-                    bgColor: Colors.secondary,
-                    color: 'white',
-                  }}
-                  bgColor={
-                    selectedOption === 'Legal Advice and Services' &&
-                    Colors.secondary
-                  }
-                >
-                  Study materials ( Student )
-                </Button>
-                <div className='w-full flex justify-between pt-7'>
-                  <SecondaryButton
-                    width={{ base: '45%', md: '35%' }}
-                    leftIcon={<MdKeyboardDoubleArrowLeft />}
-                    title={'Previous'}
-                    isDisabled={!isClickedNext}
-                  />
-                  <SecondaryButton
-                    width={{ base: '45%', md: '35%' }}
-                    rightIcon={<MdKeyboardDoubleArrowRight />}
-                    title={'Next'}
-                    isDisabled={!selectedOption}
-                    onClick={handleNextClick}
-                  />
-                </div>
+          <div data-aos='fade-up'>
+            <p className='text-center font-extrabold pt-5'>
+              Sign Up Information
+            </p>
+            <div className='text-center flex-col flex gap-3 p-1 py-4'>
+              <div>
+                <CustomInput
+                  type='text'
+                  name='fullName'
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder={'Full Name'}
+                />
               </div>
-              <p className='text-center text-base pt-5'>
-                Already registered?{' '}
-                <Link className='text-primary hover:underline' to={'/login'}>
-                  Login
-                </Link>
-              </p>
-            </div>
-          ) : null}
-
-          {/* After clicking the next button  */}
-          {showSignUpForm ? (
-            <div data-aos='fade-up'>
-              <p className='text-center font-extrabold pt-5'>
-                Sign Up Information
-              </p>
-              <p className='text-center text-sm pt-1'>
-                Register for{' '}
-                <span className='text-primary'>{selectedOption}</span>
-              </p>
-              <div className='text-center flex-col flex gap-3 p-1 py-4'>
-                <div>
-                  <CustomInput
-                    type='text'
-                    name='fullName'
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder={'Full Name'}
-                  />
-                </div>
-                <div className='flex max-sm:flex-col gap-3'>
-                  <CustomInput
-                    type='email'
-                    name='email'
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder={'Email address'}
-                  />
-                  <CustomInput
-                    type='number'
-                    name='phoneNumber'
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    placeholder={'Phone Number'}
-                  />
-                </div>
-                <div className='flex max-sm:flex-col gap-3'>
-                  <CustomInput
-                    type='text'
-                    name='state'
-                    placeholder={'State name'}
-                    list='state'
-                    onChange={handleStateChange}
-                    value={selectedState}
-                  />
-                  <datalist id='state'>
-                    {StateData.states.map((state, index) => (
-                      <option key={index} value={state.state}>
-                        {state.state}
-                      </option>
-                    ))}
-                  </datalist>
-                  <CustomInput
-                    isDisabled={selectedState ? false : true}
-                    type='text'
-                    name='district'
-                    placeholder='District name'
-                    list='district'
-                    onChange={handleDistrictChange}
-                    value={selectedDistrict}
-                  />
-                  <datalist id='district'>
-                    {(
-                      StateData.states.find(
-                        (state) => state.state === selectedState
-                      )?.districts || []
-                    ).map((district, index) => (
-                      <option key={index} value={district}>
-                        {district}
-                      </option>
-                    ))}
-                  </datalist>
-                </div>
-                <div className='flex max-sm:flex-col gap-3'>
-                  <CustomInput
-                    type={isShowPassword ? 'text' : 'password'}
-                    name='password'
-                    value={formData.password}
-                    onChange={handleChange}
-                    placeholder={'Password'}
-                  />
-                  <CustomInput
-                    type={isShowPassword ? 'text' : 'password'}
-                    name='confirmPassword'
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                    placeholder={'Confirm Password'}
-                  />
-                </div>
-                <Checkbox
-                  style={{
-                    bgColor: Colors.secondary,
-                  }}
-                  onChange={() => {
-                    setIsShowPassword(!isShowPassword)
-                  }}
-                >
-                  Show Password
-                </Checkbox>
-                <div className='w-full flex justify-between pt-3'>
-                  <SecondaryButton
-                    width={{ base: '45%', md: '35%' }}
-                    leftIcon={<MdKeyboardDoubleArrowLeft />}
-                    title={'Previous'}
-                    onClick={() => {
-                      setSelectedOption(null)
-                      setIsClickedNext(null)
-                      setShowSignUpForm(false)
-                    }}
-                  />
-                  <PrimaryButton
-                    width={{ base: '45%', md: '35%' }}
-                    title={'Submit'}
-                    isLoading={isSubmitting}
-                    loadingText={'Submitting...'}
-                    onClick={handleSubmit}
-                    isDisabled={isSubmitDisabled()}
-                  />
-                </div>
+              <div className='flex max-sm:flex-col gap-3'>
+                <CustomInput
+                  type='email'
+                  name='email'
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder={'Email address'}
+                />
+                <CustomInput
+                  type='number'
+                  name='phoneNumber'
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
+                  placeholder={'Phone Number'}
+                />
+              </div>
+              <div className='flex max-sm:flex-col gap-3'>
+                <CustomInput
+                  type='text'
+                  name='state'
+                  placeholder={'State name'}
+                  list='state'
+                  onChange={handleStateChange}
+                  value={selectedState}
+                />
+                <datalist id='state'>
+                  {StateData.states.map((state, index) => (
+                    <option key={index} value={state.state}>
+                      {state.state}
+                    </option>
+                  ))}
+                </datalist>
+                <CustomInput
+                  isDisabled={selectedState ? false : true}
+                  type='text'
+                  name='district'
+                  placeholder='District name'
+                  list='district'
+                  onChange={handleDistrictChange}
+                  value={selectedDistrict}
+                />
+                <datalist id='district'>
+                  {(
+                    StateData.states.find(
+                      (state) => state.state === selectedState
+                    )?.districts || []
+                  ).map((district, index) => (
+                    <option key={index} value={district}>
+                      {district}
+                    </option>
+                  ))}
+                </datalist>
+              </div>
+              <div className='flex max-sm:flex-col gap-3'>
+                <CustomInput
+                  type={isShowPassword ? 'text' : 'password'}
+                  name='password'
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder={'Password'}
+                />
+                <CustomInput
+                  type={isShowPassword ? 'text' : 'password'}
+                  name='confirmPassword'
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  placeholder={'Confirm Password'}
+                />
+              </div>
+              <Checkbox
+                style={{
+                  bgColor: Colors.secondary,
+                }}
+                onChange={() => {
+                  setIsShowPassword(!isShowPassword)
+                }}
+              >
+                Show Password
+              </Checkbox>
+              <div className='w-full flex justify-between pt-3'>
+                <PrimaryButton
+                  width={{ base: '45%', md: '35%' }}
+                  title={'Submit'}
+                  isLoading={isSubmitting}
+                  loadingText={'Submitting...'}
+                  onClick={handleSubmit}
+                  isDisabled={isSubmitDisabled()}
+                />
               </div>
             </div>
-          ) : null}
+          </div>
         </div>
       </div>
     </Center>

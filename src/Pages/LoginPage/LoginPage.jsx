@@ -34,16 +34,16 @@ const LoginPage = () => {
     refreshString()
     try {
       const enteredCaptcha = formData.captcha
-      if (enteredCaptcha !== captcha) {
-        toast({
-          title: 'Incorrect captcha entered',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
-        return
-      }
+      // if (enteredCaptcha !== captcha) {
+      //   toast({
+      //     title: 'Incorrect captcha entered',
+      //     status: 'error',
+      //     duration: 3000,
+      //     isClosable: true,
+      //     position: 'top',
+      //   })
+      //   return
+      // }
       setIsLoading(true)
       const response = await axios.post(
         `${api}/api/solve_litigation/auth/login`,
@@ -67,7 +67,7 @@ const LoginPage = () => {
 
       user.userType === 'admin' || user.userType === 'staff'
         ? navigate('/admin-dashboard/')
-        : navigate('/citations')
+        : navigate('/')
 
     } catch (error) {
       setIsLoading(false)
@@ -180,12 +180,12 @@ const LoginPage = () => {
                       className='cursor-pointer'
                     />
                   </div>
-                  <CustomInput
+                  {/* <CustomInput
                     name='captcha'
                     value={formData.captcha}
                     onChange={handleChange}
                     placeholder={'Enter the captcha'}
-                  />
+                  /> */}
                 </div>
                 <div className='w-full flex justify-between pt-3'>
                   <PrimaryButton type={'submit'}

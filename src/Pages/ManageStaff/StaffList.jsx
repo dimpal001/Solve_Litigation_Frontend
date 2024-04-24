@@ -99,15 +99,20 @@ const StaffList = () => {
                     title={'All'}
                 />
                 <PrimaryOutlineButton
+                    bgColor={selectedFilter === 'admin' && Colors.primary}
+                    color={selectedFilter === 'admin' && 'white'}
+                    onClick={() => handleFilter('admin')}
+                    title={'Admin'} />
+                <PrimaryOutlineButton
                     bgColor={selectedFilter === 'staff' && Colors.primary}
                     color={selectedFilter === 'staff' && 'white'}
                     onClick={() => handleFilter('staff')}
                     title={'Staff'} />
                 <PrimaryOutlineButton
-                    bgColor={selectedFilter === 'admin' && Colors.primary}
-                    color={selectedFilter === 'admin' && 'white'}
-                    onClick={() => handleFilter('admin')}
-                    title={'Admin'} />
+                    bgColor={selectedFilter === 'guest' && Colors.primary}
+                    color={selectedFilter === 'guest' && 'white'}
+                    onClick={() => handleFilter('guest')}
+                    title={'Guest User'} />
             </div>
             <div>
                 <TableContainer className='border'>

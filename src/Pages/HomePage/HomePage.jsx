@@ -1,18 +1,31 @@
 import { Link } from 'react-router-dom'
 import { PrimaryButton } from '../../Components/Customs'
 import Image from '../../assets/hero_thumbnail.svg'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import AOS from 'aos'
-import 'aos/dist/aos'
-import { UserContext } from '../../UserContext'
+import 'aos/dist/aos.css'
+import { UserContext } from '../../../src/UserContext'
+import SelectServiceModal from '../../Components/SelectServiceModal'
+
 const HomePage = () => {
   const { user } = useContext(UserContext)
+  const [isSelectServiceModalOpen, setIsSelectServiceModalOpen] = useState(false)
+
   useEffect(() => {
-    window.document.title = 'Solve Litigation'
-    AOS.init()
-  }, [])
+    const userData = JSON.parse(sessionStorage.getItem('user'));
+    if (userData && userData.userType === 'guest' && userData.selectedService.length === 0) {
+      setIsSelectServiceModalOpen(true);
+    }
+    window.document.title = 'Solve Litigation';
+    AOS.init();
+  }, []);
+
   return (
     <div>
+
+      {isSelectServiceModalOpen && (
+        <SelectServiceModal isOpen={true} setIsOpen={setIsSelectServiceModalOpen} />
+      )}
       <div className='lg:flex flex-row-reverse lg:h-[600px] max-sm:pb-[100px] items-center gap-10 px-10 lg:px-32'>
         <div
           data-aos='zoom-in-up'

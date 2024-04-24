@@ -101,16 +101,26 @@ const NavItems = ({ onClose }) => {
         <NavItem onClick={onClose} title='Home Page' to={'/'}>
           Home
         </NavItem>
-        {user && user.userType === 'guest' && (
+        {user && user.userType === 'guest' && user.selectedService.includes('judgments') && (
           <NavItem onClick={onClose} title='Home Page' to={'/citations'}>
             Judgments
+          </NavItem>
+        )}
+        {user && user.userType === 'guest' && user.selectedService.includes('legalAdvice') && (
+          <NavItem onClick={onClose} title='Home Page' to={'/*'}>
+            Legal Advice
+          </NavItem>
+        )}
+        {user && user.userType === 'guest' && user.selectedService.includes('studyResources') && (
+          <NavItem onClick={onClose} title='Home Page' to={'/*'}>
+            Study Material
           </NavItem>
         )}
         <NavItem onClick={onClose} title='Service Page' to={'/services'}>
           Services
         </NavItem>
         <NavItem onClick={onClose} title='Contact Page' to={'/contact-us'}>
-          Contact Us
+          Contact
         </NavItem>
         {!user ? (
           <>

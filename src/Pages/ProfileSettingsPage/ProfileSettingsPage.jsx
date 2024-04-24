@@ -9,12 +9,14 @@ import ChangePasswordModal from './ChangePasswordModal'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { api } from '../../Components/Apis'
+import SelectServiceModal from '../../Components/SelectServiceModal'
 
 const ProfileSettingsPage = () => {
   const { user } = useContext(UserContext)
   const [userDetails, setUserDetails] = useState(null)
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
   const [isChangePassModalOpen, setIsChangePassModalOpen] = useState(false)
   const [selectedModal, setSelectedModal] = useState('')
 
@@ -113,12 +115,19 @@ const ProfileSettingsPage = () => {
                       <p className='font-extrabold'>{userDetails.district}</p>
                     </div>
                   )}
-                  <div>
+                  <div className='flex gap-5'>
                     <PrimaryOutlineButton
                       size={'sm'}
                       onClick={handleChangePassModalOpen}
                       title={'Change Password'}
                     />
+                    {user.userType === 'guest' && (
+                      <PrimaryOutlineButton
+                        size={'sm'}
+                        onClick={() => setIsServiceModalOpen(true)}
+                        title={'Update Service(s)'}
+                      />
+                    )}
                   </div>
                 </div>
                 {isModalOpen && (
@@ -128,6 +137,9 @@ const ProfileSettingsPage = () => {
                     isModalOpen={true}
                     reload={reloadData}
                   />
+                )}
+                {isServiceModalOpen && (
+                  <SelectServiceModal isOpen={true} setIsOpen={setIsServiceModalOpen} />
                 )}
                 {isChangePassModalOpen && (
                   <ChangePasswordModal

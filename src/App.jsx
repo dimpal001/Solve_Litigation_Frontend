@@ -33,7 +33,7 @@ const App = () => {
       {/* Navbar Section */}
       <BrowserRouter>
         {(!user || user.userType === 'guest') && (
-          <div>
+          <div className='relative z-[6]'>
             <Headroom>
               <Navbar />
             </Headroom>
