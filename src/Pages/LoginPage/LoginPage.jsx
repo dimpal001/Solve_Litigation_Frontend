@@ -173,12 +173,12 @@ const LoginPage = () => {
                 </Checkbox>
                 <div>
                   <div className='flex items-center justify-center gap-5'>
-                    <p>{captcha}</p>
-                    <MdRefresh
+                    {/* <p>{captcha}</p> */}
+                    {/* <MdRefresh
                       onClick={refreshString}
                       color='red'
                       className='cursor-pointer'
-                    />
+                    /> */}
                   </div>
                   {/* <CustomInput
                     name='captcha'
