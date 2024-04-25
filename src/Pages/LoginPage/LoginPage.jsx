@@ -66,8 +66,8 @@ const LoginPage = () => {
       })
 
       user.userType === 'admin' || user.userType === 'staff'
-        ? navigate('/admin-dashboard/')
-        : navigate('/')
+        && navigate('/admin-dashboard/')
+      user.userType === 'guest' && user.isEmailVerified ? navigate('/') : navigate('/verify-email')
 
     } catch (error) {
       setIsLoading(false)
@@ -196,6 +196,11 @@ const LoginPage = () => {
                     onClick={handleLogin}
                     isDisabled={isSubmitDisabled()}
                   />
+                </div>
+                <div>
+                  <Link to={'/forgot-password'}>
+                    <p className='text-sm pt-3 text-primary cursor-pointer'>Forgot Password ?</p>
+                  </Link>
                 </div>
                 <p className='text-center text-base pt-5'>
                   Don&apos;t have an account ?{' '}

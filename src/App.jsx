@@ -24,6 +24,8 @@ import ManageStaffPage from './Pages/ManageStaff/ManageStaffPage'
 import StaffList from './Pages/ManageStaff/StaffList'
 import Headroom from 'react-headroom'
 import Footer from './Components/Footer'
+import ForgotPassword from './Pages/LoginPage/ForgotPassword'
+import VerifyEmail from './Components/VerifyEmail'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -87,14 +89,16 @@ const App = () => {
               </Route>
             )}
             {!user && <Route path='/login' element={<LoginPage />} />}
+            {user && !user.isEmailVerified && <Route path='/verify-email' element={<VerifyEmail />} />}
             {!user && <Route path='/register' element={<RegisterPage />} />}
+            {!user && <Route path='forgot-password' element={<ForgotPassword />} />}
             {user && (
               <Route
                 path='/profile-settings'
                 element={<ProfileSettingsPage />}
               />
             )}
-            {user && <Route path='/citations' element={<CitationsPage />} />}
+            {user && user.isEmailVerified && <Route path='/citations' element={<CitationsPage />} />}
             {user && user.userType === 'guest' && (
               <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             )}
