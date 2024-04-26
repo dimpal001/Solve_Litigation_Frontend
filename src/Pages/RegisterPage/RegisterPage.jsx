@@ -32,7 +32,6 @@ const RegisterPage = () => {
   const navigate = useNavigate()
 
   const handleSubmit = async () => {
-    console.log(formData)
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: 'Password mismatched.',
@@ -44,6 +43,40 @@ const RegisterPage = () => {
       })
       return
     }
+
+    if (formData.state === '') {
+      toast({
+        title: 'State name should not be empty.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+      return
+    }
+
+    if (formData.district === '') {
+      toast({
+        title: 'District name should not be empty',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      })
+      return
+    }
+
+    if (formData.phoneNumber.length < 10 || !/^\d+$/.test(formData.phoneNumber)) {
+      toast({
+        title: 'Phone number should have 10 numeric characters.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+        position: 'top',
+      });
+      return;
+    }
+
 
     try {
       setIsSubmitting(true)

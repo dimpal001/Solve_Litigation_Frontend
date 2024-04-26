@@ -79,14 +79,14 @@ const ProfileSettingsPage = () => {
                       <p className='text-sm'>Email Address</p>
                       <div className='flex items-center justify-between gap-3'>
                         <p className='font-extrabold'>{userDetails.email} </p>
-                        <FaEdit
+                        {/* <FaEdit
                           cursor={'pointer'}
                           onClick={() => {
                             handleModalOpen()
                             setSelectedModal('email')
                           }}
                           color={Colors.primary}
-                        />
+                        /> */}
                       </div>
                     </div>
                     <div>
