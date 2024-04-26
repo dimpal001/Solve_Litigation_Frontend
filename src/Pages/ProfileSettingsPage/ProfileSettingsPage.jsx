@@ -3,13 +3,14 @@ import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../UserContext'
 import { FaEdit } from 'react-icons/fa'
 import { Colors } from '../../Components/Colors'
-import { PrimaryButton, PrimaryOutlineButton } from '../../Components/Customs'
+import { PrimaryOutlineButton } from '../../Components/Customs'
 import ChangeEmailPhone from './ChangeEmailPhone'
 import ChangePasswordModal from './ChangePasswordModal'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { api } from '../../Components/Apis'
 import SelectServiceModal from '../../Components/SelectServiceModal'
+import ReVerifyEmail from '../../Components/ReVerifyEmail'
 
 const ProfileSettingsPage = () => {
   const { user } = useContext(UserContext)
@@ -61,7 +62,7 @@ const ProfileSettingsPage = () => {
         <Loading title={'Loading'} />
       ) : (
         <Center className='flex max-md:px-5 max-md:pt-10 justify-center w-full'>
-          {(user.userType === 'admin' || user.isEmailVerified) ? (
+          {(user.userType === 'admin' || user.isVerified) ? (
             <div
               data-aos='fade-up'
               className='shadow-xl border w-[500px] p-10 rounded-xl'
@@ -152,12 +153,7 @@ const ProfileSettingsPage = () => {
               </div>
             </div>
           ) : (
-            <Center className='lg:h-[500px]'>
-              <div className='flex flex-col justify-center items-center pt-5'>
-                <p className='text-2xl py-5 text-red-600'>Your account is not verified</p>
-                <PrimaryButton title={'Send reverification mail'} />
-              </div>
-            </Center>
+            <ReVerifyEmail />
           )}
         </Center>
       )}

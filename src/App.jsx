@@ -24,8 +24,10 @@ import ManageStaffPage from './Pages/ManageStaff/ManageStaffPage'
 import StaffList from './Pages/ManageStaff/StaffList'
 import Headroom from 'react-headroom'
 import Footer from './Components/Footer'
-import ForgotPassword from './Pages/LoginPage/ForgotPassword'
-import VerifyEmail from './Components/VerifyEmail'
+import EmailVerify from './Components/EmailVerify'
+import ReVerifyEmail from './Components/ReVerifyEmail'
+import ResetPassword from './Pages/ResetPasswordPage/ResetPassword'
+import ResetLinkPage from './Pages/ResetPasswordPage/ResetLinkPage'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -89,19 +91,21 @@ const App = () => {
               </Route>
             )}
             {!user && <Route path='/login' element={<LoginPage />} />}
-            {user && !user.isEmailVerified && <Route path='/verify-email' element={<VerifyEmail />} />}
             {!user && <Route path='/register' element={<RegisterPage />} />}
-            {!user && <Route path='forgot-password' element={<ForgotPassword />} />}
+            {!user && <Route path='reset-password' element={<ResetPassword />} />}
             {user && (
               <Route
                 path='/profile-settings'
                 element={<ProfileSettingsPage />}
               />
             )}
-            {user && user.isEmailVerified && <Route path='/citations' element={<CitationsPage />} />}
+            {user && user.isVerified && <Route path='/citations' element={<CitationsPage />} />}
             {user && user.userType === 'guest' && (
               <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             )}
+            {user && !user.isVerified && <Route path='/verify-email' element={<ReVerifyEmail />} />}
+            <Route path='/verify-email/:token' element={<EmailVerify />} />
+            <Route path='/reset-password/:token' element={<ResetLinkPage />} />
             <Route path='/services' element={<ServicesPage />} />
             <Route path='/contact-us' element={<ContactUsPage />} />
             <Route path='/*' element={<Error404 />} />

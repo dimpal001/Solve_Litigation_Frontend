@@ -54,8 +54,9 @@ const RegisterPage = () => {
       const { message } = response.data
       toast({
         title: message,
+        description: 'An email containing a verification link has been sent to your registered email address to verify your account.',
         status: 'success',
-        duration: 3000,
+        duration: 5000,
         isClosable: true,
         position: 'top',
       })
@@ -129,7 +130,7 @@ const RegisterPage = () => {
     <Center className='flex justify-center w-full'>
       <div
         data-aos='fade-up'
-        className='shadow-xl max-sm:mt-10 border lg:w-[500px] p-10 rounded-xl'
+        className='shadow-xl max-sm:mt-10 border lg:w-[640px] p-10 rounded-xl'
       >
         <div className='flex-col gap-10'>
           <Center>
@@ -234,7 +235,7 @@ const RegisterPage = () => {
               >
                 Show Password
               </Checkbox>
-              <div className='w-full flex justify-between pt-3'>
+              <div className='w-full flex justify-center pt-3'>
                 <PrimaryButton
                   width={{ base: '45%', md: '35%' }}
                   title={'Submit'}

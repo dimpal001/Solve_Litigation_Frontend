@@ -65,9 +65,7 @@ const LoginPage = () => {
         position: 'top',
       })
 
-      user.userType === 'admin' || user.userType === 'staff'
-        && navigate('/admin-dashboard/')
-      user.userType === 'guest' && user.isEmailVerified ? navigate('/') : navigate('/verify-email')
+      user.isVerified ? (user.userType === ('admin' || 'staff') ? navigate('/admin-dashboard/') : navigate('/')) : navigate('/verify-email')
 
     } catch (error) {
       setIsLoading(false)
@@ -198,7 +196,7 @@ const LoginPage = () => {
                   />
                 </div>
                 <div>
-                  <Link to={'/forgot-password'}>
+                  <Link to={'/reset-password'}>
                     <p className='text-sm pt-3 text-primary cursor-pointer'>Forgot Password ?</p>
                   </Link>
                 </div>

@@ -13,7 +13,10 @@ import {
   CustomInput,
   PrimaryButton,
 } from '../../Components/Customs'
-import { useState } from 'react'
+import { useContext, useState } from 'react'
+import { api } from '../../Components/Apis'
+import { UserContext } from '../../UserContext'
+import axios from 'axios'
 
 const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
   const toast = useToast()
@@ -21,6 +24,7 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
   const [currentPass, setCurrentPass] = useState('')
   const [pass, setPass] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
+  const { user } = useContext(UserContext)
 
   const handleSubmit = () => {
     if (currentPass === '') {
@@ -64,8 +68,17 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
     closeModal()
   }
 
-  const handleSendReset = () => {
-    setIsSent(true)
+  const handleSendReset = async () => {
+    try {
+      const response = await axios.post(`${api}/api/solve_litigation/auth/reset-password/${user.email}`)
+
+      console.log(response.data)
+      if (response.data.status === 'sent') {
+        setIsSent(true)
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
@@ -82,7 +95,7 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
               <CustomInput value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} placeholder='Confirm new password' />
             </div>
             <div>
-              <p onClick={handleSendReset} className='text-center text-sm text-primary cursor-pointer pt-2'>Send reset link ?</p>
+              <p onClick={handleSendReset} className='text-center text-base text-primary cursor-pointer pt-2'>Send reset link ?</p>
             </div>
             <div>
               <p className={`p-3 ${isSent ? 'block' : 'hidden'} mx-1 mt-3 bg-green-200 text-center rounded-[3px]`}>Password reset link has been <br className='lg:hidden' /> sent to your registered mail</p>

@@ -101,7 +101,7 @@ const NavItems = ({ onClose }) => {
         <NavItem onClick={onClose} title='Home Page' to={'/'}>
           Home
         </NavItem>
-        {user && user.isEmailVerified && user.userType === 'guest' && user.selectedService.includes('judgments') && (
+        {user && user.isVerified && user.userType === 'guest' && user.selectedService.includes('judgments') && (
           <NavItem onClick={onClose} title='Home Page' to={'/citations'}>
             Judgments
           </NavItem>

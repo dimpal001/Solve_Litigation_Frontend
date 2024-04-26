@@ -1,15 +1,18 @@
+import axios from 'axios'
 import { CustomInput, PrimaryButton } from '../../Components/Customs'
 import Logo from '../../assets/logo.svg'
 import { Center, useToast } from "@chakra-ui/react"
 import { useState } from 'react'
+import { api } from '../../Components/Apis'
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
     const [email, setEmail] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
-    const [isSent, setIsSent] = useState(false)
+    const [result, setResult] = useState('')
     const toast = useToast()
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
+        setResult('')
         e.preventDefault()
         if (email === '') {
             toast({
@@ -21,10 +24,25 @@ const ForgotPassword = () => {
             })
             return
         }
-        console.log(email)
-        setIsSent(true)
-        setIsSubmitting(true)
 
+        try {
+            setIsSubmitting(true)
+            const response = await axios.post(`${api}/api/solve_litigation/auth/reset-password/${email}`)
+
+            console.log(response.data)
+            if (response.data.status === 'sent') {
+                setResult('sent')
+                setEmail('')
+            }
+            setEmail('')
+        } catch (error) {
+            console.log(error)
+            if (error.response.data.status === 'userNotFound') {
+                setResult('userNotFound')
+            }
+        } finally {
+            setIsSubmitting(false)
+        }
     }
 
     return (
@@ -53,6 +71,7 @@ const ForgotPassword = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder={'Registered email address '}
                                 />
+                                <p className={`text-base text-left ${result === 'sent' ? 'text-green-600' : 'text-red-600'}`}>{result === 'userNotFound' ? 'Provided mail address is not registered.' : (result === 'sent' ? 'Password reset mail has been sent to the mail address.' : '')}</p>
                                 <div className='w-full flex justify-between'>
                                     <PrimaryButton type={'submit'}
                                         isLoading={isSubmitting}
@@ -64,7 +83,6 @@ const ForgotPassword = () => {
                                 </div>
                             </form>
                         </div>
-                        <p className={`text-sm p-3 ${isSent ? 'block' : 'hidden'} mx-1 mt-3 bg-green-200 text-center rounded-[3px]`}>Password reset link has been <br className='lg:hidden' /> sent to your registered mail</p>
                     </div>
                 </div>
             </div>
@@ -72,4 +90,4 @@ const ForgotPassword = () => {
     )
 }
 
-export default ForgotPassword
+export default ResetPassword

@@ -23,7 +23,7 @@ const HomePage = () => {
   return (
     <div>
 
-      {isSelectServiceModalOpen && (
+      {isSelectServiceModalOpen && user && user.isVerified && (
         <SelectServiceModal isOpen={true} setIsOpen={setIsSelectServiceModalOpen} />
       )}
       <div className='lg:flex flex-row-reverse lg:h-[600px] max-sm:pb-[100px] items-center gap-10 px-10 lg:px-32'>
