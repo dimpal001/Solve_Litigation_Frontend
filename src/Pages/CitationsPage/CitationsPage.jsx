@@ -346,10 +346,10 @@ const CitationsPage = () => {
                   ) : (
                     <div className='flex flex-col gap-3'>
                       <div>
-                        {last10Citations.length > 0 && (
+                        {last10Citations && last10Citations.length > 0 && (
                           <p className='px-2 py-3 text-primary text-2xl'>Latest Judgments</p>
                         )}
-                        {last10Citations.map((citation, index) => (
+                        {last10Citations && last10Citations.map((citation, index) => (
                           <Citation key={index} data={citation} />
                         ))}
                       </div>
@@ -421,10 +421,6 @@ const CitationsPage = () => {
 }
 
 const Citation = ({ data }) => {
-  const sanitizeHTML = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    return doc.documentElement.textContent + '...';
-  };
 
   return (
     <div>
@@ -443,7 +439,7 @@ const Citation = ({ data }) => {
             <p className='text-primary py-1'>{data.title}</p>
           </div>
           <div>
-            <p className='text-sm' dangerouslySetInnerHTML={{ __html: sanitizeHTML(data.judgments) }} />
+            <p className='text-sm'>{data.headNote}</p>
           </div>
           <div className='flex overflow-x-scroll gap-2 py-1'>
             {data.laws.map((law, index) => (
