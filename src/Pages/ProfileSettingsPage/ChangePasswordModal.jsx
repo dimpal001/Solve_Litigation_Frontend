@@ -95,7 +95,7 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
               <CustomInput value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} placeholder='Confirm new password' />
             </div>
             <div>
-              <p onClick={handleSendReset} className='text-center text-base text-primary cursor-pointer pt-2'>Send reset link ?</p>
+              <p onClick={handleSendReset} className='text-center font-bold hover:underline text-base text-primary cursor-pointer pt-2'>Send reset link ?</p>
             </div>
             <div>
               <p className={`p-3 ${isSent ? 'block' : 'hidden'} mx-1 mt-3 bg-green-200 text-center rounded-[3px]`}>Password reset link has been <br className='lg:hidden' /> sent to your registered mail</p>

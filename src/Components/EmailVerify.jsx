@@ -40,7 +40,6 @@ const EmailVerify = () => {
         <div>
             <Center className='justify-center w-full'>
                 <div
-                    // data-aos='fade-up'
                     className='max-sm:mt-20 lg:w-[500px] p-10 rounded-xl'
 
                 >
@@ -52,7 +51,6 @@ const EmailVerify = () => {
                             <div>
                                 <p className="text-center text-3xl font-bold pt-1">Verify your mail address</p>
                                 <p className="text-base text-center py-5">Thanks for signing up at <strong>Solve Litigation</strong>. <br /> Please proceed to verify your account.</p>
-                                {result && <p className='text-center font-extrabold p-5'>{result}</p>}
                                 <div >
                                     <div className='w-full py-3 flex justify-center'>
                                         <PrimaryButton type={'submit'}
