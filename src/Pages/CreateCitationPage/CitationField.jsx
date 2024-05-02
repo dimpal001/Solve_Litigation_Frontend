@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from 'react'
 import Editor from './Editor'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../UserContext'
+import { Colors } from '../../Components/Colors'
 
 const CitationField = ({ data, setData }) => {
   const { setUser } = useContext(UserContext)
@@ -21,6 +22,9 @@ const CitationField = ({ data, setData }) => {
   const [listPOL, setListPOL] = useState([])
   const [listCourt, setListCourt] = useState([])
   const [listApellate, setListApellate] = useState([])
+  const [apellateInputValue, setApellateInputValue] = useState('')
+  const [lawInputValue, setLawInputValue] = useState('')
+  const [POLInputValue, setPOLInputValue] = useState('')
   const {
     institutionName,
     index,
@@ -144,6 +148,17 @@ const CitationField = ({ data, setData }) => {
   const capitalizeString = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
+
+  const filteredApellateList = listApellate.filter(item => {
+    return item.name.toLowerCase().includes(apellateInputValue.toLowerCase());
+  })
+  const filteredLawList = listLaw.filter(item => {
+    return item.name.toLowerCase().includes(lawInputValue.toLowerCase());
+  })
+  const filteredPOLList = listPOL.filter(item => {
+    return item.name.toLowerCase().includes(POLInputValue.toLowerCase());
+  })
+
 
   return (
     <div className='flex flex-col gap-y-7 my-3 p-10 border border-slate-100 rounded-sm bg-slate-50'>
@@ -314,10 +329,17 @@ const CitationField = ({ data, setData }) => {
       </FormControl>
       <FormControl>
         <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>Apellate Types *</span>
+          <div className='flex items-center gap-5'>
+            <div>
+              <span className='text-lg font-extrabold'>Apellate Types *</span>
+            </div>
+            <div>
+              <Input value={apellateInputValue} color={Colors.primary} rounded={'sm'} placeholder='Search...' onChange={(e) => setApellateInputValue(e.target.value)} bgColor={'white'} />
+            </div>
+          </div>
         </FormLabel>
         <div className='flex gap-5 flex-wrap capitalize'>
-          {listApellate.map((apellate, index) => (
+          {filteredApellateList.map((apellate, index) => (
             <Checkbox
               key={index}
               name={`law_${apellate._id}`}
@@ -328,8 +350,8 @@ const CitationField = ({ data, setData }) => {
                 setData((prevData) => ({
                   ...prevData,
                   apellates: checked
-                    ? [...prevData.apellates, apellateName] // Store the name in the array
-                    : prevData.apellates.filter((name) => name !== apellateName), // Remove the name from the array
+                    ? [...prevData.apellates, apellateName]
+                    : prevData.apellates.filter((name) => name !== apellateName),
                 }))
               }}
             >
@@ -340,10 +362,17 @@ const CitationField = ({ data, setData }) => {
       </FormControl>
       <FormControl>
         <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>Law *</span>
+          <div className='flex items-center gap-5'>
+            <div>
+              <span className='text-lg font-extrabold'>Law *</span>
+            </div>
+            <div>
+              <Input value={lawInputValue} color={Colors.primary} rounded={'sm'} placeholder='Search...' onChange={(e) => setLawInputValue(e.target.value)} bgColor={'white'} />
+            </div>
+          </div>
         </FormLabel>
         <div className='flex gap-5 flex-wrap capitalize'>
-          {listLaw.map((law, index) => (
+          {filteredLawList.map((law, index) => (
             <Checkbox
               key={index}
               name={`law_${law._id}`}
@@ -366,22 +395,29 @@ const CitationField = ({ data, setData }) => {
       </FormControl>
       <FormControl>
         <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>Point of Law *</span>
+          <div className='flex items-center gap-5'>
+            <div>
+              <span className='text-lg font-extrabold'>Point of Law *</span>
+            </div>
+            <div>
+              <Input value={POLInputValue} color={Colors.primary} rounded={'sm'} placeholder='Search...' onChange={(e) => setPOLInputValue(e.target.value)} bgColor={'white'} />
+            </div>
+          </div>
         </FormLabel>
         <div className='flex gap-5 flex-wrap  capitalize'>
-          {listPOL.map((pol) => (
+          {filteredPOLList.map((pol) => (
             <Checkbox
               key={pol._id}
               name={`pol_${pol._id}`}
-              isChecked={pointOfLaw.includes(pol.name)} // Check if the name is already in the array
+              isChecked={pointOfLaw.includes(pol.name)}
               onChange={(e) => {
                 const { checked } = e.target
-                const polName = pol.name // Get the name of the POL directly
+                const polName = pol.name
                 setData((prevData) => ({
                   ...prevData,
                   pointOfLaw: checked
-                    ? [...prevData.pointOfLaw, polName] // Store the name in the array
-                    : prevData.pointOfLaw.filter((name) => name !== polName), // Remove the name from the array
+                    ? [...prevData.pointOfLaw, polName]
+                    : prevData.pointOfLaw.filter((name) => name !== polName),
                 }))
               }}
             >
