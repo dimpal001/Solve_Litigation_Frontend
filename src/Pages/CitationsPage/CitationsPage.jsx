@@ -173,6 +173,8 @@ const CitationsPage = () => {
 
   const handleLatest = () => {
     fetchLast10Citations()
+    setFetchingLaws([])
+    setFetchingPOL([])
     setSelectedApellate('latest')
   }
 
@@ -366,6 +368,8 @@ const CitationsPage = () => {
                       <div className='flex flex-col gap-2'>
                         {fetchingLaws.map((law, index) => (
                           <Button key={index}
+                            maxW={'250px'}
+                            overflowX={'hidden'}
                             _focus={{
                               bgColor: Colors.primary,
                               textColor: 'white'
@@ -391,6 +395,7 @@ const CitationsPage = () => {
                       <div className='flex flex-col gap-2'>
                         {fetchingPOL.map((POL, index) => (
                           <Button key={index}
+                            // width={'230px'}
                             _focus={{
                               bgColor: Colors.primary,
                               textColor: 'white'

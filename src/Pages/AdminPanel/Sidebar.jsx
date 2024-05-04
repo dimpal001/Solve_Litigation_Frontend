@@ -73,6 +73,16 @@ const Sidebar = () => {
               />
             </Link>
           )}
+
+          {user.userType === 'admin' && (
+            <Link to={'/admin-dashboard/contact-forms'}>
+              <LinkButton
+                title={'Contact Forms'}
+                width={'100%'}
+                bgColor={isPageActive('contact-forms') ? Colors.primary : ''}
+              />
+            </Link>
+          )}
           {/* <Link to={'/admin-dashboard/citation-activity'}>
             <LinkButton
               title={'Citation Activity'}

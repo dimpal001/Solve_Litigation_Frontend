@@ -28,6 +28,8 @@ import EmailVerify from './Components/EmailVerify'
 import ReVerifyEmail from './Components/ReVerifyEmail'
 import ResetPassword from './Pages/ResetPasswordPage/ResetPassword'
 import ResetLinkPage from './Pages/ResetPasswordPage/ResetLinkPage'
+import LegalAdvice from './Pages/LegalAdvicePage/LegalAdvice'
+import AllContactForms from './Pages/ContactUsPage/AllContactForms'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -73,6 +75,7 @@ const App = () => {
                 <Route path='manage-staff/create-staff' element={<CreateStaffpage />} />
                 <Route path='manage-staff/staff-list' element={<StaffList />} />
                 <Route path='manage-staff' element={<ManageStaffPage />} />
+                <Route path='contact-forms' element={<AllContactForms />} />
                 <Route
                   path='create-citation'
                   element={<CreateCitationPage />}
@@ -104,6 +107,7 @@ const App = () => {
               <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             )}
             {user && !user.isVerified && <Route path='/verify-email' element={<ReVerifyEmail />} />}
+            {user && <Route path='/legal-advice' element={<LegalAdvice />} />}
             <Route path='/verify-email/:token' element={<EmailVerify />} />
             <Route path='/reset-password/:token' element={<ResetLinkPage />} />
             <Route path='/services' element={<ServicesPage />} />
