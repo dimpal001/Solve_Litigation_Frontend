@@ -75,10 +75,10 @@ const SingleCitationPage = ({ data }) => {
         position: 'top',
         isClosable: true,
       })
-      navigate('/admin-dashboard/review-citation/')
+      data.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
     } finally {
       setIsApproving(false)
-      navigate('/admin-dashboard/review-citation/')
+      data.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
     }
   }
 
@@ -86,7 +86,7 @@ const SingleCitationPage = ({ data }) => {
     <div>
       <div>
         {user.userType !== 'guest' && (
-          <Link to={'/admin-dashboard/review-citation'}>
+          <Link to={`/admin-dashboard/review-${data.type === 'act' ? 'acts' : 'citation'}`}>
             <div className='flex items-baseline gap-1 hover:gap-3 delay-[0.05s] transition-all'>
               <FaArrowLeft size={20} className='pt-[5px] cursor-pointer' color={Colors.primary} />
               <p className='text-primary'>Back</p>
@@ -138,29 +138,39 @@ const SingleCitationPage = ({ data }) => {
           </p>
           <p className='text-center text-3xl py-2'>{data.title}</p>
           <p className='text-center capitalize'>{data.institutionName}</p>
-          <p className='text-center text-lg capitalize'>
-            {data.apellateType} Appellate Jurisdiction
-          </p>
-          <p className='text-center text-lg capitalize'>
-            {' '}
-            <strong>Bench : </strong>
-            <span className='uppercase'>{data.judgeName}</span>
-          </p>
-          <p className='text-center uppercase'>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: data.partyNameAppealant,
-              }}
-            />
-          </p>
-          <p className='text-center text-lg'>Versus</p>
-          <p className='text-center uppercase'>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: data.partyNameRespondent,
-              }}
-            />
-          </p>
+          {data.apellateType && (
+            <p className='text-center text-lg capitalize'>
+              {data.apellateType} Appellate Jurisdiction
+            </p>
+          )}
+          {data.judgeName && (
+            <p className='text-center text-lg capitalize'>
+              {' '}
+              <strong>Bench : </strong>
+              <span className='uppercase'>{data.judgeName}</span>
+            </p>
+          )}
+          {data.partyNameAppealant && (
+            <p className='text-center uppercase'>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data.partyNameAppealant,
+                }}
+              />
+            </p>
+          )}
+          {data.partyNameAppealant && (
+            <p className='text-center text-lg'>Versus</p>
+          )}
+          {data.partyNameAppealant && (
+            <p className='text-center uppercase'>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data.partyNameRespondent,
+                }}
+              />
+            </p>
+          )}
           {data.headNote && (
             <div>
               <strong className='text-lg underline'>Headnote :</strong>
@@ -171,15 +181,27 @@ const SingleCitationPage = ({ data }) => {
               />
             </div>
           )}
-          <p className='text-center font-extrabold underline text-lg py-3'>
-            Date : {new Date(data.dateOfOrder).toDateString()}
-          </p>
+          {data.dateOfOrder && (
+            <p className='text-center font-extrabold underline text-lg py-3'>
+              Date : {new Date(data.dateOfOrder).toDateString()}
+            </p>
+          )}
           {data.judgments && (
             <div>
               <strong className='text-lg underline'>Judgement : </strong>
               <div
                 dangerouslySetInnerHTML={{
                   __html: data.judgments,
+                }}
+              />
+            </div>
+          )}
+          {data.notification && (
+            <div>
+              <strong className='text-lg underline'>Notification : </strong>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data.notification,
                 }}
               />
             </div>

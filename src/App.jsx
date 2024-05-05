@@ -30,6 +30,7 @@ import ResetPassword from './Pages/ResetPasswordPage/ResetPassword'
 import ResetLinkPage from './Pages/ResetPasswordPage/ResetLinkPage'
 import LegalAdvice from './Pages/LegalAdvicePage/LegalAdvice'
 import AllContactForms from './Pages/ContactUsPage/AllContactForms'
+import ReviewAct from './Pages/ReviewActs/ReviewAct'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -67,6 +68,10 @@ const App = () => {
                 <Route
                   path='review-citation'
                   element={<ReviewCitationPage />}
+                />
+                <Route
+                  path='review-acts'
+                  element={<ReviewAct />}
                 />
                 <Route
                   path='review-citation/:id'

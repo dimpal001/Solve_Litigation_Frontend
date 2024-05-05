@@ -38,25 +38,32 @@ const Sidebar = () => {
           </Link>
           <Link to={'/admin-dashboard/review-citation'}>
             <LinkButton
-              title={'Review Citation'}
+              title={'Review Judgments'}
               width={'100%'}
               bgColor={isPageActive('review-citation') ? Colors.primary : ''}
             />
           </Link>
+          <Link to={'/admin-dashboard/review-acts'}>
+            <LinkButton
+              title={'Review Acts'}
+              width={'100%'}
+              bgColor={isPageActive('review-acts') ? Colors.primary : ''}
+            />
+          </Link>
           <Link to={'/admin-dashboard/create-citation'}>
             <LinkButton
-              title={'Create Citation'}
+              title={'Create Judgment / Act'}
               width={'100%'}
               bgColor={isPageActive('create-citation') ? Colors.primary : ''}
             />
           </Link>
-          <Link to={'/admin-dashboard/edit-citation'}>
+          {/* <Link to={'/admin-dashboard/edit-citation'}>
             <LinkButton
               title={'Edit Citation'}
               width={'100%'}
               bgColor={isPageActive('edit-citation') ? Colors.primary : ''}
             />
-          </Link>
+          </Link> */}
           {/* <Link to={'/admin-dashboard/study-materials'}>
             <LinkButton
               title={'Study Materials'}

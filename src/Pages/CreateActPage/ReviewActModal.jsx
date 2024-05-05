@@ -53,7 +53,7 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
         })
         onClose()
       }
-      navigate('/admin-dashboard/review-citation')
+      navigate('/admin-dashboard/review-acts')
     } catch (error) {
       console.error('Error uploading citation:', error)
       toast({

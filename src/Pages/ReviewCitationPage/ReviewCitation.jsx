@@ -75,10 +75,10 @@ const ReviewCitation = () => {
         position: 'top',
         isClosable: true,
       })
-      navigate('/admin-dashboard/review-citation/')
+      citation.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
     } finally {
       setIsApproving(false)
-      navigate('/admin-dashboard/review-citation/')
+      citation.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
     }
   }
 

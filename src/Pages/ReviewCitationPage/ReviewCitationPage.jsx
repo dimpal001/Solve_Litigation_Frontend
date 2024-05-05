@@ -14,12 +14,12 @@ const ReviewCitationPage = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
   const toast = useToast()
-  const [pendingCitations, setPendingCitations] = useState([])
-  const [approvedCitations, setApprovedCitations] = useState([])
-  const [filterCitations, setFilterCitations] = useState([])
+  const [pendingJudgments, setpendingJudgments] = useState([])
+  const [approvedJudgments, setapprovedJudgments] = useState([])
+  const [filterJudgments, setfilterJudgments] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
-  const [citationType, setCitationType] = useState('pending')
+  const [judgmentType, setjudgmentType] = useState('pending')
 
   const handleLogout = () => {
     setUser(null)
@@ -36,9 +36,9 @@ const ReviewCitationPage = () => {
     })
   }
 
-  const fetchPendingCitation = async () => {
+  const fetchPendingJudgments = async () => {
     try {
-      setFilterCitations([])
+      setfilterJudgments([])
       const token = sessionStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/pending-citations`,
@@ -48,7 +48,7 @@ const ReviewCitationPage = () => {
           },
         }
       )
-      setPendingCitations(response.data.pendingCitations)
+      setpendingJudgments(response.data.pendingCitations)
       setIsLoading(false)
     } catch (error) {
       if (error.response.status === 401) {
@@ -58,9 +58,9 @@ const ReviewCitationPage = () => {
     }
   }
 
-  const approvedCitaion = async () => {
+  const fetchApprovedJudgments = async () => {
     try {
-      setFilterCitations([])
+      setfilterJudgments([])
       const token = sessionStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/approved-citations`,
@@ -70,33 +70,33 @@ const ReviewCitationPage = () => {
           },
         }
       )
-      setApprovedCitations(response.data.approvedCitations)
+      setapprovedJudgments(response.data.approvedCitations)
       setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const handleChangeCitaionType = (type) => {
+  const handleChangeJudgmentType = (type) => {
     console.log(type)
-    setCitationType(type)
+    setjudgmentType(type)
     if (type === 'pending') {
-      fetchPendingCitation()
-      setApprovedCitations([])
+      fetchPendingJudgments()
+      setapprovedJudgments([])
     } else {
-      approvedCitaion()
-      setPendingCitations([])
+      fetchApprovedJudgments()
+      setpendingJudgments([])
     }
   }
 
   useEffect(() => {
-    fetchPendingCitation()
+    fetchPendingJudgments()
   }, [])
 
   return (
     <div data-aos='fade-up'>
       <div>
-        <p className='text-3xl text-center font-extrabold'>Review Citation</p>
+        <p className='text-3xl text-center font-extrabold'>Review Judgments</p>
         {isLoading ? (
           <Loading />
         ) : (
@@ -104,22 +104,19 @@ const ReviewCitationPage = () => {
             <div className='flex justify-between'>
               <div className='flex gap-3'>
                 <PrimaryOutlineButton
-                  bgColor={citationType === 'pending' ? Colors.primary : null}
-                  color={citationType === 'pending' ? 'white' : null}
-                  onClick={() => handleChangeCitaionType('pending')}
-                  title={'Pending Citaion'}
+                  bgColor={judgmentType === 'pending' ? Colors.primary : null}
+                  color={judgmentType === 'pending' ? 'white' : null}
+                  onClick={() => handleChangeJudgmentType('pending')}
+                  title={'Pending Judgments'}
                 />
                 <PrimaryOutlineButton
-                  color={citationType === 'approved' ? 'white' : null}
-                  bgColor={citationType === 'approved' ? Colors.primary : null}
-                  onClick={() => handleChangeCitaionType('approved')}
-                  title={'Approved Citaion'}
+                  color={judgmentType === 'approved' ? 'white' : null}
+                  bgColor={judgmentType === 'approved' ? Colors.primary : null}
+                  onClick={() => handleChangeJudgmentType('approved')}
+                  title={'Approved Judgments'}
                 />
                 <div>
-                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter citation'} />
-                </div>
-                <div className='flex items-center'>
-                  {/* <input title='Select a date of order' type="date" className='w-[38px] focus:rounded-sm focus:outline-none hover:outline-none border p-1 rounded-sm hover:bg-primary hover:text-white' id="" /> */}
+                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter Judgments'} />
                 </div>
               </div>
               <div>
@@ -135,29 +132,29 @@ const ReviewCitationPage = () => {
               </div>
             </div>
             {isFilterModalOpen && (
-              <FilterCitationModal setCitationType={setCitationType} setApprovedCitations={setApprovedCitations} setPendingCitations={setPendingCitations} setFilterCitations={setFilterCitations} isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
+              <FilterCitationModal setjudgmentType={setjudgmentType} setapprovedJudgments={setapprovedJudgments} setpendingJudgments={setpendingJudgments} setfilterJudgments={setfilterJudgments} isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
             )}
-            {citationType === 'pending' && pendingCitations.length === 0 && (
+            {judgmentType === 'pending' && pendingJudgments.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
-            {citationType === 'approved' && approvedCitations.length === 0 && (
+            {judgmentType === 'approved' && approvedJudgments.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
             <div className='grid grid-cols-2 gap-5'>
-              {filterCitations &&
-                filterCitations.map((data, index) => (
+              {filterJudgments &&
+                filterJudgments.map((data, index) => (
                   <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
-              {pendingCitations &&
-                pendingCitations.map((data, index) => (
+              {pendingJudgments &&
+                pendingJudgments.map((data, index) => (
                   <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
-              {approvedCitations &&
-                approvedCitations.map((data, index) => (
+              {approvedJudgments &&
+                approvedJudgments.map((data, index) => (
                   <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>
