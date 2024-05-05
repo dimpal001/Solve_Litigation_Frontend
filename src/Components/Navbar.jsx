@@ -103,7 +103,7 @@ const NavItems = ({ onClose }) => {
         </NavItem>
         {user && user.isVerified && user.userType === 'guest' && user.selectedService.includes('judgements') && (
           <NavItem onClick={onClose} title='Home Page' to={'/citations'}>
-            judgements
+            Judgements
           </NavItem>
         )}
         {user && user.userType === 'guest' && user.selectedService.includes('legalAdvice') && (

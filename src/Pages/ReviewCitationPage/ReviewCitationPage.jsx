@@ -96,7 +96,7 @@ const ReviewCitationPage = () => {
   return (
     <div data-aos='fade-up'>
       <div>
-        <p className='text-3xl text-center font-extrabold'>Review judgements</p>
+        <p className='text-3xl text-center font-extrabold'>Review Judgements</p>
         {isLoading ? (
           <Loading />
         ) : (
@@ -116,7 +116,7 @@ const ReviewCitationPage = () => {
                   title={'Approved judgements'}
                 />
                 <div>
-                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter judgements'} />
+                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter Judgements'} />
                 </div>
               </div>
               <div>

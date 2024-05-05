@@ -36,6 +36,7 @@ const CitationsPage = () => {
 
   const handleChangeLaw = async (law) => {
     setSelectedFilter('all')
+    setSelectedPOL()
     setSelectedLaw(law)
     await fetchPOL(law)
   }
@@ -133,6 +134,7 @@ const CitationsPage = () => {
 
   const fetchLast10Citations = async () => {
     try {
+      setFetchingCitations([])
       const token = sessionStorage.getItem('token')
       const response = await axios.get(`${api}/api/solve_litigation/citation/last-10-citations`, {
         headers: {
@@ -172,10 +174,11 @@ const CitationsPage = () => {
   }
 
   const handleLatest = () => {
+    setSelectedApellate('latest')
     fetchLast10Citations()
     setFetchingLaws([])
+    setFilteredCitations([])
     setFetchingPOL([])
-    setSelectedApellate('latest')
   }
 
   return (
@@ -316,9 +319,22 @@ const CitationsPage = () => {
             {isLoading ? (
               <Loading />
             ) : (
-              <div className='flex flex-row-reverse justify-between gap-10 w-full'>
-                <div className='lg:w-[60%]'>
-                  {fetchingCitations.length !== 0 ? (
+              <div className='flex flex-col-reverse justify-between gap-10 w-full'>
+                <div className=''>
+                  <div className='flex flex-col gap-3'>
+                    <div>
+                      {last10Citations && last10Citations.length > 0 && (
+                        <p className='px-2 py-3 text-primary text-2xl'>Latest judgements</p>
+                      )}
+                      {last10Citations && last10Citations.map((citation, index) => (
+                        <Citation key={index} data={citation} />
+                      ))}
+                    </div>
+                    {/* <div className='flex justify-center'>
+                        <p className='text-center text-primary text-base hover:bg-primary hover:text-white p-1 rounded-sm transition-all delay-[0.05s] px-3 cursor-pointer' >Load more</p>
+                      </div> */}
+                  </div>
+                  {fetchingCitations.length !== 0 && (
                     <div>
                       <div className='flex max-md:px-3 gap-3 pb-3'>
                         <PrimaryOutlineButton size={'sm'}
@@ -345,30 +361,15 @@ const CitationsPage = () => {
                           <Citation key={index} data={citation} />
                         ))}
                     </div>
-                  ) : (
-                    <div className='flex flex-col gap-3'>
-                      <div>
-                        {last10Citations && last10Citations.length > 0 && (
-                          <p className='px-2 py-3 text-primary text-2xl'>Latest judgements</p>
-                        )}
-                        {last10Citations && last10Citations.map((citation, index) => (
-                          <Citation key={index} data={citation} />
-                        ))}
-                      </div>
-                      {/* <div className='flex justify-center'>
-                        <p className='text-center text-primary text-base hover:bg-primary hover:text-white p-1 rounded-sm transition-all delay-[0.05s] px-3 cursor-pointer' >Load more</p>
-                      </div> */}
-                    </div>
                   )}
                 </div>
-                <div className='flex max-lg:hidden lg:w-[40%] w-full justify-between'>
+                <div className={`flex ${fetchingLaws.length !== 0 && 'p-3'} bg-gray-50 max-lg:hidden w-full gap-14`}>
                   {fetchingLaws.length !== 0 && (
                     <div>
                       <p className='text-lg font-medium py-1'>Select a law</p>
                       <div className='flex flex-col gap-2'>
                         {fetchingLaws.map((law, index) => (
                           <Button key={index}
-                            maxW={'250px'}
                             overflowX={'hidden'}
                             _focus={{
                               bgColor: Colors.primary,
@@ -430,7 +431,7 @@ const Citation = ({ data }) => {
   return (
     <div>
       <Link to={`/detailed-citation/${data._id}`}>
-        <div className='p-2 max-sm:px-5 hover:bg-slate-50 lg:border-b bg-slate-50'>
+        <div className='p-2 max-sm:px-5 lg:my-3 hover:bg-slate-50 lg:border-b bg-slate-50'>
           <div className='flex items-center'>
             <div>
               <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />

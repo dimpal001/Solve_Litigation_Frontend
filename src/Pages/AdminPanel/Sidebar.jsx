@@ -38,7 +38,7 @@ const Sidebar = () => {
           </Link>
           <Link to={'/admin-dashboard/review-citation'}>
             <LinkButton
-              title={'Review judgements'}
+              title={'Review Judgements'}
               width={'100%'}
               bgColor={isPageActive('review-citation') ? Colors.primary : ''}
             />
@@ -52,7 +52,7 @@ const Sidebar = () => {
           </Link>
           <Link to={'/admin-dashboard/create-citation'}>
             <LinkButton
-              title={'Create judgement / Act'}
+              title={'Create Judgement / Act'}
               width={'100%'}
               bgColor={isPageActive('create-citation') ? Colors.primary : ''}
             />

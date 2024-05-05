@@ -61,6 +61,7 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
     }
 
     const handleSubmit = async () => {
+
         if (selectedServices.length === 0) {
             toast({
                 title: 'Select a service',
@@ -112,7 +113,7 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
                                     onChange={() => handleCheckboxChange('judgements')}
                                     isChecked={selectedServices.includes('judgements')}
                                 >
-                                    judgements
+                                    Judgements
                                 </Checkbox>
                                 <Checkbox
                                     size={'lg'}
