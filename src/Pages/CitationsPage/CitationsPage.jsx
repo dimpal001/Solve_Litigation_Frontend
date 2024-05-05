@@ -349,7 +349,7 @@ const CitationsPage = () => {
                     <div className='flex flex-col gap-3'>
                       <div>
                         {last10Citations && last10Citations.length > 0 && (
-                          <p className='px-2 py-3 text-primary text-2xl'>Latest Judgments</p>
+                          <p className='px-2 py-3 text-primary text-2xl'>Latest judgements</p>
                         )}
                         {last10Citations && last10Citations.map((citation, index) => (
                           <Citation key={index} data={citation} />

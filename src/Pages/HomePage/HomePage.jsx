@@ -44,7 +44,7 @@ const HomePage = () => {
           <p className='text-lg pb-10'>
             At Solve Litigation, we&apos;re dedicated to helping individuals,
             firms and companies navigate the complex world of law. Whether
-            you&apos;re looking for relevant judgments for your legal research,
+            you&apos;re looking for relevant judgements for your legal research,
             or expert legal advice and services, our comprehensive tools and
             resources have got you covered.
           </p>

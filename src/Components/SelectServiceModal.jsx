@@ -109,10 +109,10 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
                             <div className='flex flex-col gap-3 py-5 px-10'>
                                 <Checkbox
                                     size={'lg'}
-                                    onChange={() => handleCheckboxChange('judgments')}
-                                    isChecked={selectedServices.includes('judgments')}
+                                    onChange={() => handleCheckboxChange('judgements')}
+                                    isChecked={selectedServices.includes('judgements')}
                                 >
-                                    Judgments
+                                    judgements
                                 </Checkbox>
                                 <Checkbox
                                     size={'lg'}

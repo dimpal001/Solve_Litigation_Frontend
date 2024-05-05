@@ -33,7 +33,7 @@ const CreateAct = () => {
     partyNameAppealant: '',
     partyNameRespondent: '',
     title: '',
-    judgments: '',
+    judgements: '',
     dateOfOrder: '',
     judgeName: '',
     headNote: '',
@@ -106,9 +106,9 @@ const CreateAct = () => {
       })
       return 0
     }
-    if (data.judgments === '') {
+    if (data.judgements === '') {
       toast({
-        title: 'Judgments is required',
+        title: 'judgements is required',
         status: 'error',
         duration: 4000,
         position: 'top',
@@ -174,7 +174,7 @@ const CreateAct = () => {
       partyNameAppealant: '',
       partyNameRespondent: '',
       title: '',
-      judgments: '',
+      judgements: '',
       dateOfOrder: '',
       judgeName: '',
       headNote: '',

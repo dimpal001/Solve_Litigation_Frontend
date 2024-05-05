@@ -14,12 +14,12 @@ const ReviewCitationPage = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
   const toast = useToast()
-  const [pendingJudgments, setpendingJudgments] = useState([])
-  const [approvedJudgments, setapprovedJudgments] = useState([])
-  const [filterJudgments, setfilterJudgments] = useState([])
+  const [pendingjudgements, setpendingjudgements] = useState([])
+  const [approvedjudgements, setapprovedjudgements] = useState([])
+  const [filterjudgements, setfilterjudgements] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
-  const [judgmentType, setjudgmentType] = useState('pending')
+  const [judgementType, setjudgementType] = useState('pending')
 
   const handleLogout = () => {
     setUser(null)
@@ -36,9 +36,9 @@ const ReviewCitationPage = () => {
     })
   }
 
-  const fetchPendingJudgments = async () => {
+  const fetchPendingjudgements = async () => {
     try {
-      setfilterJudgments([])
+      setfilterjudgements([])
       const token = sessionStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/pending-citations`,
@@ -48,7 +48,7 @@ const ReviewCitationPage = () => {
           },
         }
       )
-      setpendingJudgments(response.data.pendingCitations)
+      setpendingjudgements(response.data.pendingCitations)
       setIsLoading(false)
     } catch (error) {
       if (error.response.status === 401) {
@@ -58,9 +58,9 @@ const ReviewCitationPage = () => {
     }
   }
 
-  const fetchApprovedJudgments = async () => {
+  const fetchApprovedjudgements = async () => {
     try {
-      setfilterJudgments([])
+      setfilterjudgements([])
       const token = sessionStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/approved-citations`,
@@ -70,33 +70,33 @@ const ReviewCitationPage = () => {
           },
         }
       )
-      setapprovedJudgments(response.data.approvedCitations)
+      setapprovedjudgements(response.data.approvedCitations)
       setIsLoading(false)
     } catch (error) {
       console.log(error)
     }
   }
 
-  const handleChangeJudgmentType = (type) => {
+  const handleChangejudgementType = (type) => {
     console.log(type)
-    setjudgmentType(type)
+    setjudgementType(type)
     if (type === 'pending') {
-      fetchPendingJudgments()
-      setapprovedJudgments([])
+      fetchPendingjudgements()
+      setapprovedjudgements([])
     } else {
-      fetchApprovedJudgments()
-      setpendingJudgments([])
+      fetchApprovedjudgements()
+      setpendingjudgements([])
     }
   }
 
   useEffect(() => {
-    fetchPendingJudgments()
+    fetchPendingjudgements()
   }, [])
 
   return (
     <div data-aos='fade-up'>
       <div>
-        <p className='text-3xl text-center font-extrabold'>Review Judgments</p>
+        <p className='text-3xl text-center font-extrabold'>Review judgements</p>
         {isLoading ? (
           <Loading />
         ) : (
@@ -104,19 +104,19 @@ const ReviewCitationPage = () => {
             <div className='flex justify-between'>
               <div className='flex gap-3'>
                 <PrimaryOutlineButton
-                  bgColor={judgmentType === 'pending' ? Colors.primary : null}
-                  color={judgmentType === 'pending' ? 'white' : null}
-                  onClick={() => handleChangeJudgmentType('pending')}
-                  title={'Pending Judgments'}
+                  bgColor={judgementType === 'pending' ? Colors.primary : null}
+                  color={judgementType === 'pending' ? 'white' : null}
+                  onClick={() => handleChangejudgementType('pending')}
+                  title={'Pending judgements'}
                 />
                 <PrimaryOutlineButton
-                  color={judgmentType === 'approved' ? 'white' : null}
-                  bgColor={judgmentType === 'approved' ? Colors.primary : null}
-                  onClick={() => handleChangeJudgmentType('approved')}
-                  title={'Approved Judgments'}
+                  color={judgementType === 'approved' ? 'white' : null}
+                  bgColor={judgementType === 'approved' ? Colors.primary : null}
+                  onClick={() => handleChangejudgementType('approved')}
+                  title={'Approved judgements'}
                 />
                 <div>
-                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter Judgments'} />
+                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter judgements'} />
                 </div>
               </div>
               <div>
@@ -132,29 +132,29 @@ const ReviewCitationPage = () => {
               </div>
             </div>
             {isFilterModalOpen && (
-              <FilterCitationModal setjudgmentType={setjudgmentType} setapprovedJudgments={setapprovedJudgments} setpendingJudgments={setpendingJudgments} setfilterJudgments={setfilterJudgments} isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
+              <FilterCitationModal setjudgementType={setjudgementType} setapprovedjudgements={setapprovedjudgements} setpendingjudgements={setpendingjudgements} setfilterjudgements={setfilterjudgements} isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
             )}
-            {judgmentType === 'pending' && pendingJudgments.length === 0 && (
+            {judgementType === 'pending' && pendingjudgements.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
-            {judgmentType === 'approved' && approvedJudgments.length === 0 && (
+            {judgementType === 'approved' && approvedjudgements.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
             <div className='grid grid-cols-2 gap-5'>
-              {filterJudgments &&
-                filterJudgments.map((data, index) => (
+              {filterjudgements &&
+                filterjudgements.map((data, index) => (
                   <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
-              {pendingJudgments &&
-                pendingJudgments.map((data, index) => (
+              {pendingjudgements &&
+                pendingjudgements.map((data, index) => (
                   <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
-              {approvedJudgments &&
-                approvedJudgments.map((data, index) => (
+              {approvedjudgements &&
+                approvedjudgements.map((data, index) => (
                   <div data-aos='fade-up' key={index}>
                     <Citation data={data} />
                   </div>

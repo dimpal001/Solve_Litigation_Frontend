@@ -186,12 +186,12 @@ const SingleCitationPage = ({ data }) => {
               Date : {new Date(data.dateOfOrder).toDateString()}
             </p>
           )}
-          {data.judgments && (
+          {data.judgements && (
             <div>
               <strong className='text-lg underline'>Judgement : </strong>
               <div
                 dangerouslySetInnerHTML={{
-                  __html: data.judgments,
+                  __html: data.judgements,
                 }}
               />
             </div>

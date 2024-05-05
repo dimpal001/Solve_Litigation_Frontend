@@ -6,7 +6,7 @@ import Editor from '../CreateCitationPage/Editor'
 
 const ActField = ({ data, setData }) => {
   const [listCourt, setListCourt] = useState([])
-  const { institutionName, index, title, judgments, notification } = data
+  const { institutionName, index, title, judgements, notification } = data
 
   const fetchCourt = async () => {
     try {
@@ -90,14 +90,14 @@ const ActField = ({ data, setData }) => {
       </FormControl>
       <FormControl>
         <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>Judgments *</span>
+          <span className='text-lg font-extrabold'>judgements *</span>
         </FormLabel>
         <Editor
-          value={judgments}
+          value={judgements}
           onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              judgments: newContent,
+              judgements: newContent,
             }))
           }
         />

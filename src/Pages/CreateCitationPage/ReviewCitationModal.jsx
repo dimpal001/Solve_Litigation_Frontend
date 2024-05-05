@@ -128,11 +128,11 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                 <p className='capitalize text-lg'>{data.title}</p>
               </div>
               <div>
-                <p className='text-sm font-extrabold text-primary'>Judgments</p>
+                <p className='text-sm font-extrabold text-primary'>judgements</p>
                 <p className='text-lg text-justify'>
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: data.judgments,
+                      __html: data.judgements,
                     }}
                   />
                 </p>

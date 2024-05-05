@@ -30,7 +30,7 @@ const CreateCitation = () => {
     partyNameAppealant: '',
     partyNameRespondent: '',
     title: '',
-    judgments: '',
+    judgements: '',
     dateOfOrder: '',
     judgeName: '',
     headNote: '',
@@ -104,9 +104,9 @@ const CreateCitation = () => {
       })
       return 0
     }
-    if (data.judgments === '') {
+    if (data.judgements === '') {
       toast({
-        title: 'Judgments is required',
+        title: 'judgements is required',
         status: 'error',
         duration: 4000,
         position: 'top',
@@ -183,7 +183,7 @@ const CreateCitation = () => {
       partyNameAppealant: '',
       partyNameRespondent: '',
       title: '',
-      judgments: '',
+      judgements: '',
       dateOfOrder: '',
       judgeName: '',
       headNote: '',
@@ -207,7 +207,7 @@ const CreateCitation = () => {
         </div>
       )}
       <p className='text-3xl font-extrabold pb-5 text-center'>
-        Create {selectedType === 'citation' ? 'Citation' : 'Act'}
+        Create {selectedType === 'citation' ? 'Judgement' : 'Act'}
       </p>
       <div className='flex justify-center gap-x-5'>
         {selectedType === 'citation' && (

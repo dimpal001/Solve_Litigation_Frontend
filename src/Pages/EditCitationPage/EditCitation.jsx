@@ -22,7 +22,7 @@ const EditCitation = () => {
     partyNameAppealant: '',
     partyNameRespondent: '',
     title: '',
-    judgments: '',
+    judgements: '',
     dateOfOrder: '',
     judgeName: '',
     headNote: '',

@@ -32,7 +32,7 @@ const CitationField = ({ data, setData }) => {
     partyNameAppealant,
     partyNameRespondent,
     title,
-    judgments,
+    judgements,
     dateOfOrder,
     judgeName,
     headNote,
@@ -258,14 +258,14 @@ const CitationField = ({ data, setData }) => {
       </FormControl>
       <FormControl>
         <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>Judgments *</span>
+          <span className='text-lg font-extrabold'>judgements *</span>
         </FormLabel>
         <Editor
-          value={judgments}
+          value={judgements}
           onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              judgments: newContent,
+              judgements: newContent,
             }))
           }
         />
