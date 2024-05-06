@@ -5,7 +5,7 @@ const ServicesPage = () => {
   return (
     <div>
       <div className='p-10 lg:px-[250px]'>
-        <p className='text-4xl font-bold text-center'>Services Page</p>
+        <p className='text-4xl font-bold text-center'>Our Services</p>
 
         {/* Judgements Section */}
         <div className='flex max-md:pt-20 max-md:flex-col py-10 gap-10 justify-center items-center'>
