@@ -48,10 +48,9 @@ const ContactUsPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold max-md:text-3xl mb-4 text-primary">Get in Touch</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h2 className="text-2xl max-md:text-xl font-semibold mb-2">Contact Form</h2>
+      <div className="gap-8">
+        <div className='lg:px-[300px]'>
+          <h2 className="text-3xl text-center text-primary max-md:text-xl font-semibold mb-2">Contact Form</h2>
           {isSubmitted ? (
             <div className='bg-green-300 p-5 rounded-sm mb-4'>
               <p className='text-lg font-bold'>Thank you for contacting us!</p>
@@ -59,7 +58,7 @@ const ContactUsPage = () => {
             </div>
           ) : (
             <form onSubmit={handleSubmit}>
-              <div className="mb-4">
+              <div className="mb-4 py-5">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                   Name
                 </label>
@@ -122,13 +121,15 @@ const ContactUsPage = () => {
           )}
 
         </div>
-        <div>
-          <h2 className="text-2xl max-md:text-xl font-semibold mb-2">Contact Details</h2>
-          <p>Email: info@solvelitigation.com</p>
-          <p>Phone: +916909115355</p>
-          <p>Address: Police Bazar, Shillong 793001, Meghalaya</p>
-          <div className='mt-5'>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224.92794524049438!2d91.88074222724602!3d25.576752430684575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37507e92f63a5089%3A0x6c1444f2f7a93cd8!2sPolice%20Bazar%2C%20Shillong%2C%20Meghalaya!5e0!3m2!1sen!2sin!4v1714813528609!5m2!1sen!2sin" className='w-full h-[360px]' allowfullscreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
+        <div className='flex gap-12 flex-col items-center pt-12'>
+          <div className='lg:w-[50%] text-center'>
+            <h2 className="text-2xl text-primary underline text-center max-md:text-xl font-semibold mb-2">Contact Details</h2>
+            <p>Email: info@solvelitigation.com</p>
+            <p>Phone: +916909115355</p>
+            <p>Address: Police Bazar, Shillong 793001, Meghalaya</p>
+          </div>
+          <div className='lg:w-[50%]'>
+            <iframe className='w-full h-[360px]' src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224.92794524049438!2d91.88074222724602!3d25.576752430684575!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x37507e92f63a5089%3A0x6c1444f2f7a93cd8!2sPolice%20Bazar%2C%20Shillong%2C%20Meghalaya!5e0!3m2!1sen!2sin!4v1714813528609!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
           </div>
         </div>
       </div>

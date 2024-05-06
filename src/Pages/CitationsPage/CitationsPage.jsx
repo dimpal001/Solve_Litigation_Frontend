@@ -8,6 +8,8 @@ import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import Loading from '../../Components/Loading'
 import { Link } from 'react-router-dom'
 import { LuSettings2 } from "react-icons/lu";
+import '../../App.css'
+import { IoMdRefresh } from "react-icons/io";
 
 const CitationsPage = () => {
   const [selectedApellate, setSelectedApellate] = useState('latest')
@@ -18,6 +20,7 @@ const CitationsPage = () => {
   const [last10Citations, setLast10Citations] = useState([])
   const [fetchingPOL, setFetchingPOL] = useState([])
   const [fetchingCitations, setFetchingCitations] = useState([])
+  const [fetchingActs, setFetchingActs] = useState([])
   const [filteredCitations, setFilteredCitations] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
@@ -132,6 +135,25 @@ const CitationsPage = () => {
     }
   }
 
+  const fetchActs = async () => {
+    try {
+      const token = sessionStorage.getItem('token')
+      const response = await axios.get(
+        `${api}/api/solve_litigation/act/get-all-acts`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      setFetchingActs(response.data.acts)
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   const fetchLast10Citations = async () => {
     try {
       setFetchingCitations([])
@@ -181,6 +203,17 @@ const CitationsPage = () => {
     setFetchingPOL([])
   }
 
+  const handleFetchActs = () => {
+    setIsFilterModalOpen(false)
+    setSelectedApellate('act')
+    setLast10Citations([])
+    setFetchingCitations([])
+    setFetchingLaws([])
+    setFilteredCitations([])
+    setFetchingPOL([])
+    fetchActs()
+  }
+
   return (
     <div>
       <div className='md:px-32 py-3'>
@@ -222,7 +255,7 @@ const CitationsPage = () => {
             }}
             size={{ base: '10px', lg: 'md' }} px={'8px'}
             py={'7px'} textTransform={'capitalize'} rounded={'sm'}
-            fontSize={14} isDisabled
+            fontSize={14} onClick={handleFetchActs}
           >Acts</Button>
         </div>
         <div className='flex justify-center lg:pb-3'>
@@ -238,6 +271,9 @@ const CitationsPage = () => {
             </InputGroup>
             <div className='lg:hidden'>
               <IconButton onClick={() => setIsFilterModalOpen(true)} rounded={'sm'} bgColor={Colors.primary} color={'white'} icon={<LuSettings2 size={23} />} />
+            </div>
+            <div className='lg:hidden'>
+              <IconButton onClick={handleLatest} rounded={'sm'} _focus={{ bgColor: Colors.primary }} bgColor={Colors.primary} color={'white'} icon={<IoMdRefresh size={23} />} />
             </div>
           </div>
         </div>
@@ -265,6 +301,18 @@ const CitationsPage = () => {
                         onClick={() => handleChangeApellate(data.name)}
                       >{data.name}</Button>
                     ))}
+                    <Button
+                      _focus={{
+                        bgColor: Colors.primary,
+                        textColor: 'white'
+                      }}
+                      size={'10px'} px={'8px'}
+                      py={'7px'} textTransform={'capitalize'} rounded={'sm'}
+                      fontSize={14}
+                      bgColor={selectedApellate === 'act' && Colors.primary}
+                      color={selectedApellate === 'act' && 'white'}
+                      onClick={handleFetchActs}
+                    >Acts</Button>
                   </div>
                   <div className='flex flex-col justify-center max-md:py-2 gap-3'>
                     {fetchingLaws.length !== 0 && (
@@ -297,6 +345,8 @@ const CitationsPage = () => {
                         <div className='flex flex-wrap gap-2'>
                           {fetchingPOL.map((POL, index) => (
                             <Button key={index}
+                              className='hideScrollBar'
+                              overflow={'scroll'}
                               _focus={{
                                 bgColor: Colors.primary,
                                 textColor: 'white'
@@ -324,15 +374,12 @@ const CitationsPage = () => {
                   <div className='flex flex-col gap-3'>
                     <div>
                       {last10Citations && last10Citations.length > 0 && (
-                        <p className='px-2 py-3 text-primary text-2xl'>Latest judgements</p>
+                        <p className='px-2 py-3 max-md:text-center text-primary text-2xl'>Latest judgements</p>
                       )}
                       {last10Citations && last10Citations.map((citation, index) => (
                         <Citation key={index} data={citation} />
                       ))}
                     </div>
-                    {/* <div className='flex justify-center'>
-                        <p className='text-center text-primary text-base hover:bg-primary hover:text-white p-1 rounded-sm transition-all delay-[0.05s] px-3 cursor-pointer' >Load more</p>
-                      </div> */}
                   </div>
                   {fetchingCitations.length !== 0 && (
                     <div>
@@ -362,8 +409,15 @@ const CitationsPage = () => {
                         ))}
                     </div>
                   )}
+                  {fetchingActs.length !== 0 && (
+                    <div>
+                      {fetchingActs.map((act, index) => (
+                        <Act key={index} data={act} />
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <div className={`flex ${fetchingLaws.length !== 0 && 'p-3'} bg-gray-50 max-lg:hidden w-full gap-14`}>
+                <div className={`flex ${fetchingLaws.length !== 0 && 'p-3'} justify-between bg-gray-50 max-lg:hidden w-full gap-14`}>
                   {fetchingLaws.length !== 0 && (
                     <div>
                       <p className='text-lg font-medium py-1'>Select a law</p>
@@ -451,6 +505,29 @@ const Citation = ({ data }) => {
             {data.laws.map((law, index) => (
               <Badge bgColor={'gray.200'} key={index} fontSize={10} px={2}>{law}</Badge>
             ))}
+          </div>
+        </div>
+      </Link>
+    </div>
+  );
+};
+
+const Act = ({ data }) => {
+
+  return (
+    <div>
+      <Link to={`/detailed-citation/${data._id}`}>
+        <div className='p-2 max-sm:px-5 lg:my-3 hover:bg-slate-50 lg:border-b bg-slate-50'>
+          <div className='flex items-center'>
+            <div>
+              <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />
+            </div>
+            <div className='px-2'>
+              <p className='text-base capitalize'>{data.institutionName}</p>
+            </div>
+          </div>
+          <div>
+            <p className='text-primary py-1'>{data.title}</p>
           </div>
         </div>
       </Link>

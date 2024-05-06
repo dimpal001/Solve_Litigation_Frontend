@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  Spinner,
   useToast,
 } from '@chakra-ui/react'
 import {
@@ -17,10 +18,12 @@ import { useContext, useState } from 'react'
 import { api } from '../../Components/Apis'
 import { UserContext } from '../../UserContext'
 import axios from 'axios'
+import { Colors } from '../../Components/Colors'
 
 const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
   const toast = useToast()
   const [isSent, setIsSent] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [currentPass, setCurrentPass] = useState('')
   const [pass, setPass] = useState('')
   const [confirmPass, setConfirmPass] = useState('')
@@ -70,6 +73,7 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
 
   const handleSendReset = async () => {
     try {
+      setIsLoading(true)
       const response = await axios.post(`${api}/api/solve_litigation/auth/reset-password/${user.email}`)
 
       console.log(response.data)
@@ -78,6 +82,8 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
       }
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -95,11 +101,13 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
               <CustomInput value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} placeholder='Confirm new password' />
             </div>
             <div>
-              <p onClick={handleSendReset} className='text-center font-bold hover:underline text-base text-primary cursor-pointer pt-2'>Send reset link ?</p>
+              {!isLoading && <p onClick={handleSendReset} className='text-center font-bold hover:underline text-base text-primary cursor-pointer pt-2'>Send reset link ?</p>}
+              <div className='flex justify-center pt-2'>
+                {isLoading && <Spinner color={Colors.primary} />}
+              </div>
             </div>
             <div>
               <p className={`p-3 ${isSent ? 'block' : 'hidden'} mx-1 mt-3 bg-green-200 text-center rounded-[3px]`}>Password reset link has been <br className='lg:hidden' /> sent to your registered mail</p>
-
             </div>
           </ModalBody>
 
