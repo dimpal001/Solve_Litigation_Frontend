@@ -5,34 +5,47 @@ import { api } from '../../Components/Apis';
 import { BiSolidMessageCheck } from "react-icons/bi";
 import { Colors } from '../../Components/Colors';
 import MessageModal from './MessageModal';
+import { MdOutlineDelete } from "react-icons/md";
+import DeleteFormModal from './DeleteFormModal';
+
+<MdOutlineDelete />
 
 const AllContactForms = () => {
     const [forms, setForms] = useState([]);
     const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
-    const [selectedUser, setSelectedUser] = useState('')
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [selectedForm, setSelectedForm] = useState('')
 
     const handleModalOpen = (form) => {
         setIsMessageModalOpen(true)
-        setSelectedUser(form)
+        setSelectedForm(form)
     }
 
-    useEffect(() => {
-        const fetchForms = async () => {
-            try {
-                const token = sessionStorage.getItem('token')
-                const response = await axios.get(`${api}/api/solve_litigation/contact/all-forms`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                })
-                setForms(response.data);
-            } catch (error) {
-                console.error('Error fetching forms:', error);
-            }
-        };
+    const handleDeleteModalOpen = (form) => {
+        setIsDeleteModalOpen(true)
+        setSelectedForm(form)
+    }
 
+    const fetchForms = async () => {
+        try {
+            const token = sessionStorage.getItem('token')
+            const response = await axios.get(`${api}/api/solve_litigation/contact/all-forms`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            setForms(response.data);
+        } catch (error) {
+            console.error('Error fetching forms:', error);
+        }
+    };
+    useEffect(() => {
         fetchForms();
     }, []);
+
+    const refresh = () => {
+        fetchForms()
+    }
 
     return (
         <div>
@@ -43,8 +56,9 @@ const AllContactForms = () => {
                         <Th color={'white'} fontSize={14}>Name</Th>
                         <Th color={'white'} fontSize={14}>Email</Th>
                         <Th color={'white'} fontSize={14}>Phone Number</Th>
-                        <Th color={'white'} fontSize={14}>Message</Th>
                         <Th color={'white'} fontSize={14}>Submitted at</Th>
+                        <Th color={'white'} fontSize={14}>Message</Th>
+                        <Th color={'white'} fontSize={14}>Delete</Th>
                     </Tr>
                 </Thead>
                 <Tbody>
@@ -53,14 +67,18 @@ const AllContactForms = () => {
                             <Td>{form.name}</Td>
                             <Td>{form.email}</Td>
                             <Td>{form.phoneNumber}</Td>
-                            <Td><BiSolidMessageCheck onClick={() => handleModalOpen(form)} color={Colors.primary} size={24} className='cursor-pointer' /></Td>
                             <Td>{new Date(form.createdAt).toLocaleString()}</Td>
+                            <Td><BiSolidMessageCheck onClick={() => handleModalOpen(form)} color={Colors.primary} size={24} className='cursor-pointer' /></Td>
+                            <Td><MdOutlineDelete onClick={() => handleDeleteModalOpen(form)} color={'red'} size={24} className='cursor-pointer' /></Td>
                         </Tr>
                     ))}
                 </Tbody>
             </Table>
             {isMessageModalOpen && (
-                <MessageModal isOpen={true} onClose={() => setIsMessageModalOpen(false)} user={selectedUser} />
+                <MessageModal isOpen={true} onClose={() => setIsMessageModalOpen(false)} user={selectedForm} />
+            )}
+            {isDeleteModalOpen && (
+                <DeleteFormModal isOpen={true} reload={refresh} onClose={() => setIsDeleteModalOpen(false)} form={selectedForm} />
             )}
         </div>
     );
