@@ -13,7 +13,7 @@ const Loading = ({ title }) => {
         <div
           aria-label='Loading...'
           role='status'
-          className='flex items-center space-x-2'
+          className='flex items-center h-[calc(100vh-90px)] space-x-2'
         >
           <svg
             className='h-20 w-20 animate-spin opacity-80 stroke-primary'

@@ -96,7 +96,6 @@ const AdminDashboard = () => {
       if (error.response.status === 401) {
         handleLogout()
       }
-
     }
   }
 
@@ -177,18 +176,11 @@ const AdminDashboard = () => {
   }
 
   const RelodeData = () => {
-    fetchPOL()
-    fetchLaw()
-    fetchCourts()
-    fetchApellateTypes()
+    return null
   }
 
   useEffect(() => {
     fetchStatistics()
-    fetchPOL()
-    fetchLaw()
-    fetchCourts()
-    fetchApellateTypes()
   }, [])
 
   return (
@@ -215,7 +207,10 @@ const AdminDashboard = () => {
           color={'bg-teal-500'}
         />
       </div>
-      <div data-aos='zoom-in-up' className={`gap-x-4 flex ${user.userType === 'staff' && 'hidden'}`}>
+      <div
+        data-aos='zoom-in-up'
+        className={`gap-x-4 flex ${user.userType === 'staff' && 'hidden'}`}
+      >
         <PrimaryButton
           leftIcon={<IoIosAddCircleOutline size={20} />}
           title={'Add Law'}
@@ -238,11 +233,29 @@ const AdminDashboard = () => {
         />
       </div>
       <div className='grid lg:grid-cols-4 gap-x-6'>
-        {listLaw && <DetailsCard2 data={listLaw} title={'Laws'} />}
-        {listPOL && <DetailsCard2 data={listPOL} title={'Point of Laws'} />}
-        {listCourt && <DetailsCard2 data={listCourt} title={'Courts'} />}
+        {listLaw && (
+          <DetailsCard2 data={listLaw} title={'Laws'} onClick={fetchLaw} />
+        )}
+        {listPOL && (
+          <DetailsCard2
+            data={listPOL}
+            title={'Point of Laws'}
+            onClick={fetchPOL}
+          />
+        )}
+        {listCourt && (
+          <DetailsCard2
+            data={listCourt}
+            title={'Courts'}
+            onClick={fetchCourts}
+          />
+        )}
         {listApellateTypes && (
-          <DetailsCard2 data={listApellateTypes} title={'Apellate Types'} />
+          <DetailsCard2
+            data={listApellateTypes}
+            title={'Apellate Types'}
+            onClick={fetchApellateTypes}
+          />
         )}
       </div>
       {isAddLawModalOpen && (
@@ -279,7 +292,8 @@ const AdminDashboard = () => {
 
 const DetailsCard = ({ color, title, number }) => {
   return (
-    <div data-aos='zoom-in-up'
+    <div
+      data-aos='zoom-in-up'
       className={`p-5 py-7 ${color} text-white shadow-primary hover:shadow-2xl rounded-md`}
     >
       <div>
@@ -292,7 +306,7 @@ const DetailsCard = ({ color, title, number }) => {
   )
 }
 
-const DetailsCard2 = ({ title, data }) => {
+const DetailsCard2 = ({ title, data, onClick }) => {
   return (
     <div data-aos='zoom-in-up'>
       <div className='border hover:shadow-2xl transition-all delay-[0.05s] rounded-md p-3'>
@@ -303,23 +317,30 @@ const DetailsCard2 = ({ title, data }) => {
           </div>
         </div>
         <div>
-          {data ? (
-            <ul className='text-base'>
-              {data.map((item) => (
-                <li className='capitalize py-1' key={item._id}>
-                  <div className='flex items-baseline gap-1'>
-                    <FiCheckCircle
-                      color={Colors.primary}
-                      className='pt-[3px]'
-                    />
-                    {item.name}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <Spinner />
-          )}
+          <PrimaryButton
+            width={'full'}
+            title={`${data.lenght > 0 ? 'Reload' : 'Load'} ${title}`}
+            onClick={onClick}
+          />
+          <div className='h-[280px] overflow-scroll'>
+            {data ? (
+              <ul className='text-base'>
+                {data.map((item) => (
+                  <li className='capitalize py-1' key={item._id}>
+                    <div className='flex items-baseline gap-1'>
+                      <FiCheckCircle
+                        color={Colors.primary}
+                        className='pt-[3px]'
+                      />
+                      {item.name}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <Spinner />
+            )}
+          </div>
         </div>
       </div>
     </div>

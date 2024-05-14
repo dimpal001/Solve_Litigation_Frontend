@@ -1,7 +1,8 @@
 import {
   FormControl,
   FormLabel,
-  Select, useToast,
+  Select,
+  useToast,
   Checkbox,
   Input,
   Textarea,
@@ -149,16 +150,15 @@ const CitationField = ({ data, setData }) => {
     return str.charAt(0).toUpperCase() + str.slice(1)
   }
 
-  const filteredApellateList = listApellate.filter(item => {
-    return item.name.toLowerCase().includes(apellateInputValue.toLowerCase());
+  const filteredApellateList = listApellate.filter((item) => {
+    return item.name.toLowerCase().includes(apellateInputValue.toLowerCase())
   })
-  const filteredLawList = listLaw.filter(item => {
-    return item.name.toLowerCase().includes(lawInputValue.toLowerCase());
+  const filteredLawList = listLaw.filter((item) => {
+    return item.name.toLowerCase().includes(lawInputValue.toLowerCase())
   })
-  const filteredPOLList = listPOL.filter(item => {
-    return item.name.toLowerCase().includes(POLInputValue.toLowerCase());
+  const filteredPOLList = listPOL.filter((item) => {
+    return item.name.toLowerCase().includes(POLInputValue.toLowerCase())
   })
-
 
   return (
     <div className='flex flex-col gap-y-7 my-3 p-10 border border-slate-100 rounded-sm bg-slate-50'>
@@ -168,7 +168,9 @@ const CitationField = ({ data, setData }) => {
             Court (Institution) Name *
           </span>
         </FormLabel>
-        <Select rounded={'sm'} bgColor={'white'}
+        <Select
+          rounded={'sm'}
+          bgColor={'white'}
           value={institutionName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -205,7 +207,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Case No *</span>
         </FormLabel>
-        <Textarea rounded={'sm'} bgColor={'white'}
+        <Textarea
+          rounded={'sm'}
+          bgColor={'white'}
           value={caseNo}
           onChange={(e) =>
             setData((prevData) => ({ ...prevData, caseNo: e.target.value }))
@@ -246,7 +250,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
         </FormLabel>
-        <Input rounded={'sm'} bgColor={'white'}
+        <Input
+          rounded={'sm'}
+          bgColor={'white'}
           value={title}
           onChange={(e) =>
             setData((prevData) => ({
@@ -274,7 +280,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Date of Order *</span>
         </FormLabel>
-        <Input rounded={'sm'} bgColor={'white'}
+        <Input
+          rounded={'sm'}
+          bgColor={'white'}
           type='date'
           value={dateOfOrder}
           onChange={(e) =>
@@ -289,7 +297,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Judge Name *</span>
         </FormLabel>
-        <Input rounded={'sm'} bgColor={'white'}
+        <Input
+          rounded={'sm'}
+          bgColor={'white'}
           value={judgeName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -317,7 +327,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Refered Judgements</span>
         </FormLabel>
-        <Textarea rounded={'sm'} bgColor={'white'}
+        <Textarea
+          rounded={'sm'}
+          bgColor={'white'}
           value={referedJudgements}
           onChange={(e) =>
             setData((prevData) => ({
@@ -334,7 +346,14 @@ const CitationField = ({ data, setData }) => {
               <span className='text-lg font-extrabold'>Apellate Types *</span>
             </div>
             <div>
-              <Input value={apellateInputValue} color={Colors.primary} rounded={'sm'} placeholder='Search...' onChange={(e) => setApellateInputValue(e.target.value)} bgColor={'white'} />
+              <Input
+                value={apellateInputValue}
+                color={Colors.primary}
+                rounded={'sm'}
+                placeholder='Search...'
+                onChange={(e) => setApellateInputValue(e.target.value)}
+                bgColor={'white'}
+              />
             </div>
           </div>
         </FormLabel>
@@ -351,7 +370,9 @@ const CitationField = ({ data, setData }) => {
                   ...prevData,
                   apellates: checked
                     ? [...prevData.apellates, apellateName]
-                    : prevData.apellates.filter((name) => name !== apellateName),
+                    : prevData.apellates.filter(
+                        (name) => name !== apellateName
+                      ),
                 }))
               }}
             >
@@ -367,7 +388,14 @@ const CitationField = ({ data, setData }) => {
               <span className='text-lg font-extrabold'>Law *</span>
             </div>
             <div>
-              <Input value={lawInputValue} color={Colors.primary} rounded={'sm'} placeholder='Search...' onChange={(e) => setLawInputValue(e.target.value)} bgColor={'white'} />
+              <Input
+                value={lawInputValue}
+                color={Colors.primary}
+                rounded={'sm'}
+                placeholder='Search...'
+                onChange={(e) => setLawInputValue(e.target.value)}
+                bgColor={'white'}
+              />
             </div>
           </div>
         </FormLabel>
@@ -400,7 +428,14 @@ const CitationField = ({ data, setData }) => {
               <span className='text-lg font-extrabold'>Point of Law *</span>
             </div>
             <div>
-              <Input value={POLInputValue} color={Colors.primary} rounded={'sm'} placeholder='Search...' onChange={(e) => setPOLInputValue(e.target.value)} bgColor={'white'} />
+              <Input
+                value={POLInputValue}
+                color={Colors.primary}
+                rounded={'sm'}
+                placeholder='Search...'
+                onChange={(e) => setPOLInputValue(e.target.value)}
+                bgColor={'white'}
+              />
             </div>
           </div>
         </FormLabel>
@@ -430,7 +465,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Equivalent Citations</span>
         </FormLabel>
-        <Input rounded={'sm'} bgColor={'white'}
+        <Input
+          rounded={'sm'}
+          bgColor={'white'}
           value={equivalentCitations}
           onChange={(e) =>
             setData((prevData) => ({
@@ -444,7 +481,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Advocate Petitioner</span>
         </FormLabel>
-        <Textarea rounded={'sm'} bgColor={'white'}
+        <Textarea
+          rounded={'sm'}
+          bgColor={'white'}
           value={advocatePetitioner}
           onChange={(e) =>
             setData((prevData) => ({
@@ -458,7 +497,9 @@ const CitationField = ({ data, setData }) => {
         <FormLabel className=''>
           <span className='text-lg font-extrabold'>Advocate Respondent</span>
         </FormLabel>
-        <Textarea rounded={'sm'} bgColor={'white'}
+        <Textarea
+          rounded={'sm'}
+          bgColor={'white'}
           value={advocateRespondent}
           onChange={(e) =>
             setData((prevData) => ({
@@ -486,6 +527,22 @@ const CitationField = ({ data, setData }) => {
           onChange={handleCheckboxChange}
         />
         <FormLabel>Over Ruled</FormLabel>
+      </FormControl>
+      <FormControl>
+        <FormLabel className=''>
+          <span className='text-lg font-extrabold'>PDF Link</span>
+        </FormLabel>
+        <Input
+          rounded={'sm'}
+          bgColor={'white'}
+          value={equivalentCitations}
+          onChange={(e) =>
+            setData((prevData) => ({
+              ...prevData,
+              equivalentCitations: e.target.value,
+            }))
+          }
+        />
       </FormControl>
     </div>
   )

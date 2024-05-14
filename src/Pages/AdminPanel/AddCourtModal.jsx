@@ -130,7 +130,7 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
         status: 'success',
         duration: 3000,
         isClosable: true,
-        position: 'top-right'
+        position: 'top-right',
       })
 
       setSelectedCourtIds([])
@@ -159,7 +159,7 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen} size={'sm'} onClose={onClose}>
+      <Modal isOpen={isOpen} size={'lg'} onClose={onClose}>
         <ModalOverlay />
         <ModalContent borderRadius={0} className='pb-5'>
           <ModalHeader>Add Court ( Institution )</ModalHeader>
@@ -168,7 +168,7 @@ const AddCourtModal = ({ isOpen, onClose, RelodeData }) => {
             {listCourt.length !== 0 && (
               <p className='text-red-600 text-base'>Select to delete</p>
             )}
-            <div className='flex flex-col'>
+            <div className='flex flex-col max-h-[350px] overflow-scroll'>
               {!listCourt ? (
                 <MySpinner />
               ) : (

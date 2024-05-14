@@ -19,12 +19,12 @@ const ProfileMenu = ({
         onClose={() => setIsMenuOpen(false)}
       >
         <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <Avatar bgColor={Colors.primary} size={'sm'} name='Dimpal Das' />
+          <Avatar bgColor={Colors.primary} size={'sm'} name={user.fullName} />
         </MenuButton>
         <MenuList>
           <div className='flex flex-col gap-3 p-4'>
             <div className='flex gap-3'>
-              <Avatar size={'lg'} />
+              <Avatar name={user.fullName} size={'lg'} />
               <div className='flex flex-col justify-center'>
                 <p className='text-lg font-extrabold'>{user.fullName}</p>
                 <p className='text-sm flex'>
