@@ -3,13 +3,12 @@ import Sidebar from './Sidebar'
 import AdminHeader from './AdminHeader'
 import { PrimaryButton } from '../../Components/Customs'
 import { useContext, useEffect } from 'react'
-import { useToast } from '@chakra-ui/react'
 import { UserContext } from '../../UserContext'
+import { enqueueSnackbar } from 'notistack'
 
 const Layout = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
-  const toast = useToast()
 
   useEffect(() => {
     window.document.title = 'Admin Panel - Solve Litigation'
@@ -20,13 +19,7 @@ const Layout = () => {
     sessionStorage.removeItem('jwtToken')
     sessionStorage.removeItem('user')
     navigate('/')
-    toast({
-      title: 'Logout Successfull',
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-      position: 'top',
-    })
+    enqueueSnackbar('Logout Successfull', { variant: 'success' })
   }
   return (
     <div>

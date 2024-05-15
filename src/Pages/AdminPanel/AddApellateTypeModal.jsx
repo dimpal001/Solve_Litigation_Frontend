@@ -1,22 +1,21 @@
 import {
+  CustomInput,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton,
-  useToast,
-  FormControl,
-  Checkbox,
-  Button,
-} from '@chakra-ui/react'
-import { CustomInput, MySpinner, PrimaryButton } from '../../Components/Customs'
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  MySpinner,
+  SLButton,
+} from '../../Components/Customs'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
+import { enqueueSnackbar } from 'notistack'
+import { Checkbox } from '@chakra-ui/react'
 
 const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
-  const toast = useToast()
   const [apellateTypes, setApellateTypes] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [listCourt, setListCourt] = useState([])
@@ -35,13 +34,7 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
       )
       setListCourt(response.data)
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     }
   }
 
@@ -53,13 +46,7 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
     const token = sessionStorage.getItem('token')
     try {
       if (apellateTypes === '') {
-        toast({
-          title: 'Apellate type cannot be empty.',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
+        enqueueSnackbar('Apellate type cannot be empty!', { variant: 'error' })
         return
       }
 
@@ -79,24 +66,15 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
 
       fetchCourts()
 
-      toast({
-        title: 'Points of law added successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
+      enqueueSnackbar('Points of law added successfully', {
+        variant: 'success',
       })
 
       setApellateTypes('')
 
       setIsLoading(false)
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsLoading(false)
       RelodeData()
@@ -124,23 +102,13 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
 
       fetchCourts()
 
-      toast({
-        title: 'Apellate(s) deleted successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-right',
+      enqueueSnackbar('Apellate(s) deleted successfully', {
+        variant: 'success',
       })
 
       setSelectedApellateIds([])
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsLoading(false)
       RelodeData()
@@ -160,11 +128,10 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen} size={'lg'} onClose={onClose}>
-        <ModalOverlay />
+      <Modal isOpen={isOpen} size={'lg'}>
         <ModalContent borderRadius={0} className='pb-5'>
           <ModalHeader>Add Apellate Type</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody className='p-lg flex flex-col gap-3'>
             {listCourt.length !== 0 && (
               <p className='text-red-600 text-base'>Select to delete</p>
@@ -186,33 +153,31 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
               )}
             </div>
             {selectedApellateIds.length > 0 && (
-              <Button
-                borderRadius={'sm'}
-                colorScheme='red'
+              <SLButton
                 onClick={handleDeleteSelectedCourt}
                 isLoading={isLoading}
                 loadingText={'Deleting...'}
-              >
-                Delete Selected Item(s)
-              </Button>
+                variant={'error'}
+                width={'full'}
+                title={'Delete selected item(s)'}
+              />
             )}
           </ModalBody>
           {selectedApellateIds.length === 0 && (
-            <ModalBody>
-              <FormControl className='flex gap-3'>
-                <CustomInput
-                  placeholder='Enter a apellate type to add'
-                  value={apellateTypes}
-                  onChange={(e) => setApellateTypes(e.target.value)}
-                />
-                <PrimaryButton
-                  isLoading={isLoading}
-                  loadingText={'Adding...'}
-                  onClick={handleAddingCourt}
-                  title={'Add'}
-                />
-              </FormControl>
-            </ModalBody>
+            <ModalFooter>
+              <CustomInput
+                placeholder='Enter a apellate type to add'
+                value={apellateTypes}
+                onChange={(e) => setApellateTypes(e.target.value)}
+              />
+              <SLButton
+                variant={'primary'}
+                isLoading={isLoading}
+                loadingText={'Adding...'}
+                onClick={handleAddingCourt}
+                title={'Add'}
+              />
+            </ModalFooter>
           )}
         </ModalContent>
       </Modal>

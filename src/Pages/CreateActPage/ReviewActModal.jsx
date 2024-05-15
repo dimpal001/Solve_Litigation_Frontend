@@ -6,7 +6,6 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useToast,
 } from '@chakra-ui/react'
 import axios from 'axios'
 
@@ -19,12 +18,12 @@ import { useContext, useState } from 'react'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
 import { useNavigate } from 'react-router-dom'
+import { enqueueSnackbar } from 'notistack'
 
 const ReviewActModal = ({ data, isOpen, onClose }) => {
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
   const [isUploading, setIsUploading] = useState(false)
-  const toast = useToast()
 
   const handleUplaod = async () => {
     try {
@@ -44,24 +43,14 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
       )
 
       if (response.status === 201) {
-        toast({
-          title: response.data.message,
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
+        enqueueSnackbar(response.data.message, { variant: 'success' })
         onClose()
       }
       navigate('/admin-dashboard/review-acts')
     } catch (error) {
       console.error('Error uploading citation:', error)
-      toast({
-        title: 'Error uploading citation. Please try again later',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
+      enqueueSnackbar('Error uploading citation. Please try again later!', {
+        variant: 'error',
       })
     } finally {
       setIsUploading(false)
@@ -88,9 +77,7 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
               </div>
               {data.index && (
                 <div>
-                  <p className='text-sm font-extrabold text-primary'>
-                    Index
-                  </p>
+                  <p className='text-sm font-extrabold text-primary'>Index</p>
                   <p className='text-lg text-justify'>
                     <div
                       dangerouslySetInnerHTML={{
@@ -105,7 +92,9 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
                 <p className='capitalize text-lg'>{data.title}</p>
               </div>
               <div>
-                <p className='text-sm font-extrabold text-primary'>judgements</p>
+                <p className='text-sm font-extrabold text-primary'>
+                  judgements
+                </p>
                 <p className='text-lg text-justify'>
                   <div
                     dangerouslySetInnerHTML={{

@@ -1,5 +1,5 @@
-import { Divider, Spinner, useToast } from '@chakra-ui/react'
-import { PrimaryButton } from '../../Components/Customs'
+import { Spinner } from '@chakra-ui/react'
+import { SLButton } from '../../Components/Customs'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 import { useContext, useEffect, useState } from 'react'
 import AddLawModal from './AddLawModal'
@@ -12,6 +12,7 @@ import { api } from '../../Components/Apis'
 import AddApellateTypeModal from './AddApellateTypeModal'
 import { UserContext } from '../../UserContext'
 import { useNavigate } from 'react-router-dom'
+import { enqueueSnackbar } from 'notistack'
 
 const AdminDashboard = () => {
   const { user } = useContext(UserContext)
@@ -32,7 +33,6 @@ const AdminDashboard = () => {
     noOfStaffUser: '',
   })
 
-  const toast = useToast()
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
 
@@ -41,14 +41,7 @@ const AdminDashboard = () => {
     sessionStorage.removeItem('jwtToken')
     sessionStorage.removeItem('user')
     navigate('/')
-    toast({
-      title: 'Session Expired !',
-      description: 'Please login again',
-      status: 'error',
-      duration: 10000,
-      isClosable: true,
-      position: 'top',
-    })
+    enqueueSnackbar('Session Expired!', { variant: 'error' })
   }
 
   const handleAddLawModal = () => {
@@ -207,26 +200,27 @@ const AdminDashboard = () => {
           color={'bg-teal-500'}
         />
       </div>
-      <div
-        data-aos='zoom-in-up'
-        className={`gap-x-4 flex ${user.userType === 'staff' && 'hidden'}`}
-      >
-        <PrimaryButton
+      <div className={`gap-x-4 flex ${user.userType === 'staff' && 'hidden'}`}>
+        <SLButton
+          variant={'primary'}
           leftIcon={<IoIosAddCircleOutline size={20} />}
           title={'Add Law'}
           onClick={handleAddLawModal}
         />
-        <PrimaryButton
+        <SLButton
+          variant={'primary'}
           leftIcon={<IoIosAddCircleOutline size={20} />}
           title={'Add Point of Law'}
           onClick={handleAddPointsOfLawModal}
         />
-        <PrimaryButton
+        <SLButton
+          variant={'primary'}
           leftIcon={<IoIosAddCircleOutline size={20} />}
           title={'Add Court'}
           onClick={handleAddCourtModal}
         />
-        <PrimaryButton
+        <SLButton
+          variant={'primary'}
           leftIcon={<IoIosAddCircleOutline size={20} />}
           title={'Add Apellate Type'}
           onClick={handleApellateTypeModal}
@@ -293,7 +287,6 @@ const AdminDashboard = () => {
 const DetailsCard = ({ color, title, number }) => {
   return (
     <div
-      data-aos='zoom-in-up'
       className={`p-5 py-7 ${color} text-white shadow-primary hover:shadow-2xl rounded-md`}
     >
       <div>
@@ -308,20 +301,21 @@ const DetailsCard = ({ color, title, number }) => {
 
 const DetailsCard2 = ({ title, data, onClick }) => {
   return (
-    <div data-aos='zoom-in-up'>
-      <div className='border hover:shadow-2xl transition-all delay-[0.05s] rounded-md p-3'>
+    <div>
+      <div className='relative border hover:shadow-2xl transition-all delay-[0.05s] rounded-md p-3'>
         <div>
           <p>{title}</p>
           <div className='py-2'>
-            <Divider />
+            <div className='bg-white w-[1px]' />
           </div>
         </div>
         <div>
-          <PrimaryButton
-            width={'full'}
-            title={`${data.lenght > 0 ? 'Reload' : 'Load'} ${title}`}
+          <p
             onClick={onClick}
-          />
+            className='text-base absolute cursor-pointer pt-4 top-0 right-0 p-2 text-primary hover:underline'
+          >
+            Refresh
+          </p>
           <div className='h-[280px] overflow-scroll'>
             {data ? (
               <ul className='text-base'>

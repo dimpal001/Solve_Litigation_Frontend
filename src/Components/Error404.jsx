@@ -2,11 +2,10 @@ import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Img from '../assets/server down.svg'
 import { PrimaryButton } from './Customs'
-import { useToast } from '@chakra-ui/react'
+import { enqueueSnackbar } from 'notistack'
 
 const Error404 = () => {
   const navigate = useNavigate()
-  const toast = useToast()
 
   useEffect(() => {
     const redirectTimeout = setTimeout(() => {
@@ -14,13 +13,7 @@ const Error404 = () => {
     }, 3000)
 
     const showToast = setTimeout(() => {
-      toast({
-        title: 'You are redirecting to homepage',
-        status: 'info',
-        duration: 1500,
-        isClosable: true,
-        position: 'bottom',
-      })
+      enqueueSnackbar('You are redirecting to homepage', { variant: 'info' })
     }, 400)
 
     return () => {

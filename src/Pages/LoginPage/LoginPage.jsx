@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react'
-import { Center, Checkbox, useToast } from '@chakra-ui/react'
+import { Center, Checkbox } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
 import { CustomInput, PrimaryButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
@@ -10,6 +10,7 @@ import axios from 'axios'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
 import { MdRefresh } from 'react-icons/md'
+import { enqueueSnackbar } from 'notistack'
 
 const LoginPage = () => {
   const [isShowPassword, setIsShowPassword] = useState(false)
@@ -19,7 +20,6 @@ const LoginPage = () => {
     password: '',
     captcha: '',
   })
-  const toast = useToast()
   const navigate = useNavigate()
   const { setUser } = useContext(UserContext)
 
@@ -35,13 +35,7 @@ const LoginPage = () => {
     try {
       const enteredCaptcha = formData.captcha
       // if (enteredCaptcha !== captcha) {
-      //   toast({
-      //     title: 'Incorrect captcha entered',
-      //     status: 'error',
-      //     duration: 3000,
-      //     isClosable: true,
-      //     position: 'top',
-      //   })
+      //   enqueueSnackbar('Incorrect captcha entered!', { variant: 'error' })
       //   return
       // }
       setIsLoading(true)
@@ -51,50 +45,32 @@ const LoginPage = () => {
       )
       const { token, message, user } = response.data
       sessionStorage.setItem('token', token)
-      const expirationTime = new Date().getTime() + 10 * 1000;
+      const expirationTime = new Date().getTime() + 10 * 1000
       sessionStorage.setItem('user', JSON.stringify(user))
-      sessionStorage.setItem('tokenExpiration', expirationTime);
+      sessionStorage.setItem('tokenExpiration', expirationTime)
 
       setUser(user)
+      enqueueSnackbar(message, { variant: 'success' })
 
-      toast({
-        title: message,
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      })
-
-      user.isVerified ? (user.userType === ('admin' || 'staff') ? navigate('/admin-dashboard/') : navigate('/')) : navigate('/verify-email')
-
+      user.isVerified
+        ? user.userType === ('admin' || 'staff')
+          ? navigate('/admin-dashboard/')
+          : navigate('/')
+        : navigate('/verify-email')
     } catch (error) {
       setIsLoading(false)
       if (error.response) {
         console.error('Login failed:', error.response.data.message)
-        toast({
-          title: error.response.data.message,
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
+        enqueueSnackbar(error.response.data.message, { variant: 'error' })
       } else if (error.request) {
         console.error('Server is not responding')
-        toast({
-          title: 'No response received from server',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
+        enqueueSnackbar('No response received from server!', {
+          variant: 'error',
         })
       } else {
         console.error('Error occurred while making request:', error.message)
-        toast({
-          title: 'Error occurred while making request',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
+        enqueueSnackbar('Error occurred while making request', {
+          variant: 'error',
         })
       }
     } finally {
@@ -122,7 +98,7 @@ const LoginPage = () => {
     window.document.title = 'Login Form - Solve Litigation'
     scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   }, [])
 
@@ -144,7 +120,7 @@ const LoginPage = () => {
 
           <div>
             <p className='text-center font-extrabold pt-5'>Login here</p>
-            <div >
+            <div>
               <form className='text-center flex-col flex gap-3 p-1 py-4'>
                 <CustomInput
                   name='emailOrPhoneNumber'
@@ -186,7 +162,8 @@ const LoginPage = () => {
                   /> */}
                 </div>
                 <div className='w-full flex justify-between pt-3'>
-                  <PrimaryButton type={'submit'}
+                  <PrimaryButton
+                    type={'submit'}
                     isLoading={isLoading}
                     loadingText={'Signing in...'}
                     width={'100%'}
@@ -197,12 +174,17 @@ const LoginPage = () => {
                 </div>
                 <div>
                   <Link to={'/reset-password'}>
-                    <p className='text-sm pt-3 text-primary cursor-pointer'>Forgot Password ?</p>
+                    <p className='text-sm pt-3 text-primary cursor-pointer'>
+                      Forgot Password ?
+                    </p>
                   </Link>
                 </div>
                 <p className='text-center text-base pt-5'>
                   Don&apos;t have an account ?{' '}
-                  <Link className='text-primary hover:underline' to={'/register'}>
+                  <Link
+                    className='text-primary hover:underline'
+                    to={'/register'}
+                  >
                     Register
                   </Link>
                 </p>

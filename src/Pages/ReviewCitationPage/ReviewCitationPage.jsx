@@ -1,19 +1,29 @@
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
-import { GreenPrimaryButton, PrimaryOutlineButton } from '../../Components/Customs'
+import {
+  GreenPrimaryButton,
+  PrimaryOutlineButton,
+} from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link, useNavigate } from 'react-router-dom'
 import { Colors } from '../../Components/Colors'
-import { InputGroup, useToast, InputLeftElement, Badge, Avatar, Input, InputRightElement } from '@chakra-ui/react'
+import {
+  InputGroup,
+  InputLeftElement,
+  Badge,
+  Avatar,
+  Input,
+  InputRightElement,
+} from '@chakra-ui/react'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import FilterCitationModal from './FilterCitationModal'
 import { UserContext } from '../../UserContext'
+import { enqueueSnackbar } from 'notistack'
 
 const ReviewCitationPage = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
-  const toast = useToast()
   const [pendingjudgements, setpendingjudgements] = useState([])
   const [approvedjudgements, setapprovedjudgements] = useState([])
   const [filterjudgements, setfilterjudgements] = useState([])
@@ -26,13 +36,8 @@ const ReviewCitationPage = () => {
     sessionStorage.removeItem('jwtToken')
     sessionStorage.removeItem('user')
     navigate('/')
-    toast({
-      title: 'Session Expired !',
-      description: 'Please login again',
-      status: 'error',
-      duration: 10000,
-      isClosable: true,
-      position: 'top',
+    enqueueSnackbar('Session Expired ! Please login again', {
+      variant: 'error',
     })
   }
 
@@ -94,7 +99,7 @@ const ReviewCitationPage = () => {
   }, [])
 
   return (
-    <div data-aos='fade-up'>
+    <div>
       <div>
         <p className='text-3xl text-center font-extrabold'>Review Judgements</p>
         {isLoading ? (
@@ -116,7 +121,10 @@ const ReviewCitationPage = () => {
                   title={'Approved judgements'}
                 />
                 <div>
-                  <GreenPrimaryButton onClick={() => setIsFilterModalOpen(true)} title={'Filter Judgements'} />
+                  <GreenPrimaryButton
+                    onClick={() => setIsFilterModalOpen(true)}
+                    title={'Filter Judgements'}
+                  />
                 </div>
               </div>
               <div>
@@ -124,7 +132,11 @@ const ReviewCitationPage = () => {
                   <InputLeftElement pointerEvents='none'>
                     <FaSearch color={Colors.primary} />
                   </InputLeftElement>
-                  <Input rounded={'sm'} type='text' placeholder='Search here...' />
+                  <Input
+                    rounded={'sm'}
+                    type='text'
+                    placeholder='Search here...'
+                  />
                   <InputRightElement>
                     <FaArrowRight color={Colors.primary} />
                   </InputRightElement>
@@ -132,14 +144,22 @@ const ReviewCitationPage = () => {
               </div>
             </div>
             {isFilterModalOpen && (
-              <FilterCitationModal setjudgementType={setjudgementType} setapprovedjudgements={setapprovedjudgements} setpendingjudgements={setpendingjudgements} setfilterjudgements={setfilterjudgements} isOpen={true} onClose={() => setIsFilterModalOpen(false)} />
+              <FilterCitationModal
+                setjudgementType={setjudgementType}
+                setapprovedjudgements={setapprovedjudgements}
+                setpendingjudgements={setpendingjudgements}
+                setfilterjudgements={setfilterjudgements}
+                isOpen={true}
+                onClose={() => setIsFilterModalOpen(false)}
+              />
             )}
             {judgementType === 'pending' && pendingjudgements.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
-            {judgementType === 'approved' && approvedjudgements.length === 0 && (
-              <p className='text-center text-lg'>No data to show</p>
-            )}
+            {judgementType === 'approved' &&
+              approvedjudgements.length === 0 && (
+                <p className='text-center text-lg'>No data to show</p>
+              )}
             <div className='grid grid-cols-2 gap-5'>
               {filterjudgements &&
                 filterjudgements.map((data, index) => (
@@ -168,7 +188,6 @@ const ReviewCitationPage = () => {
 }
 
 const Citation = ({ data }) => {
-
   return (
     <div>
       <div className='p-2 max-sm:px-5 z-[1] border rounded-sm border-slate-100 bg-slate-50 cursor-auto hover:bg-slate-100'>
@@ -179,20 +198,31 @@ const Citation = ({ data }) => {
             </div>
             <div className='px-2'>
               <p className='text-base capitalize'>{data.citationNo}</p>
-              <p className='text-xs'>Last modified : {new Date(data.lastModifiedDate).toLocaleDateString()}</p>
+              <p className='text-xs'>
+                Last modified :{' '}
+                {new Date(data.lastModifiedDate).toLocaleDateString()}
+              </p>
             </div>
           </div>
           <div>
             <p className='text-primary py-1'>{data.title}</p>
           </div>
           <div className='flex gap-2 py-1'>
-            <Badge bgColor={data.status === 'pending' ? 'orange.300' : 'green.400'} color={'white'} px={2}>{data.status}</Badge>
-            <Badge bgColor={Colors.primary} color={'white'} px={2}>{data.type}</Badge>
+            <Badge
+              bgColor={data.status === 'pending' ? 'orange.300' : 'green.400'}
+              color={'white'}
+              px={2}
+            >
+              {data.status}
+            </Badge>
+            <Badge bgColor={Colors.primary} color={'white'} px={2}>
+              {data.type}
+            </Badge>
           </div>
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default ReviewCitationPage

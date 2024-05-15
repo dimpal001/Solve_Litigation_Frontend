@@ -1,4 +1,11 @@
-import { Input, InputGroup, useToast, Avatar, Badge, InputRightElement, InputLeftElement } from '@chakra-ui/react'
+import {
+  Input,
+  InputGroup,
+  Avatar,
+  Badge,
+  InputRightElement,
+  InputLeftElement,
+} from '@chakra-ui/react'
 import { PrimaryOutlineButton } from '../../Components/Customs'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import { useContext, useEffect, useState } from 'react'
@@ -8,11 +15,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 import { Colors } from '../../Components/Colors'
 import { UserContext } from '../../UserContext'
+import { enqueueSnackbar } from 'notistack'
 
 const EditCitationPage = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
-  const toast = useToast()
   const [pendingCitations, setPendingCitations] = useState([])
   const [approvedCitations, setApprovedCitations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -23,14 +30,7 @@ const EditCitationPage = () => {
     sessionStorage.removeItem('jwtToken')
     sessionStorage.removeItem('user')
     navigate('/')
-    toast({
-      title: 'Session Expired !',
-      description: 'Please login again',
-      status: 'error',
-      duration: 10000,
-      isClosable: true,
-      position: 'top',
-    })
+    enqueueSnackbar('Session Expired! Please login again', { variant: 'error' })
   }
 
   const fetchPendingCitation = async () => {
@@ -120,7 +120,11 @@ const EditCitationPage = () => {
               <InputLeftElement pointerEvents='none'>
                 <FaSearch color={Colors.primary} />
               </InputLeftElement>
-              <Input rounded={'sm'} type='text' placeholder='Search with advotace name' />
+              <Input
+                rounded={'sm'}
+                type='text'
+                placeholder='Search with advotace name'
+              />
               <InputRightElement>
                 <FaArrowRight color={Colors.primary} />
               </InputRightElement>
@@ -153,7 +157,6 @@ const EditCitationPage = () => {
 }
 
 const Citation = ({ data }) => {
-
   return (
     <div>
       <div className='p-2 max-sm:px-5 z-[1] border rounded-sm border-slate-100 bg-slate-50 cursor-auto hover:bg-slate-100'>
@@ -164,20 +167,31 @@ const Citation = ({ data }) => {
             </div>
             <div className='px-2'>
               <p className='text-base capitalize'>{data.citationNo}</p>
-              <p className='text-xs'>Last modified : {new Date(data.lastModifiedDate).toLocaleDateString()}</p>
+              <p className='text-xs'>
+                Last modified :{' '}
+                {new Date(data.lastModifiedDate).toLocaleDateString()}
+              </p>
             </div>
           </div>
           <div>
             <p className='text-primary py-1'>{data.title}</p>
           </div>
           <div className='flex gap-2 py-1'>
-            <Badge bgColor={data.status === 'pending' ? 'orange.300' : 'green.400'} color={'white'} px={2}>{data.status}</Badge>
-            <Badge bgColor={Colors.primary} color={'white'} px={2}>{data.type}</Badge>
+            <Badge
+              bgColor={data.status === 'pending' ? 'orange.300' : 'green.400'}
+              color={'white'}
+              px={2}
+            >
+              {data.status}
+            </Badge>
+            <Badge bgColor={Colors.primary} color={'white'} px={2}>
+              {data.type}
+            </Badge>
           </div>
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default EditCitationPage

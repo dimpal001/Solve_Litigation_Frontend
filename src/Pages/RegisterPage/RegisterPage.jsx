@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Center, Checkbox, useToast } from '@chakra-ui/react'
+import { Center, Checkbox } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
-import {
-  CustomInput,
-  PrimaryButton,
-} from '../../Components/Customs'
+import { CustomInput, PrimaryButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { useNavigate } from 'react-router-dom'
 import AOS from 'aos'
@@ -12,6 +9,7 @@ import 'aos/dist/aos.css'
 import StateData from './states-and-districts.json'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
+import { enqueueSnackbar } from 'notistack'
 
 const RegisterPage = () => {
   const [selectedState, setSelectedState] = useState(null)
@@ -28,55 +26,38 @@ const RegisterPage = () => {
     state: '',
     district: '',
   })
-  const toast = useToast()
   const navigate = useNavigate()
 
   const handleSubmit = async () => {
     if (formData.password !== formData.confirmPassword) {
-      toast({
-        title: 'Password mismatched.',
-        description: 'Password and Confirm Password should be the same.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      })
+      enqueueSnackbar(
+        'Password mismatched ! Password and Confirm Password should be the same',
+        { variant: 'error' }
+      )
       return
     }
 
     if (formData.state === '') {
-      toast({
-        title: 'State name should not be empty.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      })
+      enqueueSnackbar('State name should not be empty!', { variant: 'error' })
       return
     }
 
     if (formData.district === '') {
-      toast({
-        title: 'District name should not be empty',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
+      enqueueSnackbar('District name should not be empty!', {
+        variant: 'error',
       })
       return
     }
 
-    if (formData.phoneNumber.length < 10 || !/^\d+$/.test(formData.phoneNumber)) {
-      toast({
-        title: 'Phone number should have 10 numeric characters.',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      });
-      return;
+    if (
+      formData.phoneNumber.length < 10 ||
+      !/^\d+$/.test(formData.phoneNumber)
+    ) {
+      enqueueSnackbar('Phone number should have 10 numeric characters!', {
+        variant: 'error',
+      })
+      return
     }
-
 
     try {
       setIsSubmitting(true)
@@ -85,25 +66,14 @@ const RegisterPage = () => {
         formData
       )
       const { message } = response.data
-      toast({
-        title: message,
-        description: 'An email containing a verification link has been sent to your registered email address to verify your account.',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-        position: 'top',
-      })
+      enqueueSnackbar(
+        'An email containing a verification link has been sent to your registered email address to verify your account.',
+        { variant: 'success' }
+      )
       console.log(message)
       navigate('/login')
     } catch (error) {
-      console.error('Login failed:', error.response.data.message)
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsSubmitting(false)
     }
@@ -137,7 +107,7 @@ const RegisterPage = () => {
     window.document.title = 'Registration Form - Solve Litigation'
     scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: 'smooth',
     })
   }, [])
 

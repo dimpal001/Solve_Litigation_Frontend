@@ -1,23 +1,20 @@
 import {
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalBody,
   ModalCloseButton,
-  useToast,
-  Button,
-} from '@chakra-ui/react'
-import { PrimaryButton } from './Customs'
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  SLButton,
+} from './Customs'
 import { useContext } from 'react'
 import { UserContext } from '../UserContext'
 import { useNavigate } from 'react-router-dom'
+import { enqueueSnackbar } from 'notistack'
 
 const ConfirmLogout = ({ isOpen, onClose }) => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
-  const toast = useToast()
 
   const handleLogout = () => {
     setUser(null)
@@ -25,31 +22,30 @@ const ConfirmLogout = ({ isOpen, onClose }) => {
     sessionStorage.removeItem('user')
     navigate('/')
     onClose()
-    toast({
-      title: 'Logout Successfull',
-      status: 'success',
-      duration: 3000,
-      isClosable: true,
-      position: 'top',
-    })
+    enqueueSnackbar('Logout Successfull', { variant: 'success' })
   }
 
   return (
     <div>
       <Modal isOpen={isOpen} size={'sm'} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent borderRadius={0}>
+        <ModalContent>
           <ModalHeader>Confirmation</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody className='p-lg font-extrabold'>
             Do you want to Logout ?
           </ModalBody>
 
           <ModalFooter className='gap-3'>
-            <Button borderRadius={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <PrimaryButton onClick={handleLogout} title={'Logout'} />
+            <SLButton
+              variant={'secondary'}
+              onClick={onClose}
+              title={'Cancel'}
+            />
+            <SLButton
+              variant={'primary'}
+              onClick={handleLogout}
+              title={'Logout'}
+            />
           </ModalFooter>
         </ModalContent>
       </Modal>

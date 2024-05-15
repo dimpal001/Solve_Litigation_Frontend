@@ -7,7 +7,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  useToast,
 } from '@chakra-ui/react'
 import {
   CustomInput,
@@ -18,6 +17,7 @@ import { useContext, useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { UserContext } from '../../UserContext'
+import { enqueueSnackbar } from 'notistack'
 
 const ChangeEmailPhone = ({
   isModalOpen,
@@ -27,7 +27,6 @@ const ChangeEmailPhone = ({
 }) => {
   const [data, setData] = useState('')
   const { user } = useContext(UserContext)
-  const toast = useToast()
   const [isLoading, setIsLoading] = useState(false)
 
   const handleChangeDetails = async () => {
@@ -43,24 +42,12 @@ const ChangeEmailPhone = ({
           },
         }
       )
-      toast({
-        title: response.data.message,
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      })
+      enqueueSnackbar(response.data.message, { variant: 'success' })
       reload()
       closeModal()
     } catch (error) {
       console.error('Error occurred while updating details:', error.message)
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 4000,
-        isClosable: true,
-        position: 'top',
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsLoading(false)
     }

@@ -1,21 +1,25 @@
 import axios from 'axios'
-import { GreenPrimaryButton, PrimaryButton, PrimaryOutlineButton, RedButton } from '../../Components/Customs'
+import {
+  GreenPrimaryButton,
+  PrimaryButton,
+  PrimaryOutlineButton,
+  RedButton,
+} from '../../Components/Customs'
 import { FaArrowLeft, FaFilePdf, FaRegEdit } from 'react-icons/fa'
 import { FiCheckSquare, FiPrinter } from 'react-icons/fi'
 import { IoIosMail } from 'react-icons/io'
 import { MdMarkEmailRead, MdOutlineDeleteOutline } from 'react-icons/md'
-import { useToast } from '@chakra-ui/react'
 import { api } from '../../Components/Apis'
 import { Link, useNavigate } from 'react-router-dom'
 import { Colors } from '../../Components/Colors'
 import { useContext, useState } from 'react'
 import DeleteCitationModal from './DeleteCitationModal'
 import { UserContext } from '../../UserContext'
+import { enqueueSnackbar } from 'notistack'
 
 const SingleCitationPage = ({ data }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
-  const toast = useToast()
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
   const generatePDF = async () => {
@@ -60,25 +64,18 @@ const SingleCitationPage = ({ data }) => {
         }
       )
 
-      toast({
-        title: response.data.message,
-        status: 'success',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(response.data.message, { variant: 'success' })
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
-      data.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+
+      data.type === 'act'
+        ? navigate('/admin-dashboard/review-acts/')
+        : navigate('/admin-dashboard/review-citation/')
     } finally {
       setIsApproving(false)
-      data.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
+      data.type === 'act'
+        ? navigate('/admin-dashboard/review-acts/')
+        : navigate('/admin-dashboard/review-citation/')
     }
   }
 
@@ -86,9 +83,17 @@ const SingleCitationPage = ({ data }) => {
     <div>
       <div>
         {user.userType !== 'guest' && (
-          <Link to={`/admin-dashboard/review-${data.type === 'act' ? 'acts' : 'citation'}`}>
+          <Link
+            to={`/admin-dashboard/review-${
+              data.type === 'act' ? 'acts' : 'citation'
+            }`}
+          >
             <div className='flex items-baseline gap-1 hover:gap-3 delay-[0.05s] transition-all'>
-              <FaArrowLeft size={20} className='pt-[5px] cursor-pointer' color={Colors.primary} />
+              <FaArrowLeft
+                size={20}
+                className='pt-[5px] cursor-pointer'
+                color={Colors.primary}
+              />
               <p className='text-primary'>Back</p>
             </div>
           </Link>
@@ -98,14 +103,30 @@ const SingleCitationPage = ({ data }) => {
         {user.userType === 'admin' && (
           <div className='flex gap-5'>
             <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
-              <PrimaryOutlineButton leftIcon={<FaRegEdit size={18} />} title={'Edit'} />
+              <PrimaryOutlineButton
+                leftIcon={<FaRegEdit size={18} />}
+                title={'Edit'}
+              />
             </Link>
-            <RedButton leftIcon={<MdOutlineDeleteOutline size={20} />} onClick={() => setIsDeleteModalOpen(true)} title={'Delete'} />
+            <RedButton
+              leftIcon={<MdOutlineDeleteOutline size={20} />}
+              onClick={() => setIsDeleteModalOpen(true)}
+              title={'Delete'}
+            />
             {data.status === 'pending' && (
-              <GreenPrimaryButton leftIcon={<FiCheckSquare size={18} />} onClick={handleApprove} isLoading={isApproving} loadingText={'Approving...'} title={'Approve'} />
+              <GreenPrimaryButton
+                leftIcon={<FiCheckSquare size={18} />}
+                onClick={handleApprove}
+                isLoading={isApproving}
+                loadingText={'Approving...'}
+                title={'Approve'}
+              />
             )}
             {isDeleteModalOpen && (
-              <DeleteCitationModal isOpen={true} onClose={() => setIsDeleteModalOpen(false)} />
+              <DeleteCitationModal
+                isOpen={true}
+                onClose={() => setIsDeleteModalOpen(false)}
+              />
             )}
           </div>
         )}

@@ -22,15 +22,15 @@ const Sidebar = () => {
 
   return (
     <div>
-      <div className="flex flex-col h-full fixed bg-slate-900 p-3 w-60 text-white">
-        <div className="flex flex-col items-center py-5 justify-center">
-          <img src={Logo} width={'50px'} alt="" />
-          <p className="text-sm capitalize text-primary font-extrabold">
+      <div className='flex flex-col h-full fixed bg-slate-900 p-3 w-60 text-white'>
+        <div className='flex flex-col items-center py-5 justify-center'>
+          <img src={Logo} width={'50px'} alt='' />
+          <p className='text-sm capitalize text-primary font-extrabold'>
             {user.userType} Panel
           </p>
         </div>
         <Divider />
-        <div className="flex-1 pt-5 gap-y-4 flex flex-col">
+        <div className='flex-1 pt-5 gap-y-4 flex flex-col'>
           <Link to={'/admin-dashboard/'}>
             <LinkButton
               title={'Dashboard'}
@@ -74,11 +74,11 @@ const Sidebar = () => {
             />
           </Link> */}
           {user.userType === 'admin' && (
-            <Link to={'/admin-dashboard/manage-staff'}>
+            <Link to={'/admin-dashboard/manage-users'}>
               <LinkButton
-                title={'Manage Staff'}
+                title={'Manage Users'}
                 width={'100%'}
-                bgColor={isPageActive('manage-staff') ? Colors.primary : ''}
+                bgColor={isPageActive('manage-users') ? Colors.primary : ''}
               />
             </Link>
           )}

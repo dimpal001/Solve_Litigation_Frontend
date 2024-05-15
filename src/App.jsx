@@ -19,9 +19,6 @@ import ReviewCitation from './Pages/ReviewCitationPage/ReviewCitation'
 import EditCitation from './Pages/EditCitationPage/EditCitation'
 import ViewCitation from './Pages/ViewCitationPage/ViewCitation'
 import StudyMaterialDashboard from './Pages/StudyMaterials/StudyMaterialDashboard'
-import CreateStaffpage from './Pages/ManageStaff/CreateStaffpage'
-import ManageStaffPage from './Pages/ManageStaff/ManageStaffPage'
-import StaffList from './Pages/ManageStaff/StaffList'
 import Headroom from 'react-headroom'
 import Footer from './Components/Footer'
 import EmailVerify from './Components/EmailVerify'
@@ -32,16 +29,19 @@ import LegalAdvice from './Pages/LegalAdvicePage/LegalAdvice'
 import AllContactForms from './Pages/ContactUsPage/AllContactForms'
 import ReviewAct from './Pages/ReviewActs/ReviewAct'
 import LegalAdviceRequests from './Pages/LegalAdviceAdmin/LegaAdviceRequests'
+import ManageUserPage from './Pages/ManageUser/ManageUserPage'
+import UserList from './Pages/ManageUser/UserList'
+import CreateStaffpage from './Pages/ManageUser/CreateStaffpage'
 
 const App = () => {
   const { user } = useContext(UserContext)
 
   return (
-    <div className="text-secondary text-xl varela-round-regular min-h-screen">
+    <div className='text-secondary text-xl varela-round-regular min-h-screen'>
       {/* Navbar Section */}
       <BrowserRouter>
         {(!user || user.userType === 'guest') && (
-          <div className="relative z-[6]">
+          <div className='relative z-[6]'>
             <Headroom>
               <Navbar />
             </Headroom>
@@ -49,16 +49,16 @@ const App = () => {
         )}
 
         {/* Body Section  */}
-        <div className="min-h-screen">
+        <div className='min-h-screen'>
           <Routes>
             <Route
-              path="/"
+              path='/'
               element={
                 !user ? (
                   <HomePage />
                 ) : user &&
                   (user.userType === 'admin' || user.userType === 'staff') ? (
-                  <Navigate to="/admin-dashboard" />
+                  <Navigate to='/admin-dashboard' />
                 ) : (
                   <HomePage />
                 )
@@ -66,77 +66,77 @@ const App = () => {
             />
             {user &&
               (user.userType === 'admin' || user.userType === 'staff') && (
-                <Route path="/admin-dashboard/" element={<Layout />}>
+                <Route path='/admin-dashboard/' element={<Layout />}>
                   <Route index element={<AdminDashboard />} />
                   <Route
-                    path="review-citation"
+                    path='review-citation'
                     element={<ReviewCitationPage />}
                   />
-                  <Route path="review-acts" element={<ReviewAct />} />
+                  <Route path='review-acts' element={<ReviewAct />} />
                   <Route
-                    path="review-citation/:id"
+                    path='review-citation/:id'
                     element={<ReviewCitation />}
                   />
                   <Route
-                    path="manage-staff/create-staff"
+                    path='manage-users/create-staff'
                     element={<CreateStaffpage />}
                   />
                   <Route
-                    path="manage-staff/staff-list"
-                    element={<StaffList />}
+                    path='manage-users/users-list'
+                    element={<UserList />}
                   />
-                  <Route path="manage-staff" element={<ManageStaffPage />} />
+                  <Route path='manage-users' element={<ManageUserPage />} />
                   <Route
-                    path="legal-advice-requests"
+                    path='legal-advice-requests'
                     element={<LegalAdviceRequests />}
                   />
-                  <Route path="contact-forms" element={<AllContactForms />} />
+                  <Route path='contact-forms' element={<AllContactForms />} />
                   <Route
-                    path="create-citation"
+                    path='create-citation'
                     element={<CreateCitationPage />}
                   />
-                  <Route path="edit-citation" element={<EditCitationPage />} />
-                  <Route path="edit-citation/:id" element={<EditCitation />} />
+                  <Route path='edit-citation' element={<EditCitationPage />} />
+                  <Route path='edit-citation/:id' element={<EditCitation />} />
                   <Route
-                    path="detailed-citation/:id"
+                    path='detailed-citation/:id'
                     element={<ViewCitation />}
                   />
                   <Route
-                    path="study-materials"
+                    path='study-materials'
                     element={<StudyMaterialDashboard />}
                   />
                   <Route
-                    path="profile-settings"
+                    path='profile-settings'
                     element={<ProfileSettingsPage />}
                   />
                 </Route>
               )}
-            {!user && <Route path="/login" element={<LoginPage />} />}
-            {!user && <Route path="/register" element={<RegisterPage />} />}
+            {!user && <Route path='/login' element={<LoginPage />} />}
+            {!user && <Route path='/register' element={<RegisterPage />} />}
             {!user && (
-              <Route path="reset-password" element={<ResetPassword />} />
+              <Route path='reset-password' element={<ResetPassword />} />
             )}
             {user && (
               <Route
-                path="/profile-settings"
+                path='/profile-settings'
                 element={<ProfileSettingsPage />}
               />
             )}
             {user && user.isVerified && (
-              <Route path="/citations" element={<CitationsPage />} />
+              <Route path='/citations' element={<CitationsPage />} />
             )}
             {user && user.userType === 'guest' && (
-              <Route path="/detailed-citation/:id" element={<ViewCitation />} />
+              <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             )}
             {user && !user.isVerified && (
-              <Route path="/verify-email" element={<ReVerifyEmail />} />
+              <Route path='/verify-email' element={<ReVerifyEmail />} />
             )}
-            {user && <Route path="/legal-advice" element={<LegalAdvice />} />}
-            <Route path="/verify-email/:token" element={<EmailVerify />} />
-            <Route path="/reset-password/:token" element={<ResetLinkPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/contact-us" element={<ContactUsPage />} />
-            <Route path="/*" element={<Error404 />} />
+            {user && <Route path='/legal-advice' element={<LegalAdvice />} />}
+            <Route path='/verify-email/:token' element={<EmailVerify />} />
+            <Route path='/reset-password/:token' element={<ResetLinkPage />} />
+            <Route path='/services' element={<ServicesPage />} />
+            <Route path='/contact-us' element={<ContactUsPage />} />
+            <Route path='/*' element={<Error404 />} />
           </Routes>
         </div>
         <div

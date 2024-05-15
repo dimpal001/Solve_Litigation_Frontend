@@ -6,12 +6,11 @@ import { useEffect, useState } from 'react'
 import Loading from '../../Components/Loading'
 import { PrimaryButton } from '../../Components/Customs'
 import { FaCheck } from 'react-icons/fa'
-import { useToast } from '@chakra-ui/react'
+import { enqueueSnackbar } from 'notistack'
 import ActField from '../CreateActPage/ActsField'
 
 const EditCitation = () => {
   const { id } = useParams()
-  const toast = useToast()
   const navigate = useNavigate()
   const [isUpdating, setIsUpdating] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -61,9 +60,9 @@ const EditCitation = () => {
   }, [])
 
   const handleUpdate = async () => {
-    setIsUpdating(true);
+    setIsUpdating(true)
     try {
-      const token = sessionStorage.getItem('token');
+      const token = sessionStorage.getItem('token')
       const response = await axios.put(
         `${api}/api/solve_litigation/citation/update-citation/${id}`,
         { citationData: data },
@@ -72,33 +71,22 @@ const EditCitation = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
-      toast({
-        title: response.data.message,
-        status: 'success',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
-      navigate('/admin-dashboard/review-citation');
+      )
+      enqueueSnackbar(response.data.message, { variant: 'error' })
+      navigate('/admin-dashboard/review-citation')
     } catch (error) {
-      toast({
-        title: error.response.data.error,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.error, { variant: 'error' })
     } finally {
       setIsUpdating(false)
     }
-  };
-
+  }
 
   return (
     <div>
       <div>
-        <p className='text-3xl text-center font-extrabold'>Edit {data && data.type === 'act' && 'Act'} Citation</p>
+        <p className='text-3xl text-center font-extrabold'>
+          Edit {data && data.type === 'act' && 'Act'} Citation
+        </p>
         <div>
           {!isLoading ? (
             <div className='px-16'>

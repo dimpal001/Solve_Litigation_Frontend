@@ -8,20 +8,16 @@ import {
   ModalHeader,
   ModalOverlay,
   Spinner,
-  useToast,
 } from '@chakra-ui/react'
-import {
-  CustomInput,
-  PrimaryButton,
-} from '../../Components/Customs'
+import { CustomInput, PrimaryButton } from '../../Components/Customs'
 import { useContext, useState } from 'react'
 import { api } from '../../Components/Apis'
 import { UserContext } from '../../UserContext'
 import axios from 'axios'
 import { Colors } from '../../Components/Colors'
+import { enqueueSnackbar } from 'notistack'
 
 const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
-  const toast = useToast()
   const [isSent, setIsSent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [currentPass, setCurrentPass] = useState('')
@@ -31,50 +27,30 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
 
   const handleSubmit = () => {
     if (currentPass === '') {
-      toast({
-        title: 'Enter a valid current password',
-        status: 'error',
-        position: 'top',
-        duration: 2000,
-        isClosable: true
-      })
+      enqueueSnackbar('Enter a valid current password!', { variant: 'error' })
       return
     }
     if (pass === '') {
-      toast({
-        title: 'Enter a valid new password',
-        status: 'error',
-        position: 'top',
-        duration: 2000,
-        isClosable: true
-      })
+      enqueueSnackbar('Enter a valid new password!', { variant: 'error' })
       return
     }
     if (pass !== confirmPass) {
-      toast({
-        title: 'Password and confirm password must be same',
-        status: 'error',
-        position: 'top',
-        duration: 2000,
-        isClosable: true
+      enqueueSnackbar('Password and confirm password must be same!', {
+        variant: 'error',
       })
       return
     }
 
-    toast({
-      title: 'Password changed',
-      status: 'success',
-      position: 'top',
-      duration: 2000,
-      isClosable: true
-    })
+    enqueueSnackbar('Password changed', { variant: 'success' })
     closeModal()
   }
 
   const handleSendReset = async () => {
     try {
       setIsLoading(true)
-      const response = await axios.post(`${api}/api/solve_litigation/auth/reset-password/${user.email}`)
+      const response = await axios.post(
+        `${api}/api/solve_litigation/auth/reset-password/${user.email}`
+      )
 
       console.log(response.data)
       if (response.data.status === 'sent') {
@@ -96,23 +72,51 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
           <ModalHeader>Change Password</ModalHeader>
           <ModalBody>
             <div className='flex flex-col gap-3'>
-              <CustomInput value={currentPass} onChange={(e) => setCurrentPass(e.target.value)} placeholder='Enter current password' />
-              <CustomInput value={pass} onChange={(e) => setPass(e.target.value)} placeholder='Enter a new Password' />
-              <CustomInput value={confirmPass} onChange={(e) => setConfirmPass(e.target.value)} placeholder='Confirm new password' />
+              <CustomInput
+                value={currentPass}
+                onChange={(e) => setCurrentPass(e.target.value)}
+                placeholder='Enter current password'
+              />
+              <CustomInput
+                value={pass}
+                onChange={(e) => setPass(e.target.value)}
+                placeholder='Enter a new Password'
+              />
+              <CustomInput
+                value={confirmPass}
+                onChange={(e) => setConfirmPass(e.target.value)}
+                placeholder='Confirm new password'
+              />
             </div>
             <div>
-              {!isLoading && <p onClick={handleSendReset} className='text-center font-bold hover:underline text-base text-primary cursor-pointer pt-2'>Send reset link ?</p>}
+              {!isLoading && (
+                <p
+                  onClick={handleSendReset}
+                  className='text-center font-bold hover:underline text-base text-primary cursor-pointer pt-2'
+                >
+                  Send reset link ?
+                </p>
+              )}
               <div className='flex justify-center pt-2'>
                 {isLoading && <Spinner color={Colors.primary} />}
               </div>
             </div>
             <div>
-              <p className={`p-3 ${isSent ? 'block' : 'hidden'} mx-1 mt-3 bg-green-200 text-center rounded-[3px]`}>Password reset link has been <br className='lg:hidden' /> sent to your registered mail</p>
+              <p
+                className={`p-3 ${
+                  isSent ? 'block' : 'hidden'
+                } mx-1 mt-3 bg-green-200 text-center rounded-[3px]`}
+              >
+                Password reset link has been <br className='lg:hidden' /> sent
+                to your registered mail
+              </p>
             </div>
           </ModalBody>
 
           <ModalFooter className='flex gap-3'>
-            <Button colorScheme='gray' onClick={closeModal} rounded={'sm'}>Close</Button>
+            <Button colorScheme='gray' onClick={closeModal} rounded={'sm'}>
+              Close
+            </Button>
             <PrimaryButton onClick={handleSubmit} title={'Submit'} />
           </ModalFooter>
         </ModalContent>

@@ -1,6 +1,6 @@
 import { Button, Input, Spinner } from '@chakra-ui/react'
 import { Colors } from './Colors'
-
+import { useEffect, useState } from 'react'
 
 export const PrimaryButton = ({
   title,
@@ -16,7 +16,8 @@ export const PrimaryButton = ({
 }) => {
   return (
     <>
-      <Button type={type}
+      <Button
+        type={type}
         loadingText={loadingText}
         isLoading={isLoading}
         borderRadius={3}
@@ -36,6 +37,34 @@ export const PrimaryButton = ({
         {title}
       </Button>
     </>
+  )
+}
+
+export const SLButton = ({
+  title,
+  variant,
+  isLoading,
+  isDisabled,
+  onClick,
+  width,
+  className,
+  loadingText,
+}) => {
+  return (
+    <button
+      onClick={onClick}
+      className={`ml-2 px-4 ${
+        isDisabled && 'bg-blue-400 cursor-not-allowed hover:bg-blue-400'
+      } ${width && `w-full`} py-2 ${className}
+      ${variant === 'primary' && 'bg-primary hover:bg-secondary text-white'}
+      ${variant === 'secondary' && 'bg-gray-300 hover:bg-gray-400 text-black'}
+      ${variant === 'success' && 'bg-success hover:bg-successHover text-white'}
+      ${variant === 'error' && 'bg-error hover:bg-errorHover text-white'}
+      flex justify-center items-center gap-2 rounded-sm`}
+    >
+      {isLoading === true ? <SLSpinner /> : title}{' '}
+      {isLoading && loadingText && loadingText}
+    </button>
   )
 }
 
@@ -321,7 +350,8 @@ export const CustomInput = ({
   list,
   id,
   isDisabled,
-  size, bgColor
+  size,
+  bgColor,
 }) => {
   return (
     <>
@@ -353,6 +383,242 @@ export const TextButton = ({ title, onClick, size }) => {
   )
 }
 
+export const Modal = ({ isOpen, children, size }) => {
+  const [showModal, setShowModal] = useState(isOpen)
+
+  useEffect(() => {
+    setShowModal(isOpen)
+  }, [isOpen])
+
+  return (
+    <>
+      {showModal ? (
+        <div className={`fixed inset-0 z-50 flex items-center justify-center`}>
+          <div className='fixed inset-0 bg-black opacity-50'></div>
+          <div
+            className={`relative 
+            ${size === 'sm' && 'w-[400px]'}
+            ${size === 'lg' && 'w-[450px]'}
+            ${size === 'md' && 'w-[500px]'}
+            ${size === 'xl' && 'w-[600px]'}
+            ${size === '2xl' && 'w-[700px]'}
+            ${size === '3xl' && 'w-[800px]'}
+            ${size === '4xl' && 'w-[900px]'}
+            ${size === '5xl' && 'w-[1000px]'}
+            ${size === 'full' && 'w-full h-full'}
+             bg-white rounded-sm p-6`}
+          >
+            {children}
+          </div>
+        </div>
+      ) : null}
+    </>
+  )
+}
+
+export const ModalContent = ({ children }) => {
+  return <div>{children}</div>
+}
+
+export const ModalHeader = ({ children }) => {
+  return (
+    <div className='text-2xl border-b pb-3 font-extrabold text-primary mb-4'>
+      {children}
+    </div>
+  )
+}
+
+export const ModalCloseButton = ({ onClick }) => {
+  return (
+    <button
+      className='absolute top-0 right-0 m-2 p-2 text-gray-500 hover:text-gray-700'
+      onClick={onClick}
+    >
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        className='h-6 text-primary w-6'
+        fill='none'
+        viewBox='0 0 24 24'
+        stroke='currentColor'
+      >
+        <path
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          strokeWidth={2}
+          d='M6 18L18 6M6 6l12 12'
+        />
+      </svg>
+    </button>
+  )
+}
+
+export const ModalBody = ({ children }) => {
+  return <div className='text-gray-700'>{children}</div>
+}
+
+export const ModalFooter = ({ children }) => {
+  return <div className='flex justify-end mt-4'>{children}</div>
+}
+
 export const MySpinner = () => {
   return <Spinner color={Colors.primary} />
+}
+
+export const SLSpinner = ({ className }) => {
+  return (
+    <svg
+      className={`${className}`}
+      xmlns='http://www.w3.org/2000/svg'
+      width='1em'
+      height='1em'
+      viewBox='0 0 24 24'
+    >
+      <g stroke='#0052cc'>
+        <circle
+          cx='12'
+          cy='12'
+          r='9.5'
+          fill='none'
+          strokeLinecap='round'
+          strokeWidth='3'
+        >
+          <animate
+            attributeName='stroke-dasharray'
+            calcMode='spline'
+            dur='1.5s'
+            keySplines='0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1'
+            keyTimes='0;0.475;0.95;1'
+            repeatCount='indefinite'
+            values='0 150;42 150;42 150;42 150'
+          />
+          <animate
+            attributeName='stroke-dashoffset'
+            calcMode='spline'
+            dur='1.5s'
+            keySplines='0.42,0,0.58,1;0.42,0,0.58,1;0.42,0,0.58,1'
+            keyTimes='0;0.475;0.95;1'
+            repeatCount='indefinite'
+            values='0;-16;-59;-59'
+          />
+        </circle>
+        <animateTransform
+          attributeName='transform'
+          dur='2s'
+          repeatCount='indefinite'
+          type='rotate'
+          values='0 12 12;360 12 12'
+        />
+      </g>
+    </svg>
+  )
+}
+
+export const SLRefreshIcon = ({ className, onClick }) => {
+  return (
+    <svg
+      onClick={onClick}
+      className={className}
+      viewBox='0 0 21 21'
+      xmlns='http://www.w3.org/2000/svg'
+      fill='#0052cc'
+      stroke='#0052cc'
+    >
+      <g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+      <g
+        id='SVGRepo_tracerCarrier'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      ></g>
+      <g id='SVGRepo_iconCarrier'>
+        {' '}
+        <g
+          fill='none'
+          fillRule='evenodd'
+          stroke='#0052cc'
+          strokeLinecap='round'
+          strokeLinejoin='round'
+          transform='matrix(0 1 1 0 2.5 2.5)'
+        >
+          {' '}
+          <path d='m3.98652376 1.07807068c-2.38377179 1.38514556-3.98652376 3.96636605-3.98652376 6.92192932 0 4.418278 3.581722 8 8 8s8-3.581722 8-8-3.581722-8-8-8'></path>{' '}
+          <path d='m4 1v4h-4' transform='matrix(1 0 0 -1 0 6)'></path>{' '}
+        </g>{' '}
+      </g>
+    </svg>
+  )
+}
+
+export const SLPrimarySpinner = ({ className }) => {
+  return (
+    <svg
+      className={`${className}`}
+      xmlns='http://www.w3.org/2000/svg'
+      viewBox='0 0 24 24'
+    >
+      <g>
+        <rect width='2' height='5' x='11' y='1' fill='#0052cc' opacity='0.14' />
+        <rect
+          width='2'
+          height='5'
+          x='11'
+          y='1'
+          fill='#0052cc'
+          opacity='0.29'
+          transform='rotate(30 12 12)'
+        />
+        <rect
+          width='2'
+          height='5'
+          x='11'
+          y='1'
+          fill='#0052cc'
+          opacity='0.43'
+          transform='rotate(60 12 12)'
+        />
+        <rect
+          width='2'
+          height='5'
+          x='11'
+          y='1'
+          fill='#0052cc'
+          opacity='0.57'
+          transform='rotate(90 12 12)'
+        />
+        <rect
+          width='2'
+          height='5'
+          x='11'
+          y='1'
+          fill='#0052cc'
+          opacity='0.71'
+          transform='rotate(120 12 12)'
+        />
+        <rect
+          width='2'
+          height='5'
+          x='11'
+          y='1'
+          fill='#0052cc'
+          opacity='0.86'
+          transform='rotate(150 12 12)'
+        />
+        <rect
+          width='2'
+          height='5'
+          x='11'
+          y='1'
+          fill='#0052cc'
+          transform='rotate(180 12 12)'
+        />
+        <animateTransform
+          attributeName='transform'
+          calcMode='discrete'
+          dur='0.75s'
+          repeatCount='indefinite'
+          type='rotate'
+          values='0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12'
+        />
+      </g>
+    </svg>
+  )
 }

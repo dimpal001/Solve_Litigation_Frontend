@@ -2,7 +2,6 @@ import {
   FormControl,
   FormLabel,
   Select,
-  useToast,
   Checkbox,
   Input,
   Textarea,
@@ -14,11 +13,11 @@ import Editor from './Editor'
 import { useNavigate } from 'react-router-dom'
 import { UserContext } from '../../UserContext'
 import { Colors } from '../../Components/Colors'
+import { enqueueSnackbar } from 'notistack'
 
 const CitationField = ({ data, setData }) => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
-  const toast = useToast()
   const [listLaw, setListLaw] = useState([])
   const [listPOL, setListPOL] = useState([])
   const [listCourt, setListCourt] = useState([])
@@ -53,13 +52,8 @@ const CitationField = ({ data, setData }) => {
     sessionStorage.removeItem('jwtToken')
     sessionStorage.removeItem('user')
     navigate('/')
-    toast({
-      title: 'Session Expired !',
-      description: 'Please login again',
-      status: 'error',
-      duration: 10000,
-      isClosable: true,
-      position: 'top',
+    enqueueSnackbar('Session Expired ! Please Login again', {
+      variant: 'error',
     })
   }
 

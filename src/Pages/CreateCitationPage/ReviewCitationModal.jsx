@@ -5,10 +5,10 @@ import {
   ModalBody,
   ModalCloseButton,
   Checkbox,
-  useToast,
 } from '@chakra-ui/react'
 import { VscDebugBreakpointLog } from 'react-icons/vsc'
 import axios from 'axios'
+import { enqueueSnackbar } from 'notistack'
 
 import {
   PrimaryButton,
@@ -22,7 +22,6 @@ import { useNavigate } from 'react-router-dom'
 
 const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   const { user } = useContext(UserContext)
-  const toast = useToast()
   const navigate = useNavigate()
 
   const handleUplaod = async () => {
@@ -42,24 +41,12 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
       )
 
       if (response.status === 201) {
-        toast({
-          title: response.data.message,
-          status: 'success',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
+        enqueueSnackbar(response.data.message, { variant: 'error' })
         onClose()
       }
       navigate('/admin-dashboard/review-citation')
     } catch (error) {
-      toast({
-        title: error.response.data.error,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-        position: 'top',
-      })
+      enqueueSnackbar(error.response.data.error, { variant: 'error' })
     }
   }
   return (
@@ -73,7 +60,9 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
           <ModalBody>
             <div className='flex mx-[200px] flex-col bg-slate-100 rounded-sm gap-6 p-7'>
               <div>
-                <p className='text-3xl font-extrabold text-center underline'>Review and upload</p>
+                <p className='text-3xl font-extrabold text-center underline'>
+                  Review and upload
+                </p>
               </div>
               <div>
                 <p className='text-sm font-extrabold text-primary'>
@@ -83,9 +72,7 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
               </div>
               {data.index && (
                 <div>
-                  <p className='text-sm font-extrabold text-primary'>
-                    Index
-                  </p>
+                  <p className='text-sm font-extrabold text-primary'>Index</p>
                   <p className='text-lg text-justify'>
                     <div
                       dangerouslySetInnerHTML={{
@@ -128,7 +115,9 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                 <p className='capitalize text-lg'>{data.title}</p>
               </div>
               <div>
-                <p className='text-sm font-extrabold text-primary'>judgements</p>
+                <p className='text-sm font-extrabold text-primary'>
+                  judgements
+                </p>
                 <p className='text-lg text-justify'>
                   <div
                     dangerouslySetInnerHTML={{
@@ -201,7 +190,7 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
               <div>
                 <p className='text-sm font-extrabold text-primary'>
                   Point of Law
-                </p >
+                </p>
                 <div className='flex flex-wrap gap-3'>
                   {data.pointOfLaw.map((pointOfLaw, index) => (
                     <div className='flex gap-2' key={index}>

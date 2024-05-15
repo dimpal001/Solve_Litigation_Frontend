@@ -10,10 +10,10 @@ import {
   RedButton,
 } from '../../Components/Customs'
 import { FaRegEdit } from 'react-icons/fa'
-import { useToast } from '@chakra-ui/react'
 import { UserContext } from '../../UserContext'
 import { MdDeleteOutline } from 'react-icons/md'
 import DeleteCitationModal from './DeleteCitationModal'
+import { enqueueSnackbar } from 'notistack'
 
 const ReviewCitation = () => {
   const { user } = useContext(UserContext)
@@ -22,7 +22,6 @@ const ReviewCitation = () => {
   const [isApproving, setIsApproving] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const navigate = useNavigate()
-  const toast = useToast()
 
   const fetchCitation = async () => {
     try {
@@ -60,25 +59,18 @@ const ReviewCitation = () => {
         }
       )
 
-      toast({
-        title: response.data.message,
-        status: 'success',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(response.data.message, { variant: 'success' })
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
-      citation.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+
+      citation.type === 'act'
+        ? navigate('/admin-dashboard/review-acts/')
+        : navigate('/admin-dashboard/review-citation/')
     } finally {
       setIsApproving(false)
-      citation.type === 'act' ? navigate('/admin-dashboard/review-acts/') : navigate('/admin-dashboard/review-citation/')
+      citation.type === 'act'
+        ? navigate('/admin-dashboard/review-acts/')
+        : navigate('/admin-dashboard/review-citation/')
     }
   }
 
@@ -107,11 +99,18 @@ const ReviewCitation = () => {
                 />
               )}
               {user.userType === 'admin' && (
-                <RedButton onClick={() => setIsDeleteModalOpen(true)} leftIcon={<MdDeleteOutline size={20} />} title={'Delete'} />
+                <RedButton
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  leftIcon={<MdDeleteOutline size={20} />}
+                  title={'Delete'}
+                />
               )}
             </div>
             {isDeleteModalOpen && (
-              <DeleteCitationModal isOpen={true} onClose={() => setIsDeleteModalOpen(false)} />
+              <DeleteCitationModal
+                isOpen={true}
+                onClose={() => setIsDeleteModalOpen(false)}
+              />
             )}
           </div>
         ) : (

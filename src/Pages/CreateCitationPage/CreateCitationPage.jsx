@@ -7,19 +7,16 @@ import {
 } from '../../Components/Customs'
 import { MdDeleteForever } from 'react-icons/md'
 import { MdOutlineCloudUpload } from 'react-icons/md'
-import {
-  useToast,
-} from '@chakra-ui/react'
 import { Colors } from '../../Components/Colors'
 import ReviewCitationModal from './ReviewCitationModal'
 import ResetAllModal from './ResetAllModal'
 import ActField from '../CreateActPage/ActsField'
 import ReviewActModal from '../CreateActPage/ReviewActModal'
 import { FaArrowLeft } from 'react-icons/fa'
-import { IoCreateOutline } from "react-icons/io5";
+import { IoCreateOutline } from 'react-icons/io5'
+import { enqueueSnackbar } from 'notistack'
 
 const CreateCitation = () => {
-  const toast = useToast()
   const [selectedType, setSelectedType] = useState('citation')
   const [reviewModelOpen, setReviewModelOpen] = useState(false)
   const [resetModelOpen, setResetModelOpen] = useState(false)
@@ -55,114 +52,52 @@ const CreateCitation = () => {
 
   const handleReview = () => {
     if (data.institutionName === '') {
-      toast({
-        title: 'Court (Institution) name is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
+      enqueueSnackbar('Court (Institution) name is required!', {
+        variant: 'error',
       })
       return 0
     }
     if (data.caseNo === '' && selectedType != 'act') {
-      toast({
-        title: 'Case No. is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Case No. is required!', { variant: 'error' })
       return 0
     }
     if (data.partyNameAppealant === '' && selectedType != 'act') {
-      toast({
-        title: 'Party Name Appealant is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Party Name Appealant is required!', { variant: 'error' })
       return 0
     }
     if (data.partyNameRespondent === '' && selectedType != 'act') {
-      toast({
-        title: 'Party Name Respondent is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
+      enqueueSnackbar('Party Name Respondent is required!', {
+        variant: 'error',
       })
       return 0
     }
     if (data.title === '') {
-      toast({
-        title: 'Title is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Title is required!', { variant: 'error' })
       return 0
     }
     if (data.judgements === '') {
-      toast({
-        title: 'judgements is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Judgements is required!', { variant: 'error' })
       return 0
     }
     if (data.dateOfOrder === '' && selectedType != 'act') {
-      toast({
-        title: 'Date of Order is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Date of Order is required!', { variant: 'error' })
       return 0
     }
     if (data.judgeName === '' && selectedType != 'act') {
-      toast({
-        title: 'Judge Name is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Judge Name is required!', { variant: 'error' })
       return 0
     }
     if (data.apellates.length === 0 && selectedType != 'act') {
-      toast({
-        title: 'Law is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Apellate is required!', { variant: 'error' })
       return 0
     }
 
     if (data.laws.length === 0 && selectedType != 'act') {
-      toast({
-        title: 'Law is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Law is required!', { variant: 'error' })
       return 0
     }
     if (data.pointOfLaw.length === 0 && selectedType != 'act') {
-      toast({
-        title: 'Point of Law is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Point of Law is required!', { variant: 'error' })
       return 0
     }
 
@@ -175,7 +110,7 @@ const CreateCitation = () => {
 
   const handleReset = () => {
     setSelectedType('citation')
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     setData({
       institutionName: '',
       apellateType: '',
@@ -203,7 +138,13 @@ const CreateCitation = () => {
     <div className='px-7'>
       {selectedType === 'act' && (
         <div>
-          <FaArrowLeft title='Go to previous page' size={20} onClick={() => handleReset()} className='cursor-pointer' color={Colors.primary} />
+          <FaArrowLeft
+            title='Go to previous page'
+            size={20}
+            onClick={() => handleReset()}
+            className='cursor-pointer'
+            color={Colors.primary}
+          />
         </div>
       )}
       <p className='text-3xl font-extrabold pb-5 text-center'>
@@ -211,7 +152,8 @@ const CreateCitation = () => {
       </p>
       <div className='flex justify-center gap-x-5'>
         {selectedType === 'citation' && (
-          <PrimaryOutlineButton leftIcon={<IoCreateOutline size={20} />}
+          <PrimaryOutlineButton
+            leftIcon={<IoCreateOutline size={20} />}
             onClick={() => setSelectedType('act')}
             title={'Create Act'}
           />

@@ -1,22 +1,20 @@
 import {
+  CustomInput,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton,
-  useToast,
-  FormControl,
-  Checkbox,
-  Button,
-} from '@chakra-ui/react'
-import { CustomInput, MySpinner, PrimaryButton } from '../../Components/Customs'
+  ModalContent,
+  ModalHeader,
+  MySpinner,
+  SLButton,
+} from '../../Components/Customs'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
+import { enqueueSnackbar } from 'notistack'
+import { Checkbox, FormControl } from '@chakra-ui/react'
 
 const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
-  const toast = useToast()
   const [pointsOfLaw, setPointsOfLaw] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [listPOL, setListPOL] = useState([])
@@ -35,13 +33,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
       )
       setListPOL(response.data)
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     }
   }
 
@@ -53,13 +45,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
     const token = sessionStorage.getItem('token')
     try {
       if (pointsOfLaw === '') {
-        toast({
-          title: 'Point of Law cannot be empty.',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
+        enqueueSnackbar('Point of Law cannot be empty!', { variant: 'error' })
         return
       }
 
@@ -79,25 +65,13 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
 
       fetchPOL()
 
-      toast({
-        title: 'Point of law added successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-right',
-      })
+      enqueueSnackbar('Point of law added successfully', { variant: 'success' })
 
       setPointsOfLaw('')
 
       setIsLoading(false)
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top-right',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsLoading(false)
       RelodeData()
@@ -125,23 +99,13 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
 
       fetchPOL()
 
-      toast({
-        title: 'Selected point of law deleted successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-right',
+      enqueueSnackbar('Selected point of law deleted successfully', {
+        variant: 'success',
       })
 
       setSelectedPOLIds([])
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top-right',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsLoading(false)
       RelodeData()
@@ -159,11 +123,10 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen} size={'lg'} onClose={onClose}>
-        <ModalOverlay />
+      <Modal isOpen={isOpen} size={'lg'}>
         <ModalContent borderRadius={0} className='pb-5'>
           <ModalHeader>Add a Point of Law</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody className='p-lg flex flex-col gap-3'>
             {listPOL.length !== 0 && (
               <p className='text-red-600 text-base'>Select to delete</p>
@@ -185,15 +148,13 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
               )}
             </div>
             {selectedPOLIds.length > 0 && (
-              <Button
-                colorScheme='red'
-                borderRadius={'sm'}
+              <SLButton
+                variant={'error'}
                 onClick={handleDeleteSelectedPOLs}
                 isLoading={isLoading}
                 loadingText={'Deleting...'}
-              >
-                Delete Selected Item(s)
-              </Button>
+                title={'Delete Selected Item(s)'}
+              />
             )}
           </ModalBody>
           {selectedPOLIds.length === 0 && (
@@ -204,7 +165,8 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
                   value={pointsOfLaw}
                   onChange={(e) => setPointsOfLaw(e.target.value)}
                 />
-                <PrimaryButton
+                <SLButton
+                  variant={'primary'}
                   isLoading={isLoading}
                   loadingText={'Adding...'}
                   onClick={handleAddingPOL}

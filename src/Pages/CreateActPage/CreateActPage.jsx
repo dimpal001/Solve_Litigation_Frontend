@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import CitationField from './CitationField'
+import { enqueueSnackbar } from 'notistack'
 import {
   PrimaryButton,
   PrimaryOutlineButton,
@@ -8,20 +9,13 @@ import {
 import { MdDeleteForever } from 'react-icons/md'
 import { MdOutlineCloudUpload } from 'react-icons/md'
 import { FiChevronDown } from 'react-icons/fi'
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  useToast,
-} from '@chakra-ui/react'
+import { Menu, MenuButton, MenuList, MenuItem } from '@chakra-ui/react'
 import { Colors } from '../../Components/Colors'
 import ReviewCitationModal from './ReviewActModal'
 import ResetAllModal from './ResetAllModal'
 import ActField from './ActsField'
 
 const CreateAct = () => {
-  const toast = useToast()
   const [selectedType, setSelectedType] = useState('')
   const [reviewModelOpen, setReviewModelOpen] = useState(false)
   const [resetModelOpen, setResetModelOpen] = useState(false)
@@ -57,103 +51,47 @@ const CreateAct = () => {
 
   const handleReview = () => {
     if (data.institutionName === '') {
-      toast({
-        title: 'Court (Institution) name is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
+      enqueueSnackbar('Court (Institution) name is required!', {
+        variant: 'error',
       })
       return 0
     }
     if (data.caseNo === '') {
-      toast({
-        title: 'Case No. is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Case No. is required!', { variant: 'error' })
       return 0
     }
     if (data.partyNameAppealant === '') {
-      toast({
-        title: 'Party Name Appealant is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Party Name Appealant is required!', { variant: 'error' })
       return 0
     }
     if (data.partyNameRespondent === '') {
-      toast({
-        title: 'Party Name Respondent is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
+      enqueueSnackbar('Party Name Respondent is required!', {
+        variant: 'error',
       })
       return 0
     }
     if (data.title === '') {
-      toast({
-        title: 'Title is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Title is required!', { variant: 'error' })
       return 0
     }
     if (data.judgements === '') {
-      toast({
-        title: 'judgements is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('judgements is required!', { variant: 'error' })
       return 0
     }
     if (data.dateOfOrder === '') {
-      toast({
-        title: 'Date of Order is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Date of Order is required!', { variant: 'error' })
       return 0
     }
     if (data.judgeName === '') {
-      toast({
-        title: 'Judge Name is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Judge Name is required!', { variant: 'error' })
       return 0
     }
     if (data.laws.length === 0) {
-      toast({
-        title: 'Law is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Law is required!', { variant: 'error' })
       return 0
     }
     if (data.pointOfLaw.length === 0) {
-      toast({
-        title: 'Point of Law is required',
-        status: 'error',
-        duration: 4000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar('Point of Law is required!', { variant: 'error' })
       return 0
     }
 
@@ -205,9 +143,9 @@ const CreateAct = () => {
               }
               color={
                 selectedType === 'corporate' ||
-                  selectedType === 'service' ||
-                  selectedType === 'civil' ||
-                  selectedType === 'taxation'
+                selectedType === 'service' ||
+                selectedType === 'civil' ||
+                selectedType === 'taxation'
                   ? 'white'
                   : null
               }

@@ -1,22 +1,21 @@
 import {
+  CustomInput,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
   ModalCloseButton,
-  useToast,
-  FormControl,
-  Checkbox,
-  Button,
-} from '@chakra-ui/react'
-import { CustomInput, MySpinner, PrimaryButton } from '../../Components/Customs'
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  MySpinner,
+  SLButton,
+} from '../../Components/Customs'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
+import { enqueueSnackbar } from 'notistack'
+import { Checkbox } from '@chakra-ui/react'
 
 const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
-  const toast = useToast()
   const [law, setLaw] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [listLaw, setListLaw] = useState([])
@@ -35,13 +34,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
       )
       setListLaw(response.data)
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     }
   }
 
@@ -53,13 +46,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
     const token = sessionStorage.getItem('token')
     try {
       if (law === '') {
-        toast({
-          title: 'Law name cannot be empty.',
-          status: 'error',
-          duration: 3000,
-          isClosable: true,
-          position: 'top',
-        })
+        enqueueSnackbar('Law name cannot be empty!', { variant: 'error' })
         return
       }
 
@@ -79,25 +66,13 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
 
       fetchLaw()
 
-      toast({
-        title: 'Law added successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-right',
-      })
+      enqueueSnackbar('Law added successfully', { variant: 'success' })
 
       setLaw('')
 
       setIsLoading(false)
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top-right',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsLoading(false)
       RelodeData()
@@ -125,23 +100,13 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
 
       fetchLaw()
 
-      toast({
-        title: 'Selected law(s) deleted successfully',
-        status: 'success',
-        duration: 3000,
-        isClosable: true,
-        position: 'top-right',
+      enqueueSnackbar('Selected law(s) deleted successfully', {
+        variant: 'success',
       })
 
       setSelectedLawIds([])
     } catch (error) {
-      toast({
-        title: error.response.data.message,
-        status: 'error',
-        duration: 3000,
-        position: 'top-right',
-        isClosable: true,
-      })
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
       setIsLoading(false)
       RelodeData()
@@ -159,11 +124,10 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen} size={'lg'} onClose={onClose}>
-        <ModalOverlay />
+      <Modal isOpen={isOpen} size={'lg'}>
         <ModalContent borderRadius={0} className='pb-5'>
           <ModalHeader>Add a Law</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody className='p-lg flex flex-col gap-3'>
             {listLaw.length !== 0 && (
               <p className='text-red-600 text-base'>Select to delete</p>
@@ -185,33 +149,31 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
               )}
             </div>
             {selectedLawIds.length > 0 && (
-              <Button
-                colorScheme='red'
-                borderRadius={'sm'}
+              <SLButton
+                width={'full'}
+                variant={'error'}
                 onClick={handleDeleteSelectedPOLs}
                 isLoading={isLoading}
                 loadingText={'Deleting...'}
-              >
-                Delete Selected Item(s)
-              </Button>
+                title={'Delete Selected Item(s)'}
+              />
             )}
           </ModalBody>
           {selectedLawIds.length === 0 && (
-            <ModalBody>
-              <FormControl className='flex gap-3'>
-                <CustomInput
-                  placeholder='Enter a Points of Law to add'
-                  value={law}
-                  onChange={(e) => setLaw(e.target.value)}
-                />
-                <PrimaryButton
-                  isLoading={isLoading}
-                  loadingText={'Adding...'}
-                  onClick={handleAddingLaw}
-                  title={'Add'}
-                />
-              </FormControl>
-            </ModalBody>
+            <ModalFooter>
+              <CustomInput
+                placeholder='Enter a Points of Law to add'
+                value={law}
+                onChange={(e) => setLaw(e.target.value)}
+              />
+              <SLButton
+                variant={'primary'}
+                isLoading={isLoading}
+                loadingText={'Adding...'}
+                onClick={handleAddingLaw}
+                title={'Add'}
+              />
+            </ModalFooter>
           )}
         </ModalContent>
       </Modal>

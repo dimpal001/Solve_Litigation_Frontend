@@ -1,7 +1,6 @@
 import {
   Button,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
@@ -9,61 +8,48 @@ import {
   ModalOverlay,
 } from '@chakra-ui/react'
 import { RedButton } from '../../Components/Customs'
-import { MdDeleteOutline } from 'react-icons/md'
-import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { enqueueSnackbar } from 'notistack'
 
-const DeleteCitationModal = ({ isOpen, onClose }) => {
-  const { id } = useParams()
-  console.log(id)
-  const navigate = useNavigate()
+const DeleteUserModal = ({ user, isOpen, onClose, relode }) => {
   const [isDeleting, setIsDeleting] = useState(false)
-
-  const handleDelete = async () => {
+  const handleDeleteUser = async () => {
     try {
       setIsDeleting(true)
       const token = sessionStorage.getItem('token')
       const response = await axios.delete(
-        `${api}/api/solve_litigation/citation/delete-citation/${id}`,
+        `${api}/api/solve_litigation/auth/delete-user/${user._id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       )
-      setIsDeleting(false)
       enqueueSnackbar(response.data.message, { variant: 'success' })
-      navigate('/admin-dashboard/review-citation')
     } catch (error) {
-      console.error(error)
-      enqueueSnackbar(error.response.data.error, { variant: 'error' })
-    } finally {
-      onClose()
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+    }
+    {
       setIsDeleting(false)
+      onClose()
+      relode()
     }
   }
-
   return (
-    <div className='max-h-[300px]'>
+    <div>
       <Modal size={'sm'} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent rounded={0}>
-          <ModalHeader>Delete Citation ?</ModalHeader>
+          <ModalHeader>Delete {user.fullName} ?</ModalHeader>
           <ModalCloseButton />
-          <ModalBody> This action cannot be undone</ModalBody>
-
-          <ModalFooter className='flex gap-5'>
-            <Button onClick={onClose} rounded={'sm'}>
-              Cancel
-            </Button>
+          <ModalFooter className='flex justify-end gap-3'>
+            <Button borderRadius={'sm'}>Cancel</Button>
             <RedButton
+              onClick={handleDeleteUser}
               isLoading={isDeleting}
               loadingText={'Deleting...'}
-              onClick={handleDelete}
-              leftIcon={<MdDeleteOutline size={22} />}
               title={'Delete'}
             />
           </ModalFooter>
@@ -73,4 +59,4 @@ const DeleteCitationModal = ({ isOpen, onClose }) => {
   )
 }
 
-export default DeleteCitationModal
+export default DeleteUserModal

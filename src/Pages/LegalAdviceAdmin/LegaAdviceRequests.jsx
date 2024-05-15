@@ -2,27 +2,18 @@ import { useState, useEffect } from 'react'
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
-// import { BiSolidMessageCheck } from 'react-icons/bi'
-import { Colors } from '../../Components/Colors'
-import { MdOutlineDelete } from 'react-icons/md'
-import { PrimaryButton } from '../../Components/Customs'
-// import DeleteFormModal from './DeleteFormModal'
+import DeleteModal from '../../Components/DeleteModal'
+import UserDetailsModal from './UserDetailsModal'
+import CaseDetailsModal from './CaseDetailsModal'
 
 const LegalAdviceRequests = () => {
   const [forms, setForms] = useState([])
-  //   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isUserDetailsModalOpen, setIsUserDetailsModalOpen] = useState(false)
+  const [isCaseDetailsModalOpen, setIsCaseDetailsModalOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState('')
   const [selectedForm, setSelectedForm] = useState('')
-
-  //   const handleModalOpen = (form) => {
-  //     setIsMessageModalOpen(true)
-  //     setSelectedForm(form)
-  //   }
-
-  const handleDeleteModalOpen = (form) => {
-    setIsDeleteModalOpen(true)
-    setSelectedForm(form)
-  }
+  const [isDownloading, setIsDownloading] = useState(false)
 
   const fetchForms = async () => {
     try {
@@ -35,11 +26,12 @@ const LegalAdviceRequests = () => {
           },
         }
       )
-      setForms(response.data)
+      setForms(response.data.requests)
     } catch (error) {
       console.error('Error fetching forms:', error)
     }
   }
+
   useEffect(() => {
     fetchForms()
   }, [])
@@ -50,6 +42,7 @@ const LegalAdviceRequests = () => {
 
   const downloadAttachment = async (requestId, name) => {
     try {
+      setIsDownloading(true)
       let response = await axios.get(
         `${api}/api/solve_litigation/legal-advice/${requestId}/attachments`,
         {
@@ -70,33 +63,32 @@ const LegalAdviceRequests = () => {
       window.URL.revokeObjectURL(url)
     } catch (error) {
       console.error('Error downloading PDF:', error)
+    } finally {
+      setIsDownloading(false)
     }
   }
 
   return (
     <div>
-      <p className="text-center text-4xl p-3 font-bold">
+      <p className='text-center text-4xl p-3 font-bold'>
         Legal Advice Requests
       </p>
-      <Table className="border" variant="simple">
-        <Thead className="bg-primary">
+      <Table className='border' variant='simple'>
+        <Thead className='bg-primary'>
           <Tr>
             <Th color={'white'} fontSize={14}>
               Submitted on
             </Th>
             <Th color={'white'} fontSize={14}>
-              Name
-            </Th>
-            <Th color={'white'} fontSize={14}>
-              Email
+              user
             </Th>
             <Th color={'white'} fontSize={14}>
               Case Details
             </Th>
-            <Th color={'white'} fontSize={14}>
+            <Th textAlign={'center'} color={'white'} fontSize={14}>
               Attachment
             </Th>
-            <Th color={'white'} fontSize={14}>
+            <Th textAlign={'center'} color={'white'} fontSize={14}>
               Delete
             </Th>
           </Tr>
@@ -105,49 +97,89 @@ const LegalAdviceRequests = () => {
           {forms.map((form) => (
             <Tr fontSize={16} key={form._id}>
               <Td>{new Date(form.createdAt).toLocaleString()}</Td>
-              <Td>{form.user.fullName}</Td>
-              <Td>{form.user.email}</Td>
-              <Td>{form.caseDetails}</Td>
+              <Td
+                onClick={() => {
+                  setIsUserDetailsModalOpen(true)
+                  setSelectedUser(form.user)
+                }}
+                className='text-primary cursor-pointer hover:underline'
+              >
+                {form.user.fullName}
+              </Td>
               <Td>
-                {form.attachment.data ? (
-                  <PrimaryButton
-                    title={'Download'}
-                    bgColor={Colors.primary}
-                    onClick={() =>
-                      downloadAttachment(form._id, form.user.fullName)
-                    }
-                  />
+                {form.caseDetails}...{' '}
+                <span
+                  onClick={() => {
+                    setIsCaseDetailsModalOpen(true)
+                    setSelectedForm(form)
+                  }}
+                  className='text-primary hover:underline cursor-pointer'
+                >
+                  Learn more
+                </span>
+              </Td>
+              <Td textAlign={'center'}>
+                {form.isAttachment ? (
+                  <div>
+                    {isDownloading ? (
+                      <p className='text-primary cursor-progress'>
+                        Downloading...
+                      </p>
+                    ) : (
+                      <p
+                        onClick={() =>
+                          downloadAttachment(form._id, form.user.fullName)
+                        }
+                        className='text-primary hover:underline cursor-pointer'
+                      >
+                        Download
+                      </p>
+                    )}
+                  </div>
                 ) : (
                   'No attachment'
                 )}
               </Td>
-              <Td>
-                <MdOutlineDelete
-                  onClick={() => handleDeleteModalOpen(form)}
-                  color={'red'}
-                  size={24}
-                  className="cursor-pointer"
-                />
+              <Td textAlign={'center'}>
+                <p
+                  onClick={() => {
+                    setSelectedForm(form)
+                    setIsDeleteModalOpen(true)
+                  }}
+                  className='text-red-500 cursor-pointer hover:text-red-600'
+                >
+                  Delete
+                </p>
               </Td>
             </Tr>
           ))}
         </Tbody>
       </Table>
-      {/* {isMessageModalOpen && (
-        <MessageModal
-          isOpen={true}
-          onClose={() => setIsMessageModalOpen(false)}
-          user={selectedForm}
-        />
-      )} */}
-      {/* {isDeleteModalOpen && (
-        <DeleteFormModal
-          isOpen={true}
-          reload={refresh}
+      {isDeleteModalOpen && (
+        <DeleteModal
+          title={'Delete Request?'}
           onClose={() => setIsDeleteModalOpen(false)}
+          isOpen={true}
+          api={`${api}/api/solve_litigation/legal-advice/${selectedForm._id}`}
+          reload={refresh}
+          variant={'error'}
+        />
+      )}
+      {isUserDetailsModalOpen && (
+        <UserDetailsModal
+          isOpen={true}
+          user={selectedUser}
+          onClose={() => setIsUserDetailsModalOpen(false)}
+          title={selectedUser.fullName}
+        />
+      )}
+      {isCaseDetailsModalOpen && (
+        <CaseDetailsModal
+          isOpen={true}
+          onClose={() => setIsCaseDetailsModalOpen(false)}
           form={selectedForm}
         />
-      )} */}
+      )}
     </div>
   )
 }
