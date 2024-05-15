@@ -316,7 +316,7 @@ const DetailsCard2 = ({ title, data, onClick }) => {
           >
             Refresh
           </p>
-          <div className='h-[280px] overflow-scroll'>
+          <div className='max-h-[280px] overflow-scroll'>
             {data ? (
               <ul className='text-base'>
                 {data.map((item) => (

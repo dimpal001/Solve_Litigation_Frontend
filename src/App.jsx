@@ -32,6 +32,8 @@ import LegalAdviceRequests from './Pages/LegalAdviceAdmin/LegaAdviceRequests'
 import ManageUserPage from './Pages/ManageUser/ManageUserPage'
 import UserList from './Pages/ManageUser/UserList'
 import CreateStaffpage from './Pages/ManageUser/CreateStaffpage'
+import MakeARequest from './Pages/LegalAdvicePage/MakeARequest'
+import PreviousRequests from './Pages/LegalAdvicePage/PreviousRequests'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -132,6 +134,12 @@ const App = () => {
               <Route path='/verify-email' element={<ReVerifyEmail />} />
             )}
             {user && <Route path='/legal-advice' element={<LegalAdvice />} />}
+            {user && (
+              <Route path='/make-a-request' element={<MakeARequest />} />
+            )}
+            {user && (
+              <Route path='/previous-requests' element={<PreviousRequests />} />
+            )}
             <Route path='/verify-email/:token' element={<EmailVerify />} />
             <Route path='/reset-password/:token' element={<ResetLinkPage />} />
             <Route path='/services' element={<ServicesPage />} />

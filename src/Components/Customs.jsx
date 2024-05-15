@@ -44,6 +44,7 @@ export const SLButton = ({
   title,
   variant,
   isLoading,
+  iconColor,
   isDisabled,
   onClick,
   width,
@@ -62,7 +63,7 @@ export const SLButton = ({
       ${variant === 'error' && 'bg-error hover:bg-errorHover text-white'}
       flex justify-center items-center gap-2 rounded-sm`}
     >
-      {isLoading === true ? <SLSpinner /> : title}{' '}
+      {isLoading === true ? <SLSpinner iconColor={iconColor} /> : title}{' '}
       {isLoading && loadingText && loadingText}
     </button>
   )
@@ -396,15 +397,39 @@ export const Modal = ({ isOpen, children, size }) => {
         <div className={`fixed inset-0 z-50 flex items-center justify-center`}>
           <div className='fixed inset-0 bg-black opacity-50'></div>
           <div
-            className={`relative 
-            ${size === 'sm' && 'w-[400px]'}
-            ${size === 'lg' && 'w-[450px]'}
-            ${size === 'md' && 'w-[500px]'}
-            ${size === 'xl' && 'w-[600px]'}
-            ${size === '2xl' && 'w-[700px]'}
-            ${size === '3xl' && 'w-[800px]'}
-            ${size === '4xl' && 'w-[900px]'}
-            ${size === '5xl' && 'w-[1000px]'}
+            className={`relative
+            ${
+              size === 'sm' &&
+              'w-[400px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
+            ${
+              size === 'lg' &&
+              'w-[450px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
+            ${
+              size === 'md' &&
+              'w-[500px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
+            ${
+              size === 'xl' &&
+              'w-[600px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
+            ${
+              size === '2xl' &&
+              'w-[700px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
+            ${
+              size === '3xl' &&
+              'w-[800px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
+            ${
+              size === '4xl' &&
+              'w-[900px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
+            ${
+              size === '5xl' &&
+              'w-[1000px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
+            }
             ${size === 'full' && 'w-full h-full'}
              bg-white rounded-sm p-6`}
           >
@@ -453,7 +478,11 @@ export const ModalCloseButton = ({ onClick }) => {
 }
 
 export const ModalBody = ({ children }) => {
-  return <div className='text-gray-700'>{children}</div>
+  return (
+    <div className='text-gray-700 max-h-[600px] md:max-h-[500px] overflow-scroll'>
+      {children}
+    </div>
+  )
 }
 
 export const ModalFooter = ({ children }) => {
@@ -464,16 +493,15 @@ export const MySpinner = () => {
   return <Spinner color={Colors.primary} />
 }
 
-export const SLSpinner = ({ className }) => {
+export const SLSpinner = ({ className, iconColor, width }) => {
   return (
     <svg
       className={`${className}`}
       xmlns='http://www.w3.org/2000/svg'
-      width='1em'
-      height='1em'
+      width={width ? width : '1em'}
       viewBox='0 0 24 24'
     >
-      <g stroke='#0052cc'>
+      <g stroke={iconColor ? iconColor : '#0052cc'}>
         <circle
           cx='12'
           cy='12'
@@ -550,75 +578,84 @@ export const SLRefreshIcon = ({ className, onClick }) => {
 
 export const SLPrimarySpinner = ({ className }) => {
   return (
-    <svg
-      className={`${className}`}
-      xmlns='http://www.w3.org/2000/svg'
-      viewBox='0 0 24 24'
-    >
-      <g>
-        <rect width='2' height='5' x='11' y='1' fill='#0052cc' opacity='0.14' />
-        <rect
-          width='2'
-          height='5'
-          x='11'
-          y='1'
-          fill='#0052cc'
-          opacity='0.29'
-          transform='rotate(30 12 12)'
-        />
-        <rect
-          width='2'
-          height='5'
-          x='11'
-          y='1'
-          fill='#0052cc'
-          opacity='0.43'
-          transform='rotate(60 12 12)'
-        />
-        <rect
-          width='2'
-          height='5'
-          x='11'
-          y='1'
-          fill='#0052cc'
-          opacity='0.57'
-          transform='rotate(90 12 12)'
-        />
-        <rect
-          width='2'
-          height='5'
-          x='11'
-          y='1'
-          fill='#0052cc'
-          opacity='0.71'
-          transform='rotate(120 12 12)'
-        />
-        <rect
-          width='2'
-          height='5'
-          x='11'
-          y='1'
-          fill='#0052cc'
-          opacity='0.86'
-          transform='rotate(150 12 12)'
-        />
-        <rect
-          width='2'
-          height='5'
-          x='11'
-          y='1'
-          fill='#0052cc'
-          transform='rotate(180 12 12)'
-        />
-        <animateTransform
-          attributeName='transform'
-          calcMode='discrete'
-          dur='0.75s'
-          repeatCount='indefinite'
-          type='rotate'
-          values='0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12'
-        />
-      </g>
-    </svg>
+    <div className='flex justify-center w-full'>
+      <svg
+        className={`${className}`}
+        xmlns='http://www.w3.org/2000/svg'
+        viewBox='0 0 24 24'
+      >
+        <g>
+          <rect
+            width='2'
+            height='5'
+            x='11'
+            y='1'
+            fill='#0052cc'
+            opacity='0.14'
+          />
+          <rect
+            width='2'
+            height='5'
+            x='11'
+            y='1'
+            fill='#0052cc'
+            opacity='0.29'
+            transform='rotate(30 12 12)'
+          />
+          <rect
+            width='2'
+            height='5'
+            x='11'
+            y='1'
+            fill='#0052cc'
+            opacity='0.43'
+            transform='rotate(60 12 12)'
+          />
+          <rect
+            width='2'
+            height='5'
+            x='11'
+            y='1'
+            fill='#0052cc'
+            opacity='0.57'
+            transform='rotate(90 12 12)'
+          />
+          <rect
+            width='2'
+            height='5'
+            x='11'
+            y='1'
+            fill='#0052cc'
+            opacity='0.71'
+            transform='rotate(120 12 12)'
+          />
+          <rect
+            width='2'
+            height='5'
+            x='11'
+            y='1'
+            fill='#0052cc'
+            opacity='0.86'
+            transform='rotate(150 12 12)'
+          />
+          <rect
+            width='2'
+            height='5'
+            x='11'
+            y='1'
+            fill='#0052cc'
+            transform='rotate(180 12 12)'
+          />
+          <animateTransform
+            attributeName='transform'
+            calcMode='discrete'
+            dur='0.75s'
+            repeatCount='indefinite'
+            type='rotate'
+            values='0 12 12;30 12 12;60 12 12;90 12 12;120 12 12;150 12 12;180 12 12;210 12 12;240 12 12;270 12 12;300 12 12;330 12 12;360 12 12'
+          />
+        </g>
+      </svg>
+    </div>
   )
 }

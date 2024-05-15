@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import { useContext, useRef, useState } from 'react'
 import { UserContext } from '../UserContext'
@@ -22,13 +22,16 @@ const Navbar = () => {
   const btnRef = useRef()
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
-
   const handleLogout = () => {
     setIsLogoutModalOpen(true)
   }
   return (
     <div>
-      <div className={`h-[100px] bg-white ${user && 'border-b'} px-5 lg:px-32 justify-between w-full flex items-center`}>
+      <div
+        className={`h-[100px] bg-white ${
+          user && 'border-b'
+        } px-5 lg:px-32 justify-between w-full flex items-center`}
+      >
         <div className=''>
           <NavLink title='Solve Litigation' to={'/'}>
             <img style={{ width: '60px' }} src={logo} alt='Logo' />
@@ -82,13 +85,19 @@ const Navbar = () => {
   )
 }
 
+import { enqueueSnackbar } from 'notistack'
 const NavItems = ({ onClose }) => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
+  const navigate = useNavigate()
 
   const handleLogout = () => {
-    setIsLogoutModalOpen(true)
+    setUser(null)
+    sessionStorage.removeItem('jwtToken')
+    sessionStorage.removeItem('user')
+    navigate('/')
+    enqueueSnackbar('Logout Successfull', { variant: 'success' })
   }
 
   const handleProfileSettingsClick = () => {
@@ -101,21 +110,28 @@ const NavItems = ({ onClose }) => {
         <NavItem onClick={onClose} title='Home Page' to={'/'}>
           Home
         </NavItem>
-        {user && user.isVerified && user.userType === 'guest' && user.selectedService.includes('judgements') && (
-          <NavItem onClick={onClose} title='Home Page' to={'/citations'}>
-            Judgements
-          </NavItem>
-        )}
-        {user && user.userType === 'guest' && user.selectedService.includes('legalAdvice') && (
-          <NavItem onClick={onClose} title='Home Page' to={'/legal-advice'}>
-            Legal Advice
-          </NavItem>
-        )}
-        {user && user.userType === 'guest' && user.selectedService.includes('studyResources') && (
-          <NavItem onClick={onClose} title='Home Page' to={'/*'}>
-            Study Material
-          </NavItem>
-        )}
+        {user &&
+          user.isVerified &&
+          user.userType === 'guest' &&
+          user.selectedService.includes('judgements') && (
+            <NavItem onClick={onClose} title='Home Page' to={'/citations'}>
+              Judgements
+            </NavItem>
+          )}
+        {user &&
+          user.userType === 'guest' &&
+          user.selectedService.includes('legalAdvice') && (
+            <NavItem onClick={onClose} title='Home Page' to={'/legal-advice'}>
+              Legal Advice
+            </NavItem>
+          )}
+        {user &&
+          user.userType === 'guest' &&
+          user.selectedService.includes('studyResources') && (
+            <NavItem onClick={onClose} title='Home Page' to={'/*'}>
+              Study Material
+            </NavItem>
+          )}
         <NavItem onClick={onClose} title='Service Page' to={'/services'}>
           Services
         </NavItem>
@@ -141,12 +157,14 @@ const NavItems = ({ onClose }) => {
           />
         )}
       </div>
-      {isLogoutModalOpen && (
-        <ConfirmLogout
-          isOpen={true}
-          onClose={() => setIsLogoutModalOpen(false)}
-        />
-      )}
+      <div className='fixed'>
+        {isLogoutModalOpen && (
+          <ConfirmLogout
+            isOpen={true}
+            onClose={() => setIsLogoutModalOpen(false)}
+          />
+        )}
+      </div>
     </>
   )
 }
