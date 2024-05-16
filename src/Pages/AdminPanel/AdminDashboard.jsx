@@ -302,7 +302,7 @@ const DetailsCard = ({ color, title, number }) => {
 const DetailsCard2 = ({ title, data, onClick }) => {
   return (
     <div>
-      <div className='border hover:shadow-2xl transition-all delay-[0.05s] rounded-md p-3'>
+      <div className='border relative hover:shadow-2xl transition-all delay-[0.05s] rounded-md p-3'>
         <div>
           <p>{title}</p>
           <div className='py-2'>
@@ -312,7 +312,7 @@ const DetailsCard2 = ({ title, data, onClick }) => {
         <div>
           <p
             onClick={onClick}
-            className='text-base cursor-pointer pt-4 top-0 right-0 p-2 text-primary hover:underline'
+            className='absolute text-base cursor-pointer pt-4 top-0 right-0 p-2 pr-5 text-primary hover:underline'
           >
             Refresh
           </p>

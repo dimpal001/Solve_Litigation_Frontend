@@ -1,13 +1,3 @@
-import {
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableCaption,
-  TableContainer,
-} from '@chakra-ui/react'
 import { PrimaryOutlineButton } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
@@ -84,7 +74,7 @@ const UserList = () => {
   }
 
   return (
-    <div data-aos='fade-up' className='px-7'>
+    <div className='px-7'>
       <Link to={'/admin-dashboard/manage-users'}>
         <FaArrowLeft
           size={20}
@@ -120,57 +110,59 @@ const UserList = () => {
         />
       </div>
       <div>
-        <TableContainer className='border'>
-          <Table variant='simple'>
-            {filteredList && filteredList.length > 0 && (
-              <TableCaption>
-                Click on <span className='text-red-500'>Delete</span> to delete
-                the user
-              </TableCaption>
-            )}
-            <Thead className='bg-primary'>
-              <Tr>
-                <Th color={'white'}>full name</Th>
-                <Th color={'white'}>email address</Th>
-                <Th color={'white'}>phone number</Th>
-                <Th color={'white'}>user type</Th>
-                <Th color={'white'} textAlign={'center'}>
-                  action
-                </Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {filteredList && filteredList.length > 0 ? (
-                filteredList.map((data, index) => (
-                  <Tr fontSize={16} key={index}>
-                    <Td>{data.fullName}</Td>
-                    <Td>{data.email}</Td>
-                    <Td>{data.phoneNumber}</Td>
-                    <Td
-                      textTransform={'capitalize'}
-                      color={data.userType === 'admin' ? 'green' : 'blue'}
+        <table className='table-auto w-full border-collapse border border-primary'>
+          <thead className='bg-primary'>
+            <tr className='bg-gray-200 capitalize'>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                full name
+              </th>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                email address
+              </th>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                phone number
+              </th>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                user type
+              </th>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                action
+              </th>
+            </tr>
+          </thead>
+          <tbody className='border border-primary'>
+            {filteredList && filteredList.length > 0 ? (
+              filteredList.map((data, index) => (
+                <tr fontSize={16} key={index}>
+                  <td className='border px-4 py-2'>{data.fullName}</td>
+                  <td className='border px-4 py-2'>{data.email}</td>
+                  <td className='border px-4 py-2 text-center'>
+                    {data.phoneNumber}
+                  </td>
+                  <td
+                    className='border px-4 py-2 text-center capitalize'
+                    color={data.userType === 'admin' ? 'green' : 'blue'}
+                  >
+                    {data.userType}
+                  </td>
+                  <td className='border px-4 py-2 text-center'>
+                    <p
+                      className='text-red-500 font-extrabold text-center cursor-pointer'
+                      onClick={() => {
+                        setIsDeleteModalOpen(true)
+                        setSelectedUser(data)
+                      }}
                     >
-                      {data.userType}
-                    </Td>
-                    <Td>
-                      <p
-                        className='text-red-500 font-extrabold text-center cursor-pointer'
-                        onClick={() => {
-                          setIsDeleteModalOpen(true)
-                          setSelectedUser(data)
-                        }}
-                      >
-                        Delete
-                      </p>
-                    </Td>
-                  </Tr>
-                ))
-              ) : (
-                <p className='text-center py-3'>No data found</p>
-              )}
-            </Tbody>
-          </Table>
-        </TableContainer>
+                      Delete
+                    </p>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <p className='text-center py-3'>No data found</p>
+            )}
+          </tbody>
+        </table>
       </div>
       {isDeleteModalOpen && (
         <DeleteUserModal

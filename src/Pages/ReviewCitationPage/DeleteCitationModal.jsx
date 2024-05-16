@@ -1,15 +1,12 @@
 import {
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react'
-import { RedButton } from '../../Components/Customs'
-import { MdDeleteOutline } from 'react-icons/md'
+  SLButton,
+} from '../../Components/Customs'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
@@ -48,22 +45,23 @@ const DeleteCitationModal = ({ isOpen, onClose }) => {
 
   return (
     <div className='max-h-[300px]'>
-      <Modal size={'sm'} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent rounded={0}>
+      <Modal size={'sm'} isOpen={isOpen}>
+        <ModalContent>
           <ModalHeader>Delete Citation ?</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody> This action cannot be undone</ModalBody>
 
           <ModalFooter className='flex gap-5'>
-            <Button onClick={onClose} rounded={'sm'}>
-              Cancel
-            </Button>
-            <RedButton
+            <SLButton
+              title={'Cancel'}
+              variant={'secondary'}
+              onClick={onClose}
+            />
+            <SLButton
+              variant={'error'}
               isLoading={isDeleting}
               loadingText={'Deleting...'}
               onClick={handleDelete}
-              leftIcon={<MdDeleteOutline size={22} />}
               title={'Delete'}
             />
           </ModalFooter>

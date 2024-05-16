@@ -394,7 +394,9 @@ export const Modal = ({ isOpen, children, size }) => {
   return (
     <>
       {showModal ? (
-        <div className={`fixed inset-0 z-50 flex items-center justify-center`}>
+        <div
+          className={`fixed inset-0 z-50 w-screen h-screen flex items-center justify-center`}
+        >
           <div className='fixed inset-0 z-40 bg-black opacity-50'></div>
           <div
             className={`relative z-50

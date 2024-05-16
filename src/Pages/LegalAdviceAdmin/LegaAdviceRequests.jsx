@@ -80,7 +80,7 @@ const LegalAdviceRequests = () => {
             <th className='px-4 bg-primary text-white py-2 border-r'>
               Submitted on
             </th>
-            <th className='px-4 bg-primary text-white py-2 border-r'>user</th>
+            <th className='px-4 bg-primary text-white py-2 border-r'>User</th>
             <th className='px-4 bg-primary text-white py-2 border-r'>
               Case Details
             </th>
@@ -94,7 +94,7 @@ const LegalAdviceRequests = () => {
           </tr>
         </thead>
         <tbody className='border border-primary'>
-          {forms &&
+          {forms && forms.length > 0 ? (
             forms.map((form) => (
               <tr fontSize={16} key={form._id}>
                 <td className='border px-4 py-2 text-center'>
@@ -166,7 +166,10 @@ const LegalAdviceRequests = () => {
                   </p>
                 </td>
               </tr>
-            ))}
+            ))
+          ) : (
+            <p className='text-center py-3'>No data found</p>
+          )}
         </tbody>
       </table>
       {isDeleteModalOpen && (

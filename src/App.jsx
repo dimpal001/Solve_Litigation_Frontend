@@ -19,7 +19,6 @@ import ReviewCitation from './Pages/ReviewCitationPage/ReviewCitation'
 import EditCitation from './Pages/EditCitationPage/EditCitation'
 import ViewCitation from './Pages/ViewCitationPage/ViewCitation'
 import StudyMaterialDashboard from './Pages/StudyMaterials/StudyMaterialDashboard'
-import Headroom from 'react-headroom'
 import Footer from './Components/Footer'
 import EmailVerify from './Components/EmailVerify'
 import ReVerifyEmail from './Components/ReVerifyEmail'
@@ -43,10 +42,8 @@ const App = () => {
       {/* Navbar Section */}
       <BrowserRouter>
         {(!user || user.userType === 'guest') && (
-          <div className='relative z-[6]'>
-            <Headroom>
-              <Navbar />
-            </Headroom>
+          <div className='relative z-30'>
+            <Navbar />
           </div>
         )}
 
@@ -127,9 +124,7 @@ const App = () => {
             {user && user.isVerified && (
               <Route path='/citations' element={<CitationsPage />} />
             )}
-            {user && user.userType === 'guest' && (
-              <Route path='/detailed-citation/:id' element={<ViewCitation />} />
-            )}
+            <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             {user && !user.isVerified && (
               <Route path='/verify-email' element={<ReVerifyEmail />} />
             )}

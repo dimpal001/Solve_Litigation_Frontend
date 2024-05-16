@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import { useContext, useRef, useState } from 'react'
 import { UserContext } from '../UserContext'
@@ -85,19 +85,13 @@ const Navbar = () => {
   )
 }
 
-import { enqueueSnackbar } from 'notistack'
 const NavItems = ({ onClose }) => {
-  const { user, setUser } = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
-  const navigate = useNavigate()
 
   const handleLogout = () => {
-    setUser(null)
-    sessionStorage.removeItem('jwtToken')
-    sessionStorage.removeItem('user')
-    navigate('/')
-    enqueueSnackbar('Logout Successfull', { variant: 'success' })
+    setIsLogoutModalOpen(true)
   }
 
   const handleProfileSettingsClick = () => {
@@ -157,7 +151,7 @@ const NavItems = ({ onClose }) => {
           />
         )}
       </div>
-      <div className='fixed'>
+      <div>
         {isLogoutModalOpen && (
           <ConfirmLogout
             isOpen={true}

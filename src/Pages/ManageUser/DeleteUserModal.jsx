@@ -1,13 +1,12 @@
 import {
-  Button,
   Modal,
+  ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react'
-import { RedButton } from '../../Components/Customs'
+  SLButton,
+} from '../../Components/Customs'
 import { useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
@@ -39,14 +38,21 @@ const DeleteUserModal = ({ user, isOpen, onClose, relode }) => {
   }
   return (
     <div>
-      <Modal size={'sm'} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+      <Modal size={'sm'} isOpen={isOpen}>
         <ModalContent rounded={0}>
           <ModalHeader>Delete {user.fullName} ?</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
+          <ModalBody>
+            <p>This function cannot be undone</p>
+          </ModalBody>
           <ModalFooter className='flex justify-end gap-3'>
-            <Button borderRadius={'sm'}>Cancel</Button>
-            <RedButton
+            <SLButton
+              title={'Cancel'}
+              onClick={onClose}
+              variant={'secondary'}
+            />
+            <SLButton
+              variant={'error'}
               onClick={handleDeleteUser}
               isLoading={isDeleting}
               loadingText={'Deleting...'}

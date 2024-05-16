@@ -1,14 +1,6 @@
 import axios from 'axios'
-import {
-  GreenPrimaryButton,
-  PrimaryButton,
-  PrimaryOutlineButton,
-  RedButton,
-} from '../../Components/Customs'
-import { FaArrowLeft, FaFilePdf, FaRegEdit } from 'react-icons/fa'
-import { FiCheckSquare, FiPrinter } from 'react-icons/fi'
-import { IoIosMail } from 'react-icons/io'
-import { MdMarkEmailRead, MdOutlineDeleteOutline } from 'react-icons/md'
+import { SLButton } from '../../Components/Customs'
+import { FaArrowLeft } from 'react-icons/fa'
 import { api } from '../../Components/Apis'
 import { Link, useNavigate } from 'react-router-dom'
 import { Colors } from '../../Components/Colors'
@@ -16,37 +8,14 @@ import { useContext, useState } from 'react'
 import DeleteCitationModal from './DeleteCitationModal'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
+import ShareCitationModal from './ShareCitationModal'
 
 const SingleCitationPage = ({ data }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
-  const generatePDF = async () => {
-    try {
-      const htmlContent = document.getElementById('citation-pdf').innerHTML
-
-      const response = await axios.post(
-        `${api}/api/solve_litigation/citation/citation-pdf`,
-        {
-          htmlContent: htmlContent,
-        },
-        {
-          responseType: 'blob',
-        }
-      )
-
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a')
-      link.href = url
-      link.setAttribute('download', 'generated.pdf')
-      document.body.appendChild(link) // Append the link to document body
-      link.click()
-      document.body.removeChild(link)
-    } catch (error) {
-      console.error('Error generating pdf:', error)
-    }
-  }
 
   const handleApprove = async () => {
     try {
@@ -103,25 +72,23 @@ const SingleCitationPage = ({ data }) => {
         {user.userType === 'admin' && (
           <div className='flex gap-5'>
             <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
-              <PrimaryOutlineButton
-                leftIcon={<FaRegEdit size={18} />}
-                title={'Edit'}
-              />
+              <SLButton variant={'primary'} title={'Edit'} />
             </Link>
-            <RedButton
-              leftIcon={<MdOutlineDeleteOutline size={20} />}
+            <SLButton
+              variant={'error'}
               onClick={() => setIsDeleteModalOpen(true)}
               title={'Delete'}
             />
             {data.status === 'pending' && (
-              <GreenPrimaryButton
-                leftIcon={<FiCheckSquare size={18} />}
+              <SLButton
+                variant={'success'}
                 onClick={handleApprove}
                 isLoading={isApproving}
                 loadingText={'Approving...'}
                 title={'Approve'}
               />
             )}
+
             {isDeleteModalOpen && (
               <DeleteCitationModal
                 isOpen={true}
@@ -130,22 +97,22 @@ const SingleCitationPage = ({ data }) => {
             )}
           </div>
         )}
-        {/* <div className='flex max-sm:grid grid-cols-2 gap-3 pb-5 justify-center'>
-          <PrimaryButton
-            leftIcon={<FaFilePdf size={18} />}
-            onClick={generatePDF}
-            title={'Download'}
+        {user.userType === 'guest' && (
+          <div className='flex max-sm:grid grid-cols-2 gap-3 pb-5'>
+            <SLButton
+              variant={'primary'}
+              onClick={() => setIsShareModalOpen(true)}
+              title={'Share'}
+            />
+          </div>
+        )}
+        {isShareModalOpen && (
+          <ShareCitationModal
+            isOpen={true}
+            onClose={() => setIsShareModalOpen(false)}
+            citation={data._id}
           />
-          <PrimaryButton leftIcon={<FiPrinter size={20} />} title={'Print'} />
-          <PrimaryButton
-            leftIcon={<MdMarkEmailRead size={20} />}
-            title={'Email me'}
-          />
-          <PrimaryButton
-            leftIcon={<IoIosMail size={23} />}
-            title={'Send to mail'}
-          />
-        </div> */}
+        )}
         <div id='citation-pdf' style={{ padding: '10px', fontSize: 16 }}>
           <p
             className='text-center font-extrabold'
