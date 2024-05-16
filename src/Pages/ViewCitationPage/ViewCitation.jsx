@@ -10,9 +10,11 @@ const ViewCitation = () => {
   const { id } = useParams()
   const { user } = useContext(UserContext)
   const [citation, setCitation] = useState(null)
+  const [isLoading, setIsLoading] = useState(null)
 
   const fetchCitation = async () => {
     try {
+      setIsLoading(false)
       const token = sessionStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/citation/${id}`,
@@ -25,6 +27,8 @@ const ViewCitation = () => {
       setCitation(response.data.citation)
     } catch (error) {
       console.error(error)
+    } finally {
+      setIsLoading(false)
     }
   }
   useEffect(() => {
@@ -41,8 +45,12 @@ const ViewCitation = () => {
           >
             <SingleCitationPage data={citation} />
           </div>
-        ) : (
+        ) : isLoading ? (
           <Loading title={'Loading...'} />
+        ) : (
+          <div className='w-screen h-screen flex justify-center items-center'>
+            <p className='text-2xl'>No data found</p>
+          </div>
         )}
       </div>
     </div>

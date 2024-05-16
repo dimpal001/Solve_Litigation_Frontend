@@ -151,7 +151,7 @@ const LegalAdviceRequests = () => {
                     }}
                     className='text-success cursor-pointer hover:text-successHover hover:underline'
                   >
-                    {form.feedback ? 'View Feedback' : 'Give Feedback'}
+                    {form.feedback ? 'View Feedback' : 'Give Reply'}
                   </p>
                 </td>
                 <td className='border px-4 py-2 text-center'>

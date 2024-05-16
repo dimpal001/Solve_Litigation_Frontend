@@ -9,10 +9,12 @@ import DeleteCitationModal from './DeleteCitationModal'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
 import ShareCitationModal from './ShareCitationModal'
+import AddToNotificationModal from './AddToNotificationModal'
 
 const SingleCitationPage = ({ data }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareModalOpen] = useState(false)
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false)
   const [isApproving, setIsApproving] = useState(false)
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
@@ -70,7 +72,7 @@ const SingleCitationPage = ({ data }) => {
       </div>
       <div className='max-sm:mx-3 my-3 rounded-sm bg-slate-50 lg:my-5 p-2 lg:p-10'>
         {user && user.userType === 'admin' && (
-          <div className='flex gap-5'>
+          <div className='flex gap-1'>
             <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
               <SLButton variant={'primary'} title={'Edit'} />
             </Link>
@@ -89,10 +91,25 @@ const SingleCitationPage = ({ data }) => {
               />
             )}
 
+            {data.status === 'approved' && (
+              <SLButton
+                variant={'primary'}
+                onClick={() => setIsNotificationModalOpen(true)}
+                title={'Add to Notification'}
+              />
+            )}
+
             {isDeleteModalOpen && (
               <DeleteCitationModal
                 isOpen={true}
                 onClose={() => setIsDeleteModalOpen(false)}
+              />
+            )}
+            {isNotificationModalOpen && (
+              <AddToNotificationModal
+                isOpen={true}
+                onClose={() => setIsNotificationModalOpen(false)}
+                citation={data}
               />
             )}
           </div>

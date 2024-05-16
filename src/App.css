@@ -1,3 +1,26 @@
-.hideScrollBar::-webkit-scrollbar{
-    display: none;
+.hideScrollBar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Style for the marquee */
+.marquee {
+  white-space: nowrap;
+  overflow: hidden;
+  box-sizing: border-box;
+  animation: marquee 30s linear infinite;
+}
+
+/* Pause the marquee animation when isPaused is true */
+.marquee.paused {
+  animation-play-state: paused;
+}
+
+/* Keyframe animation for the marquee */
+@keyframes marquee {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }

@@ -191,7 +191,7 @@ const ReviewCitationPage = () => {
 const Citation = ({ data }) => {
   return (
     <div>
-      <div className='p-2 max-sm:px-5 border rounded-sm border-slate-100 bg-slate-50 cursor-auto hover:bg-slate-100'>
+      <div className='p-2 relative max-sm:px-5 border rounded-sm border-slate-100 bg-slate-50 cursor-auto hover:bg-slate-100'>
         <Link to={`/admin-dashboard/detailed-citation/${data._id}`}>
           <div className='flex items-center'>
             <div>

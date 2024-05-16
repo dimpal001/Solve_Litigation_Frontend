@@ -54,7 +54,7 @@ export const SLButton = ({
   return (
     <button
       onClick={onClick}
-      className={`ml-2 px-4 ${
+      className={`px-4 ${
         isDisabled && 'bg-blue-400 cursor-not-allowed hover:bg-blue-400'
       } ${width && `w-full`} py-2 ${className}
       ${variant === 'primary' && 'bg-primary hover:bg-secondary text-white'}
@@ -488,7 +488,7 @@ export const ModalBody = ({ children }) => {
 }
 
 export const ModalFooter = ({ children }) => {
-  return <div className='flex justify-end mt-4'>{children}</div>
+  return <div className='flex justify-end gap-2 mt-5'>{children}</div>
 }
 
 export const MySpinner = () => {
