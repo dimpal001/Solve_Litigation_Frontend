@@ -1,9 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
-import {
-  GreenPrimaryButton,
-  PrimaryOutlineButton,
-} from '../../Components/Customs'
+import { Avatar, SLButton } from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link, useNavigate } from 'react-router-dom'
@@ -12,7 +9,6 @@ import {
   InputGroup,
   InputLeftElement,
   Badge,
-  Avatar,
   Input,
   InputRightElement,
 } from '@chakra-ui/react'
@@ -108,24 +104,29 @@ const ReviewCitationPage = () => {
           <div className='py-3 flex flex-col gap-y-3'>
             <div className='flex justify-between'>
               <div className='flex gap-3'>
-                <PrimaryOutlineButton
-                  bgColor={judgementType === 'pending' ? Colors.primary : null}
-                  color={judgementType === 'pending' ? 'white' : null}
+                <SLButton
+                  className={`${
+                    judgementType === 'pending'
+                      ? 'bg-primary text-white border border-primary'
+                      : 'bg-white text-primary border border-primary'
+                  }`}
+                  title={'Pending Judgements'}
                   onClick={() => handleChangejudgementType('pending')}
-                  title={'Pending judgements'}
                 />
-                <PrimaryOutlineButton
-                  color={judgementType === 'approved' ? 'white' : null}
-                  bgColor={judgementType === 'approved' ? Colors.primary : null}
+                <SLButton
+                  className={`${
+                    judgementType === 'approved'
+                      ? 'bg-primary text-white border border-primary'
+                      : 'bg-white text-primary border border-primary'
+                  }`}
+                  title={'Approved Judgements'}
                   onClick={() => handleChangejudgementType('approved')}
-                  title={'Approved judgements'}
                 />
-                <div>
-                  <GreenPrimaryButton
-                    onClick={() => setIsFilterModalOpen(true)}
-                    title={'Filter Judgements'}
-                  />
-                </div>
+                <SLButton
+                  onClick={() => setIsFilterModalOpen(true)}
+                  variant={'success'}
+                  title={'Filter Judgements'}
+                />
               </div>
               <div>
                 <InputGroup>
@@ -163,19 +164,19 @@ const ReviewCitationPage = () => {
             <div className='grid grid-cols-2 gap-5'>
               {filterjudgements &&
                 filterjudgements.map((data, index) => (
-                  <div data-aos='fade-up' key={index}>
+                  <div key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
               {pendingjudgements &&
                 pendingjudgements.map((data, index) => (
-                  <div data-aos='fade-up' key={index}>
+                  <div key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
               {approvedjudgements &&
                 approvedjudgements.map((data, index) => (
-                  <div data-aos='fade-up' key={index}>
+                  <div key={index}>
                     <Citation data={data} />
                   </div>
                 ))}
@@ -190,11 +191,11 @@ const ReviewCitationPage = () => {
 const Citation = ({ data }) => {
   return (
     <div>
-      <div className='p-2 max-sm:px-5 z-[1] border rounded-sm border-slate-100 bg-slate-50 cursor-auto hover:bg-slate-100'>
+      <div className='p-2 max-sm:px-5 border rounded-sm border-slate-100 bg-slate-50 cursor-auto hover:bg-slate-100'>
         <Link to={`/admin-dashboard/detailed-citation/${data._id}`}>
           <div className='flex items-center'>
             <div>
-              <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />
+              <Avatar />
             </div>
             <div className='px-2'>
               <p className='text-base capitalize'>{data.citationNo}</p>

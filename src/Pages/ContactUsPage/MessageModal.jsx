@@ -12,7 +12,7 @@ const MessageModal = ({ isOpen, onClose, user }) => {
       <Modal size={'lg'} isOpen={isOpen}>
         <ModalContent rounded={'sm'}>
           <ModalHeader>
-            Message by <span className='text-primary'>{user.name}</span>
+            Messaged by <span className='text-primary'>{user.name}</span>
           </ModalHeader>
           <ModalCloseButton onClick={onClose} />
           <ModalBody>

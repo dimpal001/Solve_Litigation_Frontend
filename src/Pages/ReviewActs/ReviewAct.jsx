@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
-import { PrimaryOutlineButton } from '../../Components/Customs'
+import { Avatar, SLButton } from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link, useNavigate } from 'react-router-dom'
@@ -9,7 +9,6 @@ import {
   InputGroup,
   InputLeftElement,
   Badge,
-  Avatar,
   Input,
   InputRightElement,
 } from '@chakra-ui/react'
@@ -94,7 +93,7 @@ const ReviewAct = () => {
   }, [])
 
   return (
-    <div data-aos='fade-up'>
+    <div>
       <div>
         <p className='text-3xl text-center font-extrabold'>Review Acts</p>
         {isLoading ? (
@@ -103,17 +102,23 @@ const ReviewAct = () => {
           <div className='py-3 flex flex-col gap-y-3'>
             <div className='flex justify-between'>
               <div className='flex gap-3'>
-                <PrimaryOutlineButton
-                  bgColor={actType === 'pending' ? Colors.primary : null}
-                  color={actType === 'pending' ? 'white' : null}
+                <SLButton
+                  className={`${
+                    actType === 'pending'
+                      ? 'bg-primary text-white border border-primary'
+                      : 'bg-white text-primary border border-primary'
+                  }`}
+                  title={'Pending Judgements'}
                   onClick={() => handleChangeActType('pending')}
-                  title={'Pending Acts'}
                 />
-                <PrimaryOutlineButton
-                  color={actType === 'approved' ? 'white' : null}
-                  bgColor={actType === 'approved' ? Colors.primary : null}
+                <SLButton
+                  className={`${
+                    actType === 'approved'
+                      ? 'bg-primary text-white border border-primary'
+                      : 'bg-white text-primary border border-primary'
+                  }`}
+                  title={'Approved Judgements'}
                   onClick={() => handleChangeActType('approved')}
-                  title={'Approved Acts'}
                 />
               </div>
               <div>
@@ -141,19 +146,19 @@ const ReviewAct = () => {
             <div className='grid grid-cols-2 gap-5'>
               {filterActs &&
                 filterActs.map((data, index) => (
-                  <div data-aos='fade-up' key={index}>
+                  <div key={index}>
                     <Act data={data} />
                   </div>
                 ))}
               {pendingActs &&
                 pendingActs.map((data, index) => (
-                  <div data-aos='fade-up' key={index}>
+                  <div key={index}>
                     <Act data={data} />
                   </div>
                 ))}
               {approvedActs &&
                 approvedActs.map((data, index) => (
-                  <div data-aos='fade-up' key={index}>
+                  <div key={index}>
                     <Act data={data} />
                   </div>
                 ))}
@@ -172,7 +177,7 @@ const Act = ({ data }) => {
         <Link to={`/admin-dashboard/detailed-citation/${data._id}`}>
           <div className='flex items-center'>
             <div>
-              <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />
+              <Avatar />
             </div>
             <div className='px-2'>
               <p className='text-base capitalize'>{data.institutionName}</p>

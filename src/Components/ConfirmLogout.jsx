@@ -27,7 +27,7 @@ const ConfirmLogout = ({ isOpen, onClose }) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen} size={'sm'} onClose={onClose}>
+      <Modal isOpen={isOpen} size={'sm'}>
         <ModalContent>
           <ModalHeader>Confirmation</ModalHeader>
           <ModalCloseButton onClick={onClose} />

@@ -1,11 +1,4 @@
-import {
-  FormControl,
-  FormLabel,
-  Select,
-  Checkbox,
-  Input,
-  Textarea,
-} from '@chakra-ui/react'
+import { Checkbox } from '@chakra-ui/react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useContext, useEffect, useState } from 'react'
@@ -22,9 +15,9 @@ const CitationField = ({ data, setData }) => {
   const [listPOL, setListPOL] = useState([])
   const [listCourt, setListCourt] = useState([])
   const [listApellate, setListApellate] = useState([])
-  const [apellateInputValue, setApellateInputValue] = useState('')
-  const [lawInputValue, setLawInputValue] = useState('')
-  const [POLInputValue, setPOLInputValue] = useState('')
+  const [apellateinputValue, setApellateinputValue] = useState('')
+  const [lawinputValue, setLawinputValue] = useState('')
+  const [POLinputValue, setPOLinputValue] = useState('')
   const {
     institutionName,
     index,
@@ -145,26 +138,25 @@ const CitationField = ({ data, setData }) => {
   }
 
   const filteredApellateList = listApellate.filter((item) => {
-    return item.name.toLowerCase().includes(apellateInputValue.toLowerCase())
+    return item.name.toLowerCase().includes(apellateinputValue.toLowerCase())
   })
   const filteredLawList = listLaw.filter((item) => {
-    return item.name.toLowerCase().includes(lawInputValue.toLowerCase())
+    return item.name.toLowerCase().includes(lawinputValue.toLowerCase())
   })
   const filteredPOLList = listPOL.filter((item) => {
-    return item.name.toLowerCase().includes(POLInputValue.toLowerCase())
+    return item.name.toLowerCase().includes(POLinputValue.toLowerCase())
   })
 
   return (
     <div className='flex flex-col gap-y-7 my-3 p-10 border border-slate-100 rounded-sm bg-slate-50'>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      <div className='form-control flex flex-col'>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>
             Court (Institution) Name *
           </span>
-        </FormLabel>
-        <Select
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <select
+          className='p-2 rounded-sm'
           value={institutionName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -173,19 +165,19 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         >
-          <option value=''>Select Court</option>
+          <option value=''>select Court</option>
           {listCourt.map((court, index) => (
             <option key={index} value={court.name}>
               {capitalizeString(court.name)}
             </option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
-      <FormControl>
-        <FormLabel>
+      <div className='form-control'>
+        <label>
           <span className='text-lg font-extrabold'>Index</span>
-        </FormLabel>
+        </label>
         <Editor
           value={index}
           onChange={(newContent) =>
@@ -195,25 +187,24 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
+      </div>
 
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      <div className='form-control flex flex-col'>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Case No *</span>
-        </FormLabel>
-        <Textarea
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <textarea
+          className='p-2 rounded-sm border'
           value={caseNo}
           onChange={(e) =>
             setData((prevData) => ({ ...prevData, caseNo: e.target.value }))
           }
-        />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+        ></textarea>
+      </div>
+      <div className='form-control'>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Party Name Appealant *</span>
-        </FormLabel>
+        </label>
         <Editor
           value={partyNameAppealant}
           onChange={(newContent) =>
@@ -223,13 +214,13 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      </div>
+      <div className='form-control'>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>
             Party Name Respondent *
           </span>
-        </FormLabel>
+        </label>
         <Editor
           value={partyNameRespondent}
           onChange={(newContent) =>
@@ -239,14 +230,13 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
-        </FormLabel>
-        <Input
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <input
+          className='p-2 rounded-sm border'
           value={title}
           onChange={(e) =>
             setData((prevData) => ({
@@ -255,11 +245,11 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>judgements *</span>
-        </FormLabel>
+      </div>
+      <div className='form-control'>
+        <label className='text-red-500'>
+          <span className='text-lg font-extrabold'>Judgements *</span>
+        </label>
         <Editor
           value={judgements}
           onChange={(newContent) =>
@@ -269,14 +259,13 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Date of Order *</span>
-        </FormLabel>
-        <Input
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <input
+          className='p-2 rounded-sm border'
           type='date'
           value={dateOfOrder}
           onChange={(e) =>
@@ -286,14 +275,13 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Judge Name *</span>
-        </FormLabel>
-        <Input
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <input
+          className='p-2 rounded-sm border'
           value={judgeName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -302,11 +290,11 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className=''>
+      </div>
+      <div className='form-control'>
+        <label className=''>
           <span className='text-lg font-extrabold'>Headnote</span>
-        </FormLabel>
+        </label>
         <Editor
           value={headNote}
           onChange={(newContent) =>
@@ -316,14 +304,13 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className=''>
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className=''>
           <span className='text-lg font-extrabold'>Refered Judgements</span>
-        </FormLabel>
-        <Textarea
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <textarea
+          className='p-2 rounded-sm border'
           value={referedJudgements}
           onChange={(e) =>
             setData((prevData) => ({
@@ -332,25 +319,24 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      </div>
+      <div className='form-control'>
+        <label className='text-red-500'>
           <div className='flex items-center gap-5'>
             <div>
               <span className='text-lg font-extrabold'>Apellate Types *</span>
             </div>
             <div>
-              <Input
-                value={apellateInputValue}
+              <input
+                className='p-2 rounded-sm border'
+                value={apellateinputValue}
                 color={Colors.primary}
-                rounded={'sm'}
                 placeholder='Search...'
-                onChange={(e) => setApellateInputValue(e.target.value)}
-                bgColor={'white'}
+                onChange={(e) => setApellateinputValue(e.target.value)}
               />
             </div>
           </div>
-        </FormLabel>
+        </label>
         <div className='flex gap-5 flex-wrap capitalize'>
           {filteredApellateList.map((apellate, index) => (
             <Checkbox
@@ -374,25 +360,24 @@ const CitationField = ({ data, setData }) => {
             </Checkbox>
           ))}
         </div>
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      </div>
+      <div className='form-control'>
+        <label className='text-red-500'>
           <div className='flex items-center gap-5'>
             <div>
               <span className='text-lg font-extrabold'>Law *</span>
             </div>
             <div>
-              <Input
-                value={lawInputValue}
+              <input
+                className='p-2 rounded-sm border'
+                value={lawinputValue}
                 color={Colors.primary}
-                rounded={'sm'}
                 placeholder='Search...'
-                onChange={(e) => setLawInputValue(e.target.value)}
-                bgColor={'white'}
+                onChange={(e) => setLawinputValue(e.target.value)}
               />
             </div>
           </div>
-        </FormLabel>
+        </label>
         <div className='flex gap-5 flex-wrap capitalize'>
           {filteredLawList.map((law, index) => (
             <Checkbox
@@ -414,25 +399,24 @@ const CitationField = ({ data, setData }) => {
             </Checkbox>
           ))}
         </div>
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      </div>
+      <div className='form-control'>
+        <label className='text-red-500'>
           <div className='flex items-center gap-5'>
             <div>
               <span className='text-lg font-extrabold'>Point of Law *</span>
             </div>
             <div>
-              <Input
-                value={POLInputValue}
+              <input
+                className='p-2 rounded-sm border'
+                value={POLinputValue}
                 color={Colors.primary}
-                rounded={'sm'}
                 placeholder='Search...'
-                onChange={(e) => setPOLInputValue(e.target.value)}
-                bgColor={'white'}
+                onChange={(e) => setPOLinputValue(e.target.value)}
               />
             </div>
           </div>
-        </FormLabel>
+        </label>
         <div className='flex gap-5 flex-wrap  capitalize'>
           {filteredPOLList.map((pol) => (
             <Checkbox
@@ -454,14 +438,13 @@ const CitationField = ({ data, setData }) => {
             </Checkbox>
           ))}
         </div>
-      </FormControl>
-      <FormControl>
-        <FormLabel className=''>
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className=''>
           <span className='text-lg font-extrabold'>Equivalent Citations</span>
-        </FormLabel>
-        <Input
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <input
+          className='p-2 rounded-sm border'
           value={equivalentCitations}
           onChange={(e) =>
             setData((prevData) => ({
@@ -470,14 +453,13 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className=''>
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className=''>
           <span className='text-lg font-extrabold'>Advocate Petitioner</span>
-        </FormLabel>
-        <Textarea
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <textarea
+          className='p-2 rounded-sm border'
           value={advocatePetitioner}
           onChange={(e) =>
             setData((prevData) => ({
@@ -486,14 +468,13 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className=''>
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className=''>
           <span className='text-lg font-extrabold'>Advocate Respondent</span>
-        </FormLabel>
-        <Textarea
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <textarea
+          className='rounded-sm p-2 border'
           value={advocateRespondent}
           onChange={(e) =>
             setData((prevData) => ({
@@ -502,42 +483,26 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
+      </div>
       {/* Checkboxes */}
-      <FormControl className='flex items-start gap-2'>
+      <div className='flex items-start gap-2'>
         <Checkbox
           className='mt-[6px]'
           name='reportable'
           isChecked={reportable}
           onChange={handleCheckboxChange}
         />
-        <FormLabel>Reportable</FormLabel>
-      </FormControl>
-      <FormControl className='flex items-start gap-2'>
+        <label>Reportable</label>
+      </div>
+      <div className='flex items-start gap-2'>
         <Checkbox
           className='mt-[6px]'
           name='overRuled'
           isChecked={overRuled}
           onChange={handleCheckboxChange}
         />
-        <FormLabel>Over Ruled</FormLabel>
-      </FormControl>
-      <FormControl>
-        <FormLabel className=''>
-          <span className='text-lg font-extrabold'>PDF Link</span>
-        </FormLabel>
-        <Input
-          rounded={'sm'}
-          bgColor={'white'}
-          value={equivalentCitations}
-          onChange={(e) =>
-            setData((prevData) => ({
-              ...prevData,
-              equivalentCitations: e.target.value,
-            }))
-          }
-        />
-      </FormControl>
+        <label>Over Ruled</label>
+      </div>
     </div>
   )
 }

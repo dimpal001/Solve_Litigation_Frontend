@@ -395,9 +395,9 @@ export const Modal = ({ isOpen, children, size }) => {
     <>
       {showModal ? (
         <div className={`fixed inset-0 z-50 flex items-center justify-center`}>
-          <div className='fixed inset-0 bg-black opacity-50'></div>
+          <div className='fixed inset-0 z-40 bg-black opacity-50'></div>
           <div
-            className={`relative
+            className={`relative z-50
             ${
               size === 'sm' &&
               'w-[400px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
@@ -656,6 +656,14 @@ export const SLPrimarySpinner = ({ className }) => {
           />
         </g>
       </svg>
+    </div>
+  )
+}
+
+export const Avatar = () => {
+  return (
+    <div className='bg-primary p-1'>
+      <p className='text-white'>SL</p>
     </div>
   )
 }

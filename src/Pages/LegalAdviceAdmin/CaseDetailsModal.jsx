@@ -6,7 +6,6 @@ import {
   ModalContent,
   ModalHeader,
   SLPrimarySpinner,
-  SLSpinner,
 } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'

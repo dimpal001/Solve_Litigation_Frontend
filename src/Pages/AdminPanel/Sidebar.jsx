@@ -22,7 +22,7 @@ const Sidebar = () => {
 
   return (
     <div>
-      <div className='flex flex-col h-full fixed bg-slate-900 p-3 w-60 text-white'>
+      <div className='flex flex-col h-full fixed z-40 bg-slate-900 p-3 w-60 text-white'>
         <div className='flex flex-col items-center py-5 justify-center'>
           <img src={Logo} width={'50px'} alt='' />
           <p className='text-sm capitalize text-primary font-extrabold'>
