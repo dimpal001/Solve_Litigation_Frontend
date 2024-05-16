@@ -51,7 +51,7 @@ const SingleCitationPage = ({ data }) => {
   return (
     <div>
       <div>
-        {user.userType !== 'guest' && (
+        {user && user.userType !== 'guest' && (
           <Link
             to={`/admin-dashboard/review-${
               data.type === 'act' ? 'acts' : 'citation'
@@ -69,7 +69,7 @@ const SingleCitationPage = ({ data }) => {
         )}
       </div>
       <div className='max-sm:mx-3 my-3 rounded-sm bg-slate-50 lg:my-5 p-2 lg:p-10'>
-        {user.userType === 'admin' && (
+        {user && user.userType === 'admin' && (
           <div className='flex gap-5'>
             <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
               <SLButton variant={'primary'} title={'Edit'} />
@@ -97,7 +97,7 @@ const SingleCitationPage = ({ data }) => {
             )}
           </div>
         )}
-        {user.userType === 'guest' && (
+        {user && user.userType === 'guest' && (
           <div className='flex max-sm:grid grid-cols-2 gap-3 pb-5'>
             <SLButton
               variant={'primary'}

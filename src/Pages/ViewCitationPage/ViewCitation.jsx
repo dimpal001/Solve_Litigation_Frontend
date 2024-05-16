@@ -34,7 +34,11 @@ const ViewCitation = () => {
     <div>
       <div>
         {citation ? (
-          <div className={`${user.userType === 'guest' && 'lg:px-[260px]'}`}>
+          <div
+            className={`${
+              user && user.userType !== 'admin' && 'lg:px-[260px]'
+            } ${!user && 'lg:px-[260px]'}`}
+          >
             <SingleCitationPage data={citation} />
           </div>
         ) : (
