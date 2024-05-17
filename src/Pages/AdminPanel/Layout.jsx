@@ -16,8 +16,8 @@ const Layout = () => {
 
   const handleLogout = () => {
     setUser(null)
-    sessionStorage.removeItem('jwtToken')
-    sessionStorage.removeItem('user')
+    localStorage.removeItem('jwtToken')
+    localStorage.removeItem('user')
     navigate('/')
     enqueueSnackbar('Logout Successfull', { variant: 'success' })
   }

@@ -22,7 +22,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
   const [selectedLawIds, setSelectedLawIds] = useState([])
 
   const fetchLaw = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/law-list`,
@@ -43,7 +43,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
   }, [])
 
   const handleAddingLaw = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       if (law === '') {
         enqueueSnackbar('Law name cannot be empty!', { variant: 'error' })
@@ -80,7 +80,7 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
   }
 
   const handleDeleteSelectedPOLs = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       setIsLoading(true)
 

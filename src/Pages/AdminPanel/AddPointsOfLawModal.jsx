@@ -21,7 +21,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
   const [selectedPOLIds, setSelectedPOLIds] = useState([])
 
   const fetchPOL = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/pol-list`,
@@ -42,7 +42,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
   }, [])
 
   const handleAddingPOL = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       if (pointsOfLaw === '') {
         enqueueSnackbar('Point of Law cannot be empty!', { variant: 'error' })
@@ -79,7 +79,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
   }
 
   const handleDeleteSelectedPOLs = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       setIsLoading(true)
 

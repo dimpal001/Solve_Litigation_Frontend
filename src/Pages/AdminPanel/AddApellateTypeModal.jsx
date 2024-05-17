@@ -22,7 +22,7 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
   const [selectedApellateIds, setSelectedApellateIds] = useState([])
 
   const fetchCourts = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/apellate-list`,
@@ -43,7 +43,7 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
   }, [])
 
   const handleAddingCourt = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       if (apellateTypes === '') {
         enqueueSnackbar('Apellate type cannot be empty!', { variant: 'error' })
@@ -82,7 +82,7 @@ const AddApellateTypeModal = ({ isOpen, onClose, RelodeData }) => {
   }
 
   const handleDeleteSelectedCourt = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       setIsLoading(true)
 

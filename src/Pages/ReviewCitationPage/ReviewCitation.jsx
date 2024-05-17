@@ -25,7 +25,7 @@ const ReviewCitation = () => {
 
   const fetchCitation = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/citation/${id}`,
         {
@@ -47,7 +47,7 @@ const ReviewCitation = () => {
     try {
       setIsApproving(true)
 
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
       const response = await axios.put(
         `${api}/api/solve_litigation/citation/approve-citation/${id}`,

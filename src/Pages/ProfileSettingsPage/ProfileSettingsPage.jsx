@@ -29,7 +29,7 @@ const ProfileSettingsPage = () => {
   }
 
   const fetchUserDetails = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
 
     try {
       const response = await axios.get(
@@ -62,7 +62,7 @@ const ProfileSettingsPage = () => {
         <Loading title={'Loading'} />
       ) : (
         <Center className='flex max-md:px-5 max-md:pt-10 justify-center w-full'>
-          {(user.userType === 'admin' || user.isVerified) ? (
+          {user.userType === 'admin' || user.isVerified ? (
             <div
               data-aos='fade-up'
               className='shadow-xl border w-[500px] p-10 rounded-xl'
@@ -141,7 +141,10 @@ const ProfileSettingsPage = () => {
                     />
                   )}
                   {isServiceModalOpen && (
-                    <SelectServiceModal isOpen={true} setIsOpen={setIsServiceModalOpen} />
+                    <SelectServiceModal
+                      isOpen={true}
+                      setIsOpen={setIsServiceModalOpen}
+                    />
                   )}
                   {isChangePassModalOpen && (
                     <ChangePasswordModal

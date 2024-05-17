@@ -38,8 +38,8 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     setUser(null)
-    sessionStorage.removeItem('jwtToken')
-    sessionStorage.removeItem('user')
+    localStorage.removeItem('jwtToken')
+    localStorage.removeItem('user')
     navigate('/')
     enqueueSnackbar('Session Expired!', { variant: 'error' })
   }
@@ -62,7 +62,7 @@ const AdminDashboard = () => {
 
   const fetchStatistics = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/statistics`,
         {
@@ -93,7 +93,7 @@ const AdminDashboard = () => {
   }
 
   const fetchPOL = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/pol-list`,
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
   }
 
   const fetchCourts = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/court-list`,
@@ -131,7 +131,7 @@ const AdminDashboard = () => {
   }
 
   const fetchLaw = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/law-list`,
@@ -150,7 +150,7 @@ const AdminDashboard = () => {
   }
 
   const fetchApellateTypes = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/apellate-list`,

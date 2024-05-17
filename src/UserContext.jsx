@@ -4,12 +4,12 @@ const UserContext = createContext()
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
-    const storedUser = sessionStorage.getItem('user')
+    const storedUser = localStorage.getItem('user')
     return storedUser ? JSON.parse(storedUser) : null
   })
 
   useEffect(() => {
-    const storedUser = JSON.parse(sessionStorage.getItem('user'))
+    const storedUser = JSON.parse(localStorage.getItem('user'))
     if (storedUser) {
       setUser(storedUser)
     }

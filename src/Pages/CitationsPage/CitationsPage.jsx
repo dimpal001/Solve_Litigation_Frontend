@@ -69,7 +69,7 @@ const CitationsPage = () => {
 
   const fetchLaw = async (apellate) => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/get-laws-by-apellateType`,
         {
@@ -89,7 +89,7 @@ const CitationsPage = () => {
 
   const fetchApellate = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/apellate-list`,
         {
@@ -106,7 +106,7 @@ const CitationsPage = () => {
 
   const fetchPOL = async (law) => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/get-pointOfLaw-by-law`,
         {
@@ -127,7 +127,7 @@ const CitationsPage = () => {
 
   const fetchCitations = async (POL) => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/get-citations-by-filter`,
         {
@@ -152,7 +152,7 @@ const CitationsPage = () => {
 
   const fetchActs = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/act/get-all-acts`,
         {
@@ -172,7 +172,7 @@ const CitationsPage = () => {
   const fetchLast10Citations = async () => {
     try {
       setFetchingCitations([])
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/last-10-citations`,
         {

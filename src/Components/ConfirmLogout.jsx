@@ -18,8 +18,8 @@ const ConfirmLogout = ({ isOpen, onClose }) => {
 
   const handleLogout = () => {
     setUser(null)
-    sessionStorage.removeItem('jwtToken')
-    sessionStorage.removeItem('user')
+    localStorage.removeItem('jwtToken')
+    localStorage.removeItem('user')
     navigate('/')
     onClose()
     enqueueSnackbar('Logout Successfull', { variant: 'success' })

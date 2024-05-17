@@ -28,7 +28,7 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
   const handleUplaod = async () => {
     try {
       setIsUploading(true)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/act/upload-act`,
         {

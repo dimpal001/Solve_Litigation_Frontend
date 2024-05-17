@@ -30,7 +30,7 @@ const AddToNotificationModal = ({ isOpen, onClose, citation }) => {
         },
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       )

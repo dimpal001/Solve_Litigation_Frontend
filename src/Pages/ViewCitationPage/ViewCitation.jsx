@@ -15,7 +15,7 @@ const ViewCitation = () => {
   const fetchCitation = async () => {
     try {
       setIsLoading(false)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/citation/${id}`,
         {

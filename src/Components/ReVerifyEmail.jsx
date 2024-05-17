@@ -22,8 +22,8 @@ const ReVerifyEmail = () => {
       enqueueSnackbar(response.data.message, { variant: 'success' })
 
       setUser(null)
-      sessionStorage.removeItem('jwtToken')
-      sessionStorage.removeItem('user')
+      localStorage.removeItem('jwtToken')
+      localStorage.removeItem('user')
       navigate('/')
     } catch (error) {
       console.log(error)

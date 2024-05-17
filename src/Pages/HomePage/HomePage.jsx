@@ -29,7 +29,7 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchNotification()
-    const userData = JSON.parse(sessionStorage.getItem('user'))
+    const userData = JSON.parse(localStorage.getItem('user'))
     if (
       userData &&
       userData.userType === 'guest' &&
@@ -51,7 +51,7 @@ const HomePage = () => {
       )}
       <div>
         <Marquee pauseOnHover>
-          <div className='flex pt-5 justify-around overflow-hidden w-screen'>
+          <div className='flex pt-5 gap-14 justify-around overflow-hidden min-w-screen'>
             {notifications &&
               notifications.map((item, index) => (
                 <a

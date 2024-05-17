@@ -22,7 +22,7 @@ const DeleteCitationModal = ({ isOpen, onClose }) => {
   const handleDelete = async () => {
     try {
       setIsDeleting(true)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.delete(
         `${api}/api/solve_litigation/citation/delete-citation/${id}`,
         {

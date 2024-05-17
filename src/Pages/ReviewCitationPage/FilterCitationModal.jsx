@@ -44,7 +44,7 @@ const FilterCitationModal = ({
       setSelectedCourt(court)
     }
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/filter/${
           court === 'the supreme court of india'
@@ -80,7 +80,7 @@ const FilterCitationModal = ({
     setMonths([])
     setDays([])
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/filter/get-year/${court}`,
         {
@@ -102,7 +102,7 @@ const FilterCitationModal = ({
     setSelectedDay('')
     setDays([])
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/filter/get-months/${selectedCourt}/${year}`,
         {
@@ -141,7 +141,7 @@ const FilterCitationModal = ({
     setSelectedMonth(month)
     setSelectedDay('')
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/filter/get-days/${selectedCourt}/${selectedYear}/${selectedMonth}`,
         {
@@ -160,7 +160,7 @@ const FilterCitationModal = ({
   const handleFetchCitations = async (day) => {
     setSelectedDay(day)
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/filter/get-citations/${selectedCourt}/${selectedYear}/${selectedMonth}/${selectedDay}`,
         {

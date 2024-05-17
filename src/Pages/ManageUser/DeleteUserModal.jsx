@@ -17,7 +17,7 @@ const DeleteUserModal = ({ user, isOpen, onClose, relode }) => {
   const handleDeleteUser = async () => {
     try {
       setIsDeleting(true)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.delete(
         `${api}/api/solve_litigation/auth/delete-user/${user._id}`,
         {

@@ -28,7 +28,7 @@ const MakeARequest = () => {
     formDataToSend.append('attachment', attachment)
 
     const headers = {
-      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Content-Type': 'multipart/form-data',
     }
 

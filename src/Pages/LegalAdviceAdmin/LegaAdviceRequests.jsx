@@ -18,7 +18,7 @@ const LegalAdviceRequests = () => {
 
   const fetchForms = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/legal-advice`,
         {
@@ -48,7 +48,7 @@ const LegalAdviceRequests = () => {
         `${api}/api/solve_litigation/legal-advice/${requestId}/attachments`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
           responseType: 'blob',
         }

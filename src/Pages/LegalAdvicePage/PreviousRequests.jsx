@@ -15,7 +15,7 @@ const PreviousRequests = () => {
 
   const fetchPreviousRequests = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/legal-advice/my-requests/${user._id}`,
         {
@@ -41,7 +41,7 @@ const PreviousRequests = () => {
         `${api}/api/solve_litigation/legal-advice/${requestId}/attachments`,
         {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
           responseType: 'blob',
         }

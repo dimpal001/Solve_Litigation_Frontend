@@ -44,10 +44,10 @@ const LoginPage = () => {
         formData
       )
       const { token, message, user } = response.data
-      sessionStorage.setItem('token', token)
+      localStorage.setItem('token', token)
       const expirationTime = new Date().getTime() + 10 * 1000
-      sessionStorage.setItem('user', JSON.stringify(user))
-      sessionStorage.setItem('tokenExpiration', expirationTime)
+      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('tokenExpiration', expirationTime)
 
       setUser(user)
       enqueueSnackbar(message, { variant: 'success' })

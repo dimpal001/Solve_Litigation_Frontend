@@ -6,7 +6,7 @@ import { enqueueSnackbar } from 'notistack'
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(UserContext)
 
-  if (user && sessionStorage.getItem('jwtToken')) {
+  if (user && localStorage.getItem('jwtToken')) {
     // console.log(children)
     return children
   } else {

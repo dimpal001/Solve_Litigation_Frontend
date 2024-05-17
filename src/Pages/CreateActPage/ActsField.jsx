@@ -10,7 +10,7 @@ const ActField = ({ data, setData }) => {
 
   const fetchCourt = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/court-list`,
         {
@@ -41,7 +41,9 @@ const ActField = ({ data, setData }) => {
             Court (Institution) Name *
           </span>
         </FormLabel>
-        <Select rounded={'sm'} bgColor={'white'}
+        <Select
+          rounded={'sm'}
+          bgColor={'white'}
           value={institutionName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -78,7 +80,9 @@ const ActField = ({ data, setData }) => {
         <FormLabel className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
         </FormLabel>
-        <Input rounded={'sm'} bgColor={'white'}
+        <Input
+          rounded={'sm'}
+          bgColor={'white'}
           value={title}
           onChange={(e) =>
             setData((prevData) => ({

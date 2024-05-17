@@ -27,7 +27,7 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
   useEffect(() => {
     if (isOpen) {
       setIsLoading(true)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       // Make GET request to fetch existing selected services
       axios
         .get(
@@ -66,7 +66,7 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
       enqueueSnackbar('Select a service', { variant: 'error' })
     }
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       setIsSubmitting(true)
       const response = await axios.put(
         `${api}/api/solve_litigation/auth/update-selected-service/${user._id}`,
@@ -83,7 +83,7 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
       console.log(response.data)
 
       const updatedUser = { ...user, selectedService: selectedServices }
-      sessionStorage.setItem('user', JSON.stringify(updatedUser))
+      localStorage.setItem('user', JSON.stringify(updatedUser))
       window.location.reload()
 
       setIsOpen(false)

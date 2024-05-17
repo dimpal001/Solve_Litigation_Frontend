@@ -27,15 +27,15 @@ const EditCitationPage = () => {
 
   const handleLogout = () => {
     setUser(null)
-    sessionStorage.removeItem('jwtToken')
-    sessionStorage.removeItem('user')
+    localStorage.removeItem('jwtToken')
+    localStorage.removeItem('user')
     navigate('/')
     enqueueSnackbar('Session Expired! Please login again', { variant: 'error' })
   }
 
   const fetchPendingCitation = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/pending-citations`,
         {
@@ -56,7 +56,7 @@ const EditCitationPage = () => {
 
   const approvedCitaion = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/approved-citations`,
         {

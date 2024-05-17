@@ -23,7 +23,7 @@ const SingleCitationPage = ({ data }) => {
     try {
       setIsApproving(true)
 
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
 
       const response = await axios.put(
         `${api}/api/solve_litigation/citation/approve-citation/${data._id}`,

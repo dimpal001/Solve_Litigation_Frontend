@@ -17,7 +17,7 @@ const DeleteFormModal = ({ isOpen, onClose, form, reload }) => {
   const handleDelete = async () => {
     try {
       setIsDeleting(true)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.delete(
         `${api}/api/solve_litigation/contact/${form._id}`,
         {

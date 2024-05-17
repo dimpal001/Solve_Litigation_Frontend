@@ -42,8 +42,8 @@ const CitationField = ({ data, setData }) => {
 
   const handleLogout = () => {
     setUser(null)
-    sessionStorage.removeItem('jwtToken')
-    sessionStorage.removeItem('user')
+    localStorage.removeItem('jwtToken')
+    localStorage.removeItem('user')
     navigate('/')
     enqueueSnackbar('Session Expired ! Please Login again', {
       variant: 'error',
@@ -52,7 +52,7 @@ const CitationField = ({ data, setData }) => {
 
   const fetchLaw = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/law-list`,
         {
@@ -69,7 +69,7 @@ const CitationField = ({ data, setData }) => {
 
   const fetchCourt = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/court-list`,
         {
@@ -88,7 +88,7 @@ const CitationField = ({ data, setData }) => {
   }
 
   const fetchPOL = async () => {
-    const token = sessionStorage.getItem('token')
+    const token = localStorage.getItem('token')
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/pol-list`,
@@ -106,7 +106,7 @@ const CitationField = ({ data, setData }) => {
 
   const fetchApellate = async () => {
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/apellate-list`,
         {

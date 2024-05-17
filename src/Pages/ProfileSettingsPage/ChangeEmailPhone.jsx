@@ -32,7 +32,7 @@ const ChangeEmailPhone = ({
   const handleChangeDetails = async () => {
     try {
       setIsLoading(true)
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await axios.put(
         `${api}/api/solve_litigation/auth/update-details/${user._id}`,
         { title: selectedModal, data },
