@@ -5,7 +5,6 @@ import { useState } from 'react'
 
 const DeleteModal = ({ isOpen, onClose, title, api, variant, reload }) => {
   const [isLoading, setIsLoading] = useState(false)
-  console.log(api)
 
   const handleDelete = async () => {
     try {
@@ -54,7 +53,7 @@ const DeleteModal = ({ isOpen, onClose, title, api, variant, reload }) => {
             >
               {title}
             </div>
-            <div className='text-gray-700'>This Fucntion cannot be undone.</div>
+            <div className='text-gray-700'>This fucntion cannot be undone.</div>
             <div className='mt-6 flex justify-end'>
               <button
                 onClick={onClose}

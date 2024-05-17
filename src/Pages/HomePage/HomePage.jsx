@@ -66,11 +66,8 @@ const HomePage = () => {
           </div>
         </Marquee>
       </div>
-      <div className='lg:flex flex-row-reverse lg:h-[600px] max-sm:pb-[100px] items-center gap-10 px-10 lg:px-32'>
-        <div
-          data-aos='zoom-in-up'
-          className='lg:w-[50%] flex max-md:pt-10 justify-center relative z-[5] items-center'
-        >
+      <div className='lg:flex flex-row-reverse lg:h-[500px] max-sm:pb-[100px] items-center gap-10 px-10 lg:px-32'>
+        <div className='lg:w-[50%] flex max-md:pt-10 justify-center relative z-[5] items-center'>
           <img
             style={{ width: '100%' }}
             className='relative z-[3]'

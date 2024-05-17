@@ -94,6 +94,19 @@ const Sidebar = () => {
               />
             </Link>
           )}
+
+          {user.userType === 'admin' && (
+            <Link to={'/admin-dashboard/all-notifications'}>
+              <LinkButton
+                title={'Manage Notifications'}
+                width={'100%'}
+                bgColor={
+                  isPageActive('all-notifications') ? Colors.primary : ''
+                }
+              />
+            </Link>
+          )}
+
           {user.userType === 'admin' && (
             <Link to={'/admin-dashboard/contact-forms'}>
               <LinkButton

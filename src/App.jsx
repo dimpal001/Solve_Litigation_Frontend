@@ -33,6 +33,7 @@ import UserList from './Pages/ManageUser/UserList'
 import CreateStaffpage from './Pages/ManageUser/CreateStaffpage'
 import MakeARequest from './Pages/LegalAdvicePage/MakeARequest'
 import PreviousRequests from './Pages/LegalAdvicePage/PreviousRequests'
+import AllNotifications from './Pages/ManageNotification/AllNotifications'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -85,6 +86,10 @@ const App = () => {
                     element={<UserList />}
                   />
                   <Route path='manage-users' element={<ManageUserPage />} />
+                  <Route
+                    path='all-notifications'
+                    element={<AllNotifications />}
+                  />
                   <Route
                     path='legal-advice-requests'
                     element={<LegalAdviceRequests />}

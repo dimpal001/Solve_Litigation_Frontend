@@ -149,9 +149,13 @@ const LegalAdviceRequests = () => {
                       setSelectedForm(form)
                       setIsFeedbackModalOpen(true)
                     }}
-                    className='text-success cursor-pointer hover:text-successHover hover:underline'
+                    className={`${
+                      form.feedback
+                        ? 'text-success hover:text-successHover'
+                        : 'text-primary hover:text-primaryHover'
+                    } cursor-pointer hover:underline`}
                   >
-                    {form.feedback ? 'View Feedback' : 'Give Reply'}
+                    {form.feedback ? 'View Reply' : 'Give Reply'}
                   </p>
                 </td>
                 <td className='border px-4 py-2 text-center'>

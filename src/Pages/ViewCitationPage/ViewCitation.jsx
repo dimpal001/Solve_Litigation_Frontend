@@ -24,7 +24,7 @@ const ViewCitation = () => {
           },
         }
       )
-      setCitation(response.data.citation)
+      await setCitation(response.data.citation)
     } catch (error) {
       console.error(error)
     } finally {
@@ -37,7 +37,9 @@ const ViewCitation = () => {
   return (
     <div>
       <div>
-        {citation ? (
+        {isLoading ? (
+          <Loading title={'Loading...'} />
+        ) : citation ? (
           <div
             className={`${
               user && user.userType !== 'admin' && 'lg:px-[260px]'
@@ -45,8 +47,6 @@ const ViewCitation = () => {
           >
             <SingleCitationPage data={citation} />
           </div>
-        ) : isLoading ? (
-          <Loading title={'Loading...'} />
         ) : (
           <div className='w-screen h-screen flex justify-center items-center'>
             <p className='text-2xl'>No data found</p>
