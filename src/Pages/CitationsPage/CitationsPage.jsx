@@ -14,17 +14,19 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 import axios from 'axios'
 import { PrimaryOutlineButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import Loading from '../../Components/Loading'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { LuSettings2 } from 'react-icons/lu'
 import '../../App.css'
 import { IoMdRefresh } from 'react-icons/io'
+import { enqueueSnackbar } from 'notistack'
+import { UserContext } from '../../UserContext'
 
 const CitationsPage = () => {
   const [selectedApellate, setSelectedApellate] = useState('latest')
@@ -40,6 +42,9 @@ const CitationsPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState('all')
+
+  const { setUser } = useContext(UserContext)
+  const navigate = useNavigate()
 
   const handleChangeApellate = async (apellate) => {
     setLast10Citations([])
@@ -169,6 +174,14 @@ const CitationsPage = () => {
     }
   }
 
+  const handleLogout = () => {
+    setUser(null)
+    localStorage.removeItem('jwtToken')
+    localStorage.removeItem('user')
+    navigate('/')
+    enqueueSnackbar('Session Expired!', { variant: 'error' })
+  }
+
   const fetchLast10Citations = async () => {
     try {
       setFetchingCitations([])
@@ -184,6 +197,10 @@ const CitationsPage = () => {
       setLast10Citations(response.data.last10Citations)
     } catch (error) {
       console.log(error)
+      handleLogout()
+      if (error.response.status === 401) {
+        handleLogout()
+      }
     }
   }
 

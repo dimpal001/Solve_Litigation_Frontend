@@ -39,18 +39,16 @@ const ViewCitation = () => {
       <div>
         {isLoading ? (
           <Loading title={'Loading...'} />
-        ) : citation ? (
-          <div
-            className={`${
-              user && user.userType !== 'admin' && 'lg:px-[260px]'
-            } ${!user && 'lg:px-[260px]'}`}
-          >
-            <SingleCitationPage data={citation} />
-          </div>
         ) : (
-          <div className='w-screen h-screen flex justify-center items-center'>
-            <p className='text-2xl'>No data found</p>
-          </div>
+          citation && (
+            <div
+              className={`${
+                user && user.userType !== 'admin' && 'lg:px-[260px]'
+              } ${!user && 'lg:px-[260px]'}`}
+            >
+              <SingleCitationPage data={citation} />
+            </div>
+          )
         )}
       </div>
     </div>
