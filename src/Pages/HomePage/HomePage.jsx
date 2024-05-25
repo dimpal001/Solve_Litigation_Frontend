@@ -56,7 +56,7 @@ const HomePage = () => {
               notifications.map((item, index) => (
                 <a
                   key={index}
-                  className='text-primary hover:underline'
+                  className='text-primary capitalize hover:underline'
                   href={item.link}
                   target='_blank'
                 >

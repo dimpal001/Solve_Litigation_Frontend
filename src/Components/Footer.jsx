@@ -15,9 +15,9 @@ const Footer = () => {
           <Link
             className='hover:text-gray-300 underline'
             target='_blank'
-            to={'https://dimpaldas.in'}
+            to={'https://www.trinitycybertech.com'}
           >
-            Dimpal Das
+            Trinity Cyber Tech
           </Link>
         </p>
       </div>
