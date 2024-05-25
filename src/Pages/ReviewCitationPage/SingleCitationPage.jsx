@@ -30,8 +30,12 @@ const SingleCitationPage = ({ data }) => {
   <div style="display: flex; flex-direction: column; align-items: center">
   <div style="display: flex; justify-content: space-between; width: 100%">
     <div style="color: #0052cc">
-      <p style="margin: 2px 0; font-size: 12px">User : ${user.fullName}</p>
-      <p style="margin: 2px 0; font-size: 12px">Email : ${user.email}</p>
+      <p style="margin: 2px 0; font-size: 12px">User : ${
+        user && user.fullName
+      }</p>
+      <p style="margin: 2px 0; font-size: 12px">Email : ${
+        user && user.email
+      }</p>
       <p style="margin: 2px 0; font-size: 12px">
         Downloaded : ${new Date().toLocaleString()}
       </p>
