@@ -178,6 +178,7 @@ const LegalAdviceRequests = () => {
       </table>
       {isDeleteModalOpen && (
         <DeleteModal
+          iconColor={'white'}
           title={'Delete Request?'}
           onClose={() => setIsDeleteModalOpen(false)}
           isOpen={true}

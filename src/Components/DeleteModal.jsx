@@ -3,7 +3,15 @@ import { SLSpinner } from './Customs'
 import { enqueueSnackbar } from 'notistack'
 import { useState } from 'react'
 
-const DeleteModal = ({ isOpen, onClose, title, api, variant, reload }) => {
+const DeleteModal = ({
+  isOpen,
+  onClose,
+  title,
+  api,
+  variant,
+  reload,
+  iconColor,
+}) => {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleDelete = async () => {
@@ -69,7 +77,11 @@ const DeleteModal = ({ isOpen, onClose, title, api, variant, reload }) => {
                   ${!variant && 'bg-primary hover:bg-secondary'}
                    text-white rounded-sm`}
               >
-                {isLoading === true ? <SLSpinner /> : 'Delete'}{' '}
+                {isLoading === true ? (
+                  <SLSpinner iconColor={iconColor} />
+                ) : (
+                  'Delete'
+                )}{' '}
                 {isLoading && 'Deleting...'}
               </button>
             </div>

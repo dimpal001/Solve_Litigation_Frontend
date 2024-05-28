@@ -1,12 +1,6 @@
 import { useState, useEffect } from 'react'
 import CitationField from './CitationField'
-import {
-  PrimaryButton,
-  PrimaryOutlineButton,
-  RedButton,
-} from '../../Components/Customs'
-import { MdDeleteForever } from 'react-icons/md'
-import { MdOutlineCloudUpload } from 'react-icons/md'
+import { PrimaryOutlineButton, SLButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import ReviewCitationModal from './ReviewCitationModal'
 import ResetAllModal from './ResetAllModal'
@@ -187,15 +181,15 @@ const CreateCitation = () => {
           <CitationField data={data} setData={setData} />
         )}
         <div className='pt-10 pb-20 flex gap-5'>
-          <PrimaryButton
+          <SLButton
+            variant={'primary'}
             title={'Upload Citation'}
             onClick={handleReview}
-            leftIcon={<MdOutlineCloudUpload size={20} />}
           />
-          <RedButton
+          <SLButton
+            variant={'error'}
             title={'Reset All'}
             onClick={handleResetModalOpen}
-            leftIcon={<MdDeleteForever size={20} />}
           />
         </div>
       </div>

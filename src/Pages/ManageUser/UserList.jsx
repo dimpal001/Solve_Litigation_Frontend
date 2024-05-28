@@ -110,7 +110,7 @@ const UserList = () => {
         />
       </div>
       <div>
-        <table className='table-auto w-full border-collapse border border-primary'>
+        <table className='table-auto w-full mb-10 border-collapse border border-primary'>
           <thead className='bg-primary'>
             <tr className='bg-gray-200 capitalize'>
               <th className='px-4 bg-primary text-white py-2 border-r'>
@@ -140,7 +140,13 @@ const UserList = () => {
                     {data.phoneNumber}
                   </td>
                   <td
-                    className='border px-4 py-2 text-center capitalize'
+                    className={`border ${
+                      data.userType === 'admin'
+                        ? 'text-green-500'
+                        : data.userType === 'guest'
+                        ? 'text-primary'
+                        : 'text-yellow-600'
+                    } px-4 py-2 text-center capitalize`}
                     color={data.userType === 'admin' ? 'green' : 'blue'}
                   >
                     {data.userType}

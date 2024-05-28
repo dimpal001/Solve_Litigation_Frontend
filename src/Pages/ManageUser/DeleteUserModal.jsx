@@ -55,6 +55,7 @@ const DeleteUserModal = ({ user, isOpen, onClose, relode }) => {
               variant={'error'}
               onClick={handleDeleteUser}
               isLoading={isDeleting}
+              iconColor={'white'}
               loadingText={'Deleting...'}
               title={'Delete'}
             />

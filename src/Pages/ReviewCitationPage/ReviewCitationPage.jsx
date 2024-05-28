@@ -122,11 +122,11 @@ const ReviewCitationPage = () => {
                   title={'Approved Judgements'}
                   onClick={() => handleChangejudgementType('approved')}
                 />
-                <SLButton
+                {/* <SLButton
                   onClick={() => setIsFilterModalOpen(true)}
                   variant={'success'}
                   title={'Filter Judgements'}
-                />
+                /> */}
               </div>
               <div>
                 <InputGroup>

@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   SLButton,
+  UploadIcon,
 } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
@@ -63,19 +64,30 @@ const SendFeedbackModal = ({ isOpen, onClose, form }) => {
           </ModalBody>
           {!form.feedback && (
             <ModalFooter>
-              <SLButton
-                onClick={onClose}
-                title={'Cancel'}
-                variant={'secondary'}
-              />
-              <SLButton
-                onClick={handleSubmit}
-                isLoading={isSubmitting}
-                iconColor={'white'}
-                loadingText={'Submitting...'}
-                title={'Submit'}
-                variant={'primary'}
-              />
+              <div className='flex justify-between items-center w-full'>
+                <div>
+                  <SLButton
+                    title={'Upload Attachment'}
+                    variant={'primary'}
+                    icon={<UploadIcon size={25} />}
+                  />
+                </div>
+                <div className='flex items-center gap-5'>
+                  <SLButton
+                    onClick={onClose}
+                    title={'Cancel'}
+                    variant={'secondary'}
+                  />
+                  <SLButton
+                    onClick={handleSubmit}
+                    isLoading={isSubmitting}
+                    iconColor={'white'}
+                    loadingText={'Submitting...'}
+                    title={'Submit'}
+                    variant={'primary'}
+                  />
+                </div>
+              </div>
             </ModalFooter>
           )}
         </ModalContent>

@@ -193,13 +193,15 @@ const CitationField = ({ data, setData }) => {
         <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Case No *</span>
         </label>
-        <textarea
-          className='p-2 rounded-sm border'
+        <Editor
           value={caseNo}
-          onChange={(e) =>
-            setData((prevData) => ({ ...prevData, caseNo: e.target.value }))
+          onChange={(newContent) =>
+            setData((prevData) => ({
+              ...prevData,
+              caseNo: newContent,
+            }))
           }
-        ></textarea>
+        />
       </div>
       <div className='form-control'>
         <label className='text-red-500'>
@@ -262,11 +264,17 @@ const CitationField = ({ data, setData }) => {
       </div>
       <div className='form-control flex flex-col'>
         <label className='text-red-500'>
-          <span className='text-lg font-extrabold'>Date of Order *</span>
+          <span className='text-lg font-extrabold'>
+            Date of Order * :{' '}
+            <span className='text-primary'>
+              {dateOfOrder && new Date(dateOfOrder).toLocaleDateString()}
+            </span>
+          </span>
         </label>
         <input
           className='p-2 rounded-sm border'
           type='date'
+          placeholder={new Date(dateOfOrder)}
           value={dateOfOrder}
           onChange={(e) =>
             setData((prevData) => ({
@@ -328,7 +336,7 @@ const CitationField = ({ data, setData }) => {
             </div>
             <div>
               <input
-                className='p-2 rounded-sm border'
+                className='p-2 text-primary rounded-sm border'
                 value={apellateinputValue}
                 color={Colors.primary}
                 placeholder='Search...'
@@ -369,7 +377,7 @@ const CitationField = ({ data, setData }) => {
             </div>
             <div>
               <input
-                className='p-2 rounded-sm border'
+                className='p-2 text-primary rounded-sm border'
                 value={lawinputValue}
                 color={Colors.primary}
                 placeholder='Search...'
@@ -408,7 +416,7 @@ const CitationField = ({ data, setData }) => {
             </div>
             <div>
               <input
-                className='p-2 rounded-sm border'
+                className='p-2 rounded-sm text-primary border'
                 value={POLinputValue}
                 color={Colors.primary}
                 placeholder='Search...'

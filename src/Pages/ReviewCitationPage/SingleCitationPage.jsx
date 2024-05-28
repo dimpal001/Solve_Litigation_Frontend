@@ -219,6 +219,61 @@ const SingleCitationPage = ({ data }) => {
     }
   }
 
+  const printPdf = async () => {
+    // example header, replace with your actual header
+
+    const htmlContent = `<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>${data.citationNo}</title>
+        <style>
+        @page {
+          margin: 0;
+        }
+        body {
+          margin: 1in;
+        }
+        /* Hide header/footer elements that show date, page numbers, etc. */
+        @media print {
+          body {
+            -webkit-print-color-adjust: exact;
+          }
+          .no-print {
+            display: none !important;
+          }
+        }
+      </style>
+      </head>
+      <body>
+        ${pdfHeader + document.querySelector('#citation-pdf').innerHTML}
+      </body>
+    </html>`
+
+    // Create an iframe element
+    const iframe = document.createElement('iframe')
+    iframe.style.position = 'fixed'
+    iframe.style.right = '100%'
+    iframe.style.bottom = '100%'
+    iframe.style.width = '0'
+    iframe.style.height = '0'
+    iframe.style.border = 'none'
+    document.body.appendChild(iframe)
+
+    // Write the HTML content to the iframe
+    const doc = iframe.contentDocument || iframe.contentWindow.document
+    doc.open()
+    doc.write(htmlContent)
+    doc.close()
+
+    // Wait for the iframe content to load, then print
+    setTimeout(() => {
+      iframe.contentWindow.print()
+      document.body.removeChild(iframe)
+    }, 500) // Adjust the delay as needed
+  }
+
   return (
     <div>
       <div>
@@ -268,20 +323,6 @@ const SingleCitationPage = ({ data }) => {
                   title={'Add to Notification'}
                 />
               )}
-
-              {isDeleteModalOpen && (
-                <DeleteCitationModal
-                  isOpen={true}
-                  onClose={() => setIsDeleteModalOpen(false)}
-                />
-              )}
-              {isNotificationModalOpen && (
-                <AddToNotificationModal
-                  isOpen={true}
-                  onClose={() => setIsNotificationModalOpen(false)}
-                  citation={data}
-                />
-              )}
             </div>
           )}
           {user && (
@@ -297,11 +338,29 @@ const SingleCitationPage = ({ data }) => {
                 loadingText={'Downloading...'}
                 onClick={generatePdf}
                 iconColor={'white'}
-                title={'Download PDF'}
+                title={'Download'}
+              />
+              <SLButton
+                variant={'primary'}
+                onClick={printPdf}
+                title={'Print'}
               />
             </div>
           )}
         </div>
+        {isDeleteModalOpen && (
+          <DeleteCitationModal
+            isOpen={true}
+            onClose={() => setIsDeleteModalOpen(false)}
+          />
+        )}
+        {isNotificationModalOpen && (
+          <AddToNotificationModal
+            isOpen={true}
+            onClose={() => setIsNotificationModalOpen(false)}
+            citation={data}
+          />
+        )}
         {isShareModalOpen && (
           <ShareCitationModal
             isOpen={true}

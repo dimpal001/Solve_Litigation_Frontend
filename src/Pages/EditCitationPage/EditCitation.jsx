@@ -4,8 +4,7 @@ import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useEffect, useState } from 'react'
 import Loading from '../../Components/Loading'
-import { PrimaryButton } from '../../Components/Customs'
-import { FaCheck } from 'react-icons/fa'
+import { SLButton } from '../../Components/Customs'
 import { enqueueSnackbar } from 'notistack'
 import ActField from '../CreateActPage/ActsField'
 
@@ -96,12 +95,12 @@ const EditCitation = () => {
                 <CitationField data={data} setData={setData} />
               )}
               <div className='pt-5 pb-10'>
-                <PrimaryButton
+                <SLButton
+                  variant={'primary'}
                   title={'Update Citaion'}
                   isLoading={isUpdating}
                   onClick={handleUpdate}
                   loadingText={'Updating...'}
-                  leftIcon={<FaCheck size={17} />}
                 />
               </div>
             </div>

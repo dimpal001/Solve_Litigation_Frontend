@@ -1,11 +1,6 @@
-import { useState } from 'react'
-import { CustomInput, PrimaryButton } from '../../Components/Customs'
-import {
-  FormControl,
-  FormHelperText,
-  FormLabel,
-  Spacer,
-} from '@chakra-ui/react'
+import { useRef, useState } from 'react'
+import { CustomInput, SLButton, UploadIcon } from '../../Components/Customs'
+import { FormControl, FormLabel, Spacer } from '@chakra-ui/react'
 import { enqueueSnackbar } from 'notistack'
 
 import { api } from '../../Components/Apis'
@@ -13,6 +8,11 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 const MakeARequest = () => {
+  const fileInputRef = useRef(null)
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click()
+  }
   const [caseDetails, setCaseDetails] = useState('')
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -53,14 +53,14 @@ const MakeARequest = () => {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
-    if (file && file.type === 'application/pdf' && file.size <= 5242880 * 2) {
+    if (file && file.size <= 5242880 * 2) {
       setAttachment(file)
     } else {
       e.target.value = null
       setAttachment(null)
       enqueueSnackbar(
         'Attach a valid file! Please select a valid PDF file (less than 10 MB).',
-        { variant: 'info' }
+        { variant: 'error' }
       )
     }
   }
@@ -70,48 +70,61 @@ const MakeARequest = () => {
       <h1 className='text-4xl text-primary font-bold mb-4'>
         Make a Request for Legal advice
       </h1>
-      <form onSubmit={handleSubmit} className='mb-8'>
-        <div className='mb-6'>
-          <label htmlFor='caseDetails' className='block font-medium mb-1'>
-            Case Details
-          </label>
-          <textarea
-            id='caseDetails'
-            className='w-full rounded-sm px-4 py-2 border border-gray-300 resize-none'
-            rows='6'
-            placeholder='Please describe your case details here...'
-            value={caseDetails}
-            onChange={(e) => setCaseDetails(e.target.value)}
-            required
-          ></textarea>
-        </div>
+      {/* <form className='mb-8'> */}
+      <div className='mb-6'>
+        <label htmlFor='caseDetails' className='block font-medium mb-1'>
+          Case Details
+        </label>
+        <textarea
+          id='caseDetails'
+          className='w-full rounded-sm px-4 py-2 border border-gray-300 resize-none'
+          rows='6'
+          placeholder='Please describe your case details here...'
+          value={caseDetails}
+          onChange={(e) => setCaseDetails(e.target.value)}
+          required
+        ></textarea>
+      </div>
 
-        {/* Input file max size 10mb */}
-        <FormControl>
-          <FormLabel htmlFor='fileAttachments' fontWeight={'normal'}>
-            Upload Relevant documents for the Case:
-          </FormLabel>
-          <CustomInput
-            variant={'outline'}
-            pt={1.5}
-            type='file'
-            name='fileAttachments'
-            id='fileAttachments'
-            onChange={handleFileChange}
-          />
-          <FormHelperText>
-            The documents should be merged in a single pdf file and should be
-            less than 10 mb.
-          </FormHelperText>
-        </FormControl>
-        <Spacer h={6} />
-        <PrimaryButton
-          type={'submit'}
-          size={'lg'}
-          title={isSubmitting ? 'Submitting..' : 'Submit'}
-          isLoading={isSubmitting}
+      {/* Input file max size 10mb */}
+      <FormControl>
+        <FormLabel htmlFor='fileAttachments' fontWeight={'normal'}>
+          <div className='flex gap-5'>
+            Upload Relevant documents for the Case: (Optional)
+            <SLButton
+              title={'PDF file'}
+              variant={'primary'}
+              icon={<UploadIcon size={25} />}
+              onClick={handleButtonClick}
+            />
+            {/* <SLButton
+                title={'Word file'}
+                variant={'primary'}
+                icon={<UploadIcon size={25} />}
+              /> */}
+          </div>
+        </FormLabel>
+        <CustomInput
+          className={'hidden'}
+          variant={'outline'}
+          pt={1.5}
+          ref={fileInputRef}
+          type='file'
+          name='fileAttachments'
+          id='fileAttachments'
+          onChange={handleFileChange}
         />
-      </form>
+      </FormControl>
+      <Spacer h={6} />
+      <SLButton
+        onClick={handleSubmit}
+        variant={'success'}
+        type={'submit'}
+        size={'lg'}
+        title={isSubmitting ? 'Submitting..' : 'Submit'}
+        isLoading={isSubmitting}
+      />
+      {/* </form> */}
 
       <div>
         <Link to={'/previous-requests'}>

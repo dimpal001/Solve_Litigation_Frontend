@@ -83,7 +83,7 @@ const Sidebar = () => {
             </Link>
           )}
 
-          {user.userType === 'admin' && (
+          {/* {user.userType === 'admin' && (
             <Link to={'/admin-dashboard/legal-advice-requests'}>
               <LinkButton
                 title={'Legal Advice Requests'}
@@ -93,7 +93,7 @@ const Sidebar = () => {
                 }
               />
             </Link>
-          )}
+          )} */}
 
           {user.userType === 'admin' && (
             <Link to={'/admin-dashboard/all-notifications'}>
