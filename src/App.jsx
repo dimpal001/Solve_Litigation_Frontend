@@ -34,6 +34,7 @@ import CreateStaffpage from './Pages/ManageUser/CreateStaffpage'
 import MakeARequest from './Pages/LegalAdvicePage/MakeARequest'
 import PreviousRequests from './Pages/LegalAdvicePage/PreviousRequests'
 import AllNotifications from './Pages/ManageNotification/AllNotifications'
+import Chat from './Pages/ChatPage/Chat'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -137,6 +138,7 @@ const App = () => {
             {user && (
               <Route path='/make-a-request' element={<MakeARequest />} />
             )}
+            {user && <Route path='/chat' element={<Chat />} />}
             {user && (
               <Route path='/previous-requests' element={<PreviousRequests />} />
             )}

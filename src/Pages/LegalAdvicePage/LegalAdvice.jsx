@@ -1,7 +1,16 @@
 import { Link } from 'react-router-dom'
 import { SLButton } from '../../Components/Customs'
+import { useContext } from 'react'
+import { UserContext } from '../../UserContext'
 
 const LegalAdvice = () => {
+  const { user } = useContext(UserContext)
+  const token = localStorage.getItem('token')
+
+  const redirectToChat = () => {
+    window.open(`http://localhost:5173/?token=${token}&user=${user}`, '_blank')
+  }
+
   return (
     <div className='container mx-auto min-h-[calc(100vh-150px)] flex items-center lg:px-[250px] px-4 py-8'>
       <div>
@@ -18,9 +27,14 @@ const LegalAdvice = () => {
           complexities of the legal system with confidence.
         </p>
         <div className='flex max-sm:flex-col gap-3'>
-          <Link to={'/make-a-request'}>
+          <SLButton
+            onClick={redirectToChat}
+            title={'Chat with Lawyer'}
+            variant={'primary'}
+          />
+          {/* <Link to={'/make-a-request'}>
             <SLButton title={'Make a request'} variant={'primary'} />
-          </Link>
+          </Link> */}
           <Link to={'/previous-requests'}>
             <SLButton title={'See Previous Requests'} variant={'secondary'} />
           </Link>
