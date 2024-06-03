@@ -1,14 +1,17 @@
 import { Link } from 'react-router-dom'
 import { SLButton } from '../../Components/Customs'
-import { useContext } from 'react'
-import { UserContext } from '../../UserContext'
 
 const LegalAdvice = () => {
-  const { user } = useContext(UserContext)
+  const user = JSON.parse(localStorage.getItem('user'))
+  console.log(user)
   const token = localStorage.getItem('token')
+  const userString = encodeURIComponent(JSON.stringify(user))
 
   const redirectToChat = () => {
-    window.open(`http://localhost:5173/?token=${token}&user=${user}`, '_blank')
+    window.open(
+      `http://localhost:5173/?token=${token}&user=${userString}`,
+      '_blank'
+    )
   }
 
   return (

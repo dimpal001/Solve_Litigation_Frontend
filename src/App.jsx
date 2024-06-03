@@ -35,6 +35,13 @@ import MakeARequest from './Pages/LegalAdvicePage/MakeARequest'
 import PreviousRequests from './Pages/LegalAdvicePage/PreviousRequests'
 import AllNotifications from './Pages/ManageNotification/AllNotifications'
 import Chat from './Pages/ChatPage/Chat'
+import ManageLawyer from './Pages/ManageLawyer/ManageLawyer'
+import LawyerList from './Pages/ManageLawyer/LawyerList'
+import CreateLawyer from './Pages/ManageLawyer/CreateLawyer'
+import LawyerProfile from './Pages/ManageLawyer/LawyerProfile'
+import CreateMaterial from './Pages/StudyMaterials/CreateMaterial'
+import ManageTopic from './Pages/ManageTopic/ManageTopic'
+import ViewMaterial from './Pages/StudyMaterials/ViewMaterial'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -110,10 +117,18 @@ const App = () => {
                     path='study-materials'
                     element={<StudyMaterialDashboard />}
                   />
+                  <Route path='create-material' element={<CreateMaterial />} />
+                  <Route path='manage-topic' element={<ManageTopic />} />
+                  <Route path='view-material' element={<ViewMaterial />} />
                   <Route
                     path='profile-settings'
                     element={<ProfileSettingsPage />}
                   />
+
+                  <Route path='manage-lawyer' element={<ManageLawyer />} />
+                  <Route path='lawyer-list' element={<LawyerList />} />
+                  <Route path='create-lawyer' element={<CreateLawyer />} />
+                  <Route path='lawyer/:id' element={<LawyerProfile />} />
                 </Route>
               )}
             {!user && <Route path='/login' element={<LoginPage />} />}

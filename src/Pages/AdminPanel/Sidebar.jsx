@@ -66,13 +66,13 @@ const Sidebar = () => {
               bgColor={isPageActive('edit-citation') ? Colors.primary : ''}
             />
           </Link> */}
-          {/* <Link to={'/admin-dashboard/study-materials'}>
+          <Link to={'/admin-dashboard/study-materials'}>
             <LinkButton
               title={'Study Materials'}
               width={'100%'}
               bgColor={isPageActive('study-materials') ? Colors.primary : ''}
             />
-          </Link> */}
+          </Link>
           {user.userType === 'admin' && (
             <Link to={'/admin-dashboard/manage-users'}>
               <LinkButton
@@ -116,11 +116,11 @@ const Sidebar = () => {
               />
             </Link>
           )}
-          {/* <Link to={'/admin-dashboard/citation-activity'}>
+          {/* <Link to={'/admin-dashboard/manage-lawyer'}>
             <LinkButton
-              title={'Citation Activity'}
+              title={'Manage Lawyer'}
               width={'100%'}
-              bgColor={isPageActive('citation-activity') ? Colors.primary : ''}
+              bgColor={isPageActive('manage-lawyer') ? Colors.primary : ''}
             />
           </Link> */}
         </div>

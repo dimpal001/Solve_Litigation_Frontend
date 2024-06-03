@@ -433,7 +433,11 @@ const SingleCitationPage = ({ data }) => {
             )}
             {data.judgements && (
               <div>
-                <strong className='text-lg underline'>Judgement : </strong>
+                {data.type === 'judgement' && (
+                  <p className='text-lg font-bold py-5 underline'>
+                    Judgement :{' '}
+                  </p>
+                )}
                 <div
                   dangerouslySetInnerHTML={{
                     __html: data.judgements,

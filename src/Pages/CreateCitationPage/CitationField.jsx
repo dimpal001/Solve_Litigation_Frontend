@@ -387,25 +387,27 @@ const CitationField = ({ data, setData }) => {
           </div>
         </label>
         <div className='flex gap-5 flex-wrap capitalize'>
-          {filteredLawList.map((law, index) => (
-            <Checkbox
-              key={index}
-              name={`law_${law._id}`}
-              isChecked={laws.includes(law.name)}
-              onChange={(e) => {
-                const { checked } = e.target
-                const lawName = law.name
-                setData((prevData) => ({
-                  ...prevData,
-                  laws: checked
-                    ? [...prevData.laws, lawName] // Store the name in the array
-                    : prevData.laws.filter((name) => name !== lawName), // Remove the name from the array
-                }))
-              }}
-            >
-              {law.name}
-            </Checkbox>
-          ))}
+          {filteredLawList
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sort the law list alphabetically
+            .map((law, index) => (
+              <Checkbox
+                key={index}
+                name={`law_${law._id}`}
+                isChecked={laws.includes(law.name)}
+                onChange={(e) => {
+                  const { checked } = e.target
+                  const lawName = law.name
+                  setData((prevData) => ({
+                    ...prevData,
+                    laws: checked
+                      ? [...prevData.laws, lawName] // Store the name in the array
+                      : prevData.laws.filter((name) => name !== lawName), // Remove the name from the array
+                  }))
+                }}
+              >
+                {law.name}
+              </Checkbox>
+            ))}
         </div>
       </div>
       <div className='form-control'>
@@ -426,25 +428,27 @@ const CitationField = ({ data, setData }) => {
           </div>
         </label>
         <div className='flex gap-5 flex-wrap  capitalize'>
-          {filteredPOLList.map((pol) => (
-            <Checkbox
-              key={pol._id}
-              name={`pol_${pol._id}`}
-              isChecked={pointOfLaw.includes(pol.name)}
-              onChange={(e) => {
-                const { checked } = e.target
-                const polName = pol.name
-                setData((prevData) => ({
-                  ...prevData,
-                  pointOfLaw: checked
-                    ? [...prevData.pointOfLaw, polName]
-                    : prevData.pointOfLaw.filter((name) => name !== polName),
-                }))
-              }}
-            >
-              {pol.name}
-            </Checkbox>
-          ))}
+          {filteredPOLList
+            .sort((a, b) => a.name.localeCompare(b.name)) // Sort the POL list alphabetically
+            .map((pol) => (
+              <Checkbox
+                key={pol._id}
+                name={`pol_${pol._id}`}
+                isChecked={pointOfLaw.includes(pol.name)}
+                onChange={(e) => {
+                  const { checked } = e.target
+                  const polName = pol.name
+                  setData((prevData) => ({
+                    ...prevData,
+                    pointOfLaw: checked
+                      ? [...prevData.pointOfLaw, polName]
+                      : prevData.pointOfLaw.filter((name) => name !== polName),
+                  }))
+                }}
+              >
+                {pol.name}
+              </Checkbox>
+            ))}
         </div>
       </div>
       <div className='form-control flex flex-col'>

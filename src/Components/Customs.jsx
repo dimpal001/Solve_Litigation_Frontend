@@ -42,6 +42,7 @@ export const PrimaryButton = ({
 
 export const SLButton = ({
   title,
+  type,
   variant,
   isLoading,
   iconColor,
@@ -54,6 +55,7 @@ export const SLButton = ({
 }) => {
   return (
     <button
+      type={type}
       onClick={onClick}
       className={`px-4 ${
         isDisabled && 'bg-blue-400 cursor-not-allowed hover:bg-blue-400'
