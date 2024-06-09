@@ -42,7 +42,7 @@ const ConfirmLogout = ({ isOpen, onClose }) => {
               title={'Cancel'}
             />
             <SLButton
-              variant={'primary'}
+              variant={'error'}
               onClick={handleLogout}
               title={'Logout'}
             />

@@ -42,6 +42,7 @@ import LawyerProfile from './Pages/ManageLawyer/LawyerProfile'
 import CreateMaterial from './Pages/StudyMaterials/CreateMaterial'
 import ManageTopic from './Pages/ManageTopic/ManageTopic'
 import ViewMaterial from './Pages/StudyMaterials/ViewMaterial'
+import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -161,6 +162,10 @@ const App = () => {
             <Route path='/reset-password/:token' element={<ResetLinkPage />} />
             <Route path='/services' element={<ServicesPage />} />
             <Route path='/contact-us' element={<ContactUsPage />} />
+
+            {user && (
+              <Route path='/study-material' element={<StudyMaterialUser />} />
+            )}
             <Route path='/*' element={<Error404 />} />
           </Routes>
         </div>

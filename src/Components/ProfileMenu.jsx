@@ -1,8 +1,8 @@
-import { Avatar, Button, Menu, MenuButton, MenuList } from '@chakra-ui/react'
+import { Avatar, Menu, MenuButton, MenuList } from '@chakra-ui/react'
 import { Colors } from './Colors'
 import { MdPlace } from 'react-icons/md'
 import { Link } from 'react-router-dom'
-import { PrimaryOutlineButton } from './Customs'
+import { SLButton } from './Customs'
 
 const ProfileMenu = ({
   user,
@@ -55,14 +55,17 @@ const ProfileMenu = ({
                 }
                 title='Profile Settings'
               >
-                <Button borderRadius={'sm'} width={'100%'}>
-                  Profile Settings
-                </Button>
+                <SLButton
+                  title={'Profile Settings'}
+                  variant={'secondary'}
+                  width={'full'}
+                />
               </Link>
             </div>
             {user.userType !== 'admin' && (
               <div title='Logout' className='flex justify-center'>
-                <PrimaryOutlineButton
+                <SLButton
+                  variant={'error'}
                   onClick={handleLogout}
                   width={'100%'}
                   title={'Logout'}

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Center, Checkbox } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
-import { CustomInput, PrimaryButton } from '../../Components/Customs'
+import { CustomInput, PrimaryButton, SLButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { Link, useNavigate } from 'react-router-dom'
 import AOS from 'aos'
@@ -30,7 +30,8 @@ const LoginPage = () => {
     setCaptcha(Math.random().toString(36).slice(8))
   }
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault()
     refreshString()
     try {
       const enteredCaptcha = formData.captcha
@@ -162,7 +163,17 @@ const LoginPage = () => {
                   /> */}
                 </div>
                 <div className='w-full flex justify-between pt-3'>
-                  <PrimaryButton
+                  <SLButton
+                    width={'full'}
+                    type={'submit'}
+                    iconColor={'white'}
+                    isLoading={isLoading}
+                    loadingText={'Please wait...'}
+                    onClick={handleLogin}
+                    title={'Login'}
+                    variant={'primary'}
+                  />
+                  {/* <PrimaryButton
                     type={'submit'}
                     isLoading={isLoading}
                     loadingText={'Signing in...'}
@@ -170,7 +181,7 @@ const LoginPage = () => {
                     title={'Login'}
                     onClick={handleLogin}
                     isDisabled={isSubmitDisabled()}
-                  />
+                  /> */}
                 </div>
                 <div>
                   <Link to={'/reset-password'}>

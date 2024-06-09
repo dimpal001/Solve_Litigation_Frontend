@@ -122,7 +122,7 @@ const NavItems = ({ onClose }) => {
         {user &&
           user.userType === 'guest' &&
           user.selectedService.includes('studyResources') && (
-            <NavItem onClick={onClose} title='Home Page' to={'/*'}>
+            <NavItem onClick={onClose} title='Home Page' to={'/study-material'}>
               Study Material
             </NavItem>
           )}

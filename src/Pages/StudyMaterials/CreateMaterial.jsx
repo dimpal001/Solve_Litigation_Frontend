@@ -12,6 +12,7 @@ const CreateMaterial = () => {
   })
   const [topics, setTopics] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isSuccess, setIsSuccess] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
 
   const fetchTopics = async () => {
@@ -43,8 +44,19 @@ const CreateMaterial = () => {
     })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
+    if (formData.topicId === '') {
+      enqueueSnackbar('Select a valid Topic!', { variant: 'error' })
+      return
+    }
+    if (formData.question === '') {
+      enqueueSnackbar('Write a valid question!', { variant: 'error' })
+      return
+    }
+    if (formData.answer === '') {
+      enqueueSnackbar('Write a valid answer!', { variant: 'error' })
+      return
+    }
 
     setIsLoading(true)
     try {
@@ -60,13 +72,17 @@ const CreateMaterial = () => {
           },
         }
       )
-      console.log(response.data)
       setFormData({ topicId: '', question: '', answer: '' })
-      enqueueSnackbar(response.data.message, {
-        variant: 'success',
-      })
+
+      setIsSuccess(true)
+      console.log(isSuccess)
+
+      if (isSuccess) {
+        enqueueSnackbar(response.data.message, {
+          variant: 'success',
+        })
+      }
     } catch (error) {
-      console.error(error)
       enqueueSnackbar(error.response.data.error, { variant: 'error' })
     } finally {
       setIsLoading(false)
@@ -78,7 +94,7 @@ const CreateMaterial = () => {
       <p className='text-3xl font-extrabold pb-5 text-center'>
         Create Study Material
       </p>
-      <form onSubmit={handleSubmit} className='px-[200px]'>
+      <div className='px-[200px]'>
         <div className='pb-4'>
           <label className='block text-lg font-medium'>Topic</label>
           <select
@@ -126,12 +142,13 @@ const CreateMaterial = () => {
           <SLButton
             title={'Submit'}
             variant={'primary'}
-            type={'submit'}
+            onClick={handleSubmit}
+            iconColor={'white'}
             isLoading={isLoading}
             loadingText={'Submitting...'}
           />
         </div>
-      </form>
+      </div>
     </div>
   )
 }

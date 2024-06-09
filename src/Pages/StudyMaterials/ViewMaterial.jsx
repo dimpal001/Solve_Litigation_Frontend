@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useSnackbar } from 'notistack'
-import { SLButton } from '../../Components/Customs'
+import { SLSpinner } from '../../Components/Customs'
+import EditModal from './EditModal'
 
 const ViewMaterial = () => {
   const [topics, setTopics] = useState([])
   const { enqueueSnackbar } = useSnackbar()
+  const [selectedMaterial, setSelectedMaterial] = useState(null)
+  const [selectedTopic, setSelectedTopic] = useState('')
+  const [isEditModalOpen, setEditModalOpen] = useState(false)
 
   const fetchTopicsWithQuestions = async () => {
     try {
@@ -44,11 +48,8 @@ const ViewMaterial = () => {
     fetchTopicsWithQuestions()
   }, [])
 
-  const handleEditQuestion = (questionId, newQuestion, newAnswer) => {
-    // Handle editing the question and answer
-    console.log(
-      `Editing question with ID: ${questionId}, new question: ${newQuestion}, new answer: ${newAnswer}`
-    )
+  const reload = () => {
+    fetchTopicsWithQuestions()
   }
 
   return (
@@ -56,7 +57,9 @@ const ViewMaterial = () => {
       <p className='text-3xl font-extrabold pb-5 text-center'>View Material</p>
       <div className='px-[50px]'>
         {topics.length === 0 ? (
-          <p className='text-center'>No materials found</p>
+          <div className='w-full h-[500px] flex justify-center items-center'>
+            <SLSpinner width={'50px'} />
+          </div>
         ) : (
           topics.map((topic) => (
             <div key={topic._id} className='mb-8'>
@@ -83,17 +86,25 @@ const ViewMaterial = () => {
                         <td className='border px-4 py-2'>{qa.answer}</td>
                         <td className='border px-4 py-2'>
                           <div className='flex justify-center'>
-                            <SLButton
-                              title='Edit'
+                            <p
+                              onClick={() => {
+                                setEditModalOpen(true)
+                                setSelectedMaterial(qa)
+                                setSelectedTopic(topic._id)
+                              }}
+                              className='text-primary hover:underline cursor-pointer'
+                            >
+                              Manage
+                            </p>
+                            {/* <SLButton
+                              title='Manage'
                               variant='primary'
-                              onClick={() =>
-                                handleEditQuestion(
-                                  qa._id,
-                                  qa.question,
-                                  qa.answer
-                                )
-                              }
-                            />
+                              onClick={() => {
+                                setEditModalOpen(true)
+                                setSelectedMaterial(qa)
+                                setSelectedTopic(topic._id)
+                              }}
+                            /> */}
                           </div>
                         </td>
                       </tr>
@@ -103,6 +114,15 @@ const ViewMaterial = () => {
               )}
             </div>
           ))
+        )}
+        {isEditModalOpen && (
+          <EditModal
+            reload={reload}
+            material={selectedMaterial}
+            topicId={selectedTopic}
+            isOpen={true}
+            onClose={() => setEditModalOpen(false)}
+          />
         )}
       </div>
     </div>

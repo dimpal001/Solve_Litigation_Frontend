@@ -64,6 +64,7 @@ export const SLButton = ({
       ${variant === 'secondary' && 'bg-gray-300 hover:bg-gray-400 text-black'}
       ${variant === 'success' && 'bg-success hover:bg-successHover text-white'}
       ${variant === 'error' && 'bg-error hover:bg-errorHover text-white'}
+      ${isLoading && 'cursor-not-allowed opacity-70'}
       flex justify-center items-center gap-2 rounded-sm`}
     >
       {icon && icon}

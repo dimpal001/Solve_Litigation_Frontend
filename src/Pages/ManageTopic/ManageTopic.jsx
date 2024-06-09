@@ -10,6 +10,7 @@ import {
 } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
+import ManageTopicModal from './ManageTopicModal'
 
 const ManageTopic = () => {
   const [isAddTopicModalOpen, setIsAddTopicModalOpen] = useState(false)
@@ -17,6 +18,8 @@ const ManageTopic = () => {
   const [topic, setTopic] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
+  const [isManageTopicModalOpen, setIsManageTopicModalOpen] = useState(false)
+  const [selectedTopic, setSelectedTopic] = useState('')
   const [topicId, setTopicId] = useState(null)
 
   const fetchTopics = async () => {
@@ -90,6 +93,10 @@ const ManageTopic = () => {
     fetchTopics()
   }, [])
 
+  const reload = () => {
+    fetchTopics()
+  }
+
   return (
     <div>
       <p className='text-3xl font-extrabold pb-5 text-center'>Manage Topic</p>
@@ -127,16 +134,30 @@ const ManageTopic = () => {
                 >
                   {item.topic}
                 </td>
-                <td className='border px-4 py-2'>length</td>
+                <td className='border px-4 py-2'>{item.numberOfQuestions}</td>
                 <td className='border px-4 py-2'>
-                  <p className='text-red-500 font-extrabold text-center hover:underline cursor-pointer'>
-                    Delete
+                  <p
+                    onClick={() => {
+                      setIsManageTopicModalOpen(true)
+                      setSelectedTopic(item)
+                    }}
+                    className='text-primary font-extrabold text-center hover:underline cursor-pointer'
+                  >
+                    Manage
                   </p>
                 </td>
               </tr>
             ))}
         </tbody>
       </table>
+      {isManageTopicModalOpen && (
+        <ManageTopicModal
+          topic={selectedTopic}
+          isOpen={true}
+          reload={reload}
+          onClose={() => setIsManageTopicModalOpen(false)}
+        />
+      )}
       {isAddTopicModalOpen && (
         <Modal size={'md'} isOpen={true}>
           <ModalContent>
