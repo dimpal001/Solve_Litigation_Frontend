@@ -22,7 +22,9 @@ const ConfirmLogout = ({ isOpen, onClose }) => {
     localStorage.removeItem('user')
     navigate('/')
     onClose()
-    enqueueSnackbar('Logout Successfull', { variant: 'success' })
+    enqueueSnackbar('Logout Successfull', {
+      variant: 'success',
+    })
   }
 
   return (
