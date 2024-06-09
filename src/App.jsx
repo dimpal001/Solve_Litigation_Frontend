@@ -43,6 +43,7 @@ import CreateMaterial from './Pages/StudyMaterials/CreateMaterial'
 import ManageTopic from './Pages/ManageTopic/ManageTopic'
 import ViewMaterial from './Pages/StudyMaterials/ViewMaterial'
 import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
+import DetailedQuestionPage from './Pages/StudyMaterials/DetailedQuestionPage'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -166,6 +167,13 @@ const App = () => {
             {user && (
               <Route path='/study-material' element={<StudyMaterialUser />} />
             )}
+            {user && (
+              <Route
+                path='/detailed-question/:topicId/:questionId'
+                element={<DetailedQuestionPage />}
+              />
+            )}
+
             <Route path='/*' element={<Error404 />} />
           </Routes>
         </div>

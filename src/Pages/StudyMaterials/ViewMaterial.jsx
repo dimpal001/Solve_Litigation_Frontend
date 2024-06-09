@@ -63,7 +63,9 @@ const ViewMaterial = () => {
         ) : (
           topics.map((topic) => (
             <div key={topic._id} className='mb-8'>
-              <h2 className='text-2xl font-bold mb-4'>{topic.topic}</h2>
+              <h2 className='text-2xl capitalize font-bold mb-4'>
+                {topic.topic}
+              </h2>
               {topic.questions.length === 0 ? (
                 <p>No questions available</p>
               ) : (
@@ -76,7 +78,7 @@ const ViewMaterial = () => {
                       <th className='bg-primary w-[65%] px-4 py-2 border-r'>
                         Answer
                       </th>
-                      <th className='bg-primary w-[10%] px-4 py-2'>Edit</th>
+                      <th className='bg-primary w-[10%] px-4 py-2'>Action</th>
                     </tr>
                   </thead>
                   <tbody className=''>
@@ -96,15 +98,6 @@ const ViewMaterial = () => {
                             >
                               Manage
                             </p>
-                            {/* <SLButton
-                              title='Manage'
-                              variant='primary'
-                              onClick={() => {
-                                setEditModalOpen(true)
-                                setSelectedMaterial(qa)
-                                setSelectedTopic(topic._id)
-                              }}
-                            /> */}
                           </div>
                         </td>
                       </tr>

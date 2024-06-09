@@ -7,10 +7,12 @@ import {
   ModalFooter,
   ModalHeader,
   SLButton,
+  SLSpinner,
 } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import ManageTopicModal from './ManageTopicModal'
+import { useSnackbar } from 'notistack'
 
 const ManageTopic = () => {
   const [isAddTopicModalOpen, setIsAddTopicModalOpen] = useState(false)
@@ -21,6 +23,7 @@ const ManageTopic = () => {
   const [isManageTopicModalOpen, setIsManageTopicModalOpen] = useState(false)
   const [selectedTopic, setSelectedTopic] = useState('')
   const [topicId, setTopicId] = useState(null)
+  const { enqueueSnackbar } = useSnackbar()
 
   const fetchTopics = async () => {
     try {
@@ -40,6 +43,10 @@ const ManageTopic = () => {
   }
 
   const handleAddTopic = async () => {
+    if (topic === '') {
+      enqueueSnackbar('Enter a valid topic name', { variant: 'error' })
+      return
+    }
     try {
       setIsSubmitting(true)
       if (isEditMode && topicId) {
@@ -82,13 +89,6 @@ const ManageTopic = () => {
     }
   }
 
-  const handleEditModalOpen = (topic) => {
-    setTopic(topic.topic)
-    setTopicId(topic._id)
-    setIsEditMode(true)
-    setIsAddTopicModalOpen(true)
-  }
-
   useEffect(() => {
     fetchTopics()
   }, [])
@@ -112,44 +112,47 @@ const ManageTopic = () => {
           variant={'primary'}
         />
       </div>
-      <table className='table-auto my-5 w-full mb-10 border-collapse border border-primary'>
-        <thead className='bg-primary'>
-          <tr className='bg-gray-200 capitalize'>
-            <th className='px-4 bg-primary text-white py-2 border-r'>
-              topic name
-            </th>
-            <th className='px-4 bg-primary text-white py-2 border-r'>
-              no of questions
-            </th>
-            <th className='px-4 bg-primary text-white py-2 border-r'>action</th>
-          </tr>
-        </thead>
-        <tbody className='border border-primary'>
-          {topics &&
-            topics.map((item, index) => (
-              <tr key={index} fontSize={16}>
-                <td
-                  onClick={() => handleEditModalOpen(item)}
-                  className='border cursor-pointer px-4 py-2 hover:text-primary hover:underline'
-                >
-                  {item.topic}
-                </td>
-                <td className='border px-4 py-2'>{item.numberOfQuestions}</td>
-                <td className='border px-4 py-2'>
-                  <p
-                    onClick={() => {
-                      setIsManageTopicModalOpen(true)
-                      setSelectedTopic(item)
-                    }}
-                    className='text-primary font-extrabold text-center hover:underline cursor-pointer'
-                  >
-                    Manage
-                  </p>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {topics.length === 0 ? (
+        <div className='w-full h-[500px] flex justify-center items-center'>
+          <SLSpinner width={'50px'} />
+        </div>
+      ) : (
+        <table className='table-auto my-5 w-full mb-10 border-collapse border border-primary'>
+          <thead className='bg-primary'>
+            <tr className='bg-gray-200 capitalize'>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                topic name
+              </th>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                no of questions
+              </th>
+              <th className='px-4 bg-primary text-white py-2 border-r'>
+                action
+              </th>
+            </tr>
+          </thead>
+          <tbody className='border border-primary'>
+            {topics &&
+              topics.map((item, index) => (
+                <tr key={index} fontSize={16}>
+                  <td className='border px-4 py-2'>{item.topic}</td>
+                  <td className='border px-4 py-2'>{item.numberOfQuestions}</td>
+                  <td className='border px-4 py-2'>
+                    <p
+                      onClick={() => {
+                        setIsManageTopicModalOpen(true)
+                        setSelectedTopic(item)
+                      }}
+                      className='text-primary font-extrabold text-center hover:underline cursor-pointer'
+                    >
+                      Manage
+                    </p>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
       {isManageTopicModalOpen && (
         <ManageTopicModal
           topic={selectedTopic}
@@ -180,6 +183,7 @@ const ManageTopic = () => {
               />
               <SLButton
                 isLoading={isSubmitting}
+                iconColor={'white'}
                 loadingText={'Submitting...'}
                 title={isEditMode ? 'Update' : 'Submit'}
                 onClick={handleAddTopic}

@@ -93,6 +93,7 @@ const ManageTopicModal = ({ isOpen, onClose, topic, reload }) => {
             {!isUpdating && (
               <SLButton
                 title={'Delete'}
+                iconColor={'white'}
                 isLoading={isDeleting}
                 loadingText={'Deleting...'}
                 variant={'error'}
@@ -102,6 +103,7 @@ const ManageTopicModal = ({ isOpen, onClose, topic, reload }) => {
             {!isDeleting && (
               <SLButton
                 title={'Update'}
+                iconColor={'white'}
                 isLoading={isUpdating}
                 loadingText={'Updating...'}
                 variant={'primary'}
