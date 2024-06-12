@@ -51,7 +51,7 @@ const HomePage = () => {
       )}
       <div>
         <Marquee pauseOnHover>
-          <div className='flex pt-5 gap-14 justify-around overflow-hidden min-w-screen'>
+          <div className='flex pt-5 gap-14 pl-7 justify-around overflow-hidden min-w-screen'>
             {notifications &&
               notifications.map((item, index) => (
                 <a

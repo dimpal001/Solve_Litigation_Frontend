@@ -67,10 +67,10 @@ const StudyMaterialUser = () => {
       <p className='text-3xl font-extrabold pb-5 text-center pt-5'>
         Study Material
       </p>
-      <div className='flex justify-center gap-2 mb-4'>
+      <div className='flex justify-center flex-wrap gap-2 mb-4'>
         <div
           onClick={() => handleTopicClick('all')}
-          className={`bg-gray-200 text-sm rounded-sm p-2 cursor-pointer flex justify-center items-center ${
+          className={`bg-gray-200 px-3 text-sm rounded-sm p-2 cursor-pointer flex justify-center items-center ${
             selectedTopic === 'all' && 'bg-primary text-white'
           }`}
         >
@@ -82,13 +82,13 @@ const StudyMaterialUser = () => {
             key={topic._id}
             className={`capitalize ${
               selectedTopic === topic._id && 'bg-primary text-white'
-            } flex justify-center items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
+            } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
           >
             {topic.topic}
           </div>
         ))}
       </div>
-      <div className='px-[50px]'>
+      <div className='lg:px-[50px]'>
         {loading ? (
           <p className='text-center'>Loading...</p>
         ) : questions.length === 0 ? (
@@ -110,7 +110,7 @@ const Material = ({ data }) => {
   return (
     <div>
       <Link to={`/detailed-question/${data.topicId}/${data._id}`}>
-        <div className='p-2 max-sm:px-5 lg:my-3 group hover:bg-slate-50 lg:border-b bg-slate-50'>
+        <div className='p-2 max-sm:px-5 lg:my-3 group max-md:mb-1 group hover:bg-slate-100 lg:border-b bg-slate-50'>
           <div className='flex items-center'>
             <div>
               <div className='text-sm p-1 px-[6px] bg-primary text-white rounded-full'>
@@ -118,7 +118,7 @@ const Material = ({ data }) => {
               </div>
             </div>
             <div className='px-2'>
-              <p className='text-base font-semibold capitalize'>
+              <p className='text-base group-hover:underline group-hover:text-primary font-semibold capitalize'>
                 {data.question}
               </p>
             </div>
