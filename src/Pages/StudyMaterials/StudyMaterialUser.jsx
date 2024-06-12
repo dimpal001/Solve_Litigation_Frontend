@@ -9,6 +9,7 @@ const StudyMaterialUser = () => {
   const [questions, setQuestions] = useState([])
   const [selectedTopic, setSelectedTopic] = useState('all')
   const [loading, setLoading] = useState(false)
+  const [showAllTopics, setShowAllTopics] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
 
   const fetchTopics = async () => {
@@ -76,7 +77,7 @@ const StudyMaterialUser = () => {
         >
           All
         </div>
-        {topics.map((topic) => (
+        {(showAllTopics ? topics : topics.slice(0, 5)).map((topic) => (
           <div
             onClick={() => handleTopicClick(topic._id)}
             key={topic._id}
@@ -87,6 +88,22 @@ const StudyMaterialUser = () => {
             {topic.topic}
           </div>
         ))}
+        {!showAllTopics && topics.length > 5 && (
+          <p
+            onClick={() => setShowAllTopics(true)}
+            className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
+          >
+            Load more...
+          </p>
+        )}
+        {showAllTopics && (
+          <div
+            onClick={() => setShowAllTopics(false)}
+            className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
+          >
+            Load less...
+          </div>
+        )}
       </div>
       <div className='lg:px-[50px]'>
         {loading ? (
