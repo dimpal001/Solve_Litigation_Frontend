@@ -16,6 +16,7 @@ const RegisterPage = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [isShowPassword, setIsShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLawyer, setIsLawyer] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -25,6 +26,7 @@ const RegisterPage = () => {
     registrationType: '',
     state: '',
     district: '',
+    userType: 'guest',
   })
   const navigate = useNavigate()
 
@@ -58,6 +60,7 @@ const RegisterPage = () => {
       })
       return
     }
+    console.log(formData)
 
     try {
       setIsSubmitting(true)
@@ -86,6 +89,13 @@ const RegisterPage = () => {
       [name]: value,
     })
   }
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      userType: isLawyer ? 'lawyer' : 'guest',
+    }))
+  }, [isLawyer])
 
   const isSubmitDisabled = () => {
     const isEmailEmpty = formData.email.trim() === ''
@@ -228,16 +238,28 @@ const RegisterPage = () => {
                   placeholder={'Confirm Password'}
                 />
               </div>
-              <Checkbox
-                style={{
-                  bgColor: Colors.secondary,
-                }}
-                onChange={() => {
-                  setIsShowPassword(!isShowPassword)
-                }}
-              >
-                Show Password
-              </Checkbox>
+              <div className='flex flex-col'>
+                <Checkbox
+                  style={{
+                    bgColor: Colors.secondary,
+                  }}
+                  onChange={() => {
+                    setIsShowPassword(!isShowPassword)
+                  }}
+                >
+                  Show Password
+                </Checkbox>
+                <Checkbox
+                  style={{
+                    bgColor: Colors.secondary,
+                  }}
+                  onChange={() => {
+                    setIsLawyer(!isLawyer)
+                  }}
+                >
+                  Registered as <span className='text-primary'>Lawyer</span>
+                </Checkbox>
+              </div>
               <div className='w-full flex justify-center pt-3'>
                 <PrimaryButton
                   width={{ base: '45%', md: '35%' }}

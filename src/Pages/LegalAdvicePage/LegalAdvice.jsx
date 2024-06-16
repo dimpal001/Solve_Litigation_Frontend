@@ -9,7 +9,7 @@ const LegalAdvice = () => {
 
   const redirectToChat = () => {
     window.open(
-      `http://localhost:5173/?token=${token}&user=${userString}`,
+      `http://localhost:5174/?token=${token}&user=${userString}`,
       '_blank'
     )
   }
