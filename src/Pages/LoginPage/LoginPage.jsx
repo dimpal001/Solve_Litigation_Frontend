@@ -35,7 +35,7 @@ const LoginPage = () => {
     const token = localStorage.getItem('token')
     const userString = encodeURIComponent(JSON.stringify(user))
 
-    const url = `http://localhost:5174/lawyer/?token=${token}&user=${userString}`
+    const url = `https://chat.solvelitigation.com/lawyer/?token=${token}&user=${userString}`
     window.location.href = url
 
     localStorage.removeItem('token')
