@@ -108,6 +108,12 @@ const UserList = () => {
           onClick={() => handleFilter('guest')}
           title={'Guest User'}
         />
+        <PrimaryOutlineButton
+          bgColor={selectedFilter === 'lawyer' && Colors.primary}
+          color={selectedFilter === 'lawyer' && 'white'}
+          onClick={() => handleFilter('lawyer')}
+          title={'Lawyer'}
+        />
       </div>
       <div>
         <table className='table-auto w-full mb-10 border-collapse border border-primary'>

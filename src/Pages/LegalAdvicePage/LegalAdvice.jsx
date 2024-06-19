@@ -10,6 +10,7 @@ const LegalAdvice = () => {
   const redirectToChat = () => {
     window.open(
       `https://chat.solvelitigation.com/?token=${token}&user=${userString}`,
+      // `http://localhost:5174/?token=${token}&user=${userString}`,
       '_blank'
     )
   }

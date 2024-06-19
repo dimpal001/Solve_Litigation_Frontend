@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import { Center, Checkbox } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
-import { CustomInput, PrimaryButton, SLButton } from '../../Components/Customs'
+import { CustomInput, SLButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { Link, useNavigate } from 'react-router-dom'
 import AOS from 'aos'
@@ -36,11 +36,24 @@ const LoginPage = () => {
     const userString = encodeURIComponent(JSON.stringify(user))
 
     const url = `https://chat.solvelitigation.com/lawyer/?token=${token}&user=${userString}`
+    // const url = `http://localhost:5174/lawyer/?token=${token}&user=${userString}`
     window.location.href = url
 
     localStorage.removeItem('token')
     localStorage.removeItem('user')
     localStorage.removeItem('tokenExpiration')
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    localStorage.removeItem('tokenExpiration')
+    localStorage.removeItem('loginTimestamp')
+    setUser(null)
+    enqueueSnackbar('Session expired ! Please Login again', {
+      variant: 'error',
+    })
+    navigate('/login')
   }
 
   const handleLogin = async (e) => {
@@ -65,6 +78,10 @@ const LoginPage = () => {
 
       setUser(user)
       enqueueSnackbar(message, { variant: 'success' })
+
+      setTimeout(() => {
+        handleLogout()
+      }, 60 * 60 * 1000)
 
       user.isVerified
         ? user.userType === ('admin' || 'staff')
@@ -95,6 +112,17 @@ const LoginPage = () => {
   }
 
   const handleChange = (e) => {
+    const handleLogout = () => {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('tokenExpiration')
+      localStorage.removeItem('loginTimestamp')
+      setUser(null)
+      enqueueSnackbar('You have been logged out due to inactivity', {
+        variant: 'info',
+      })
+      navigate('/login')
+    }
     const { name, value } = e.target
     setFormData({
       ...formData,
