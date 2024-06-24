@@ -52,7 +52,7 @@ const App = () => {
     <div className='text-secondary text-xl varela-round-regular min-h-screen'>
       {/* Navbar Section */}
       <BrowserRouter>
-        {(!user || user.userType === 'guest') && (
+        {(!user || user.userType === 'guest' || user.userType === 'lawyer') && (
           <div className='relative z-30'>
             <Navbar />
           </div>

@@ -8,11 +8,10 @@ const LegalAdvice = () => {
   const userString = encodeURIComponent(JSON.stringify(user))
 
   const redirectToChat = () => {
-    window.open(
-      `https://chat.solvelitigation.com/?token=${token}&user=${userString}`,
-      // `http://localhost:5174/?token=${token}&user=${userString}`,
-      '_blank'
-    )
+    // const url = `http://localhost:5174/?token=${token}&user=${userString}`
+    // const url = `http://192.168.1.24:5174/?token=${token}&user=${userString}`
+    const url = `https://chat.solvelitigation.com/?token=${token}&user=${userString}`
+    window.open(url, '_blank')
   }
 
   return (

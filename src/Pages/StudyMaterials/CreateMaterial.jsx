@@ -3,6 +3,7 @@ import { SLButton } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useSnackbar } from 'notistack'
+import Editor from '../CreateCitationPage/Editor'
 
 const CreateMaterial = () => {
   const [formData, setFormData] = useState({
@@ -128,7 +129,16 @@ const CreateMaterial = () => {
         </div>
         <div className='pb-4'>
           <label className='block text-lg font-medium'>Answer</label>
-          <textarea
+          <Editor
+            value={formData.answer}
+            onChange={(newContent) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                answer: newContent,
+              }))
+            }
+          />
+          {/* <textarea
             placeholder='Enter the answer...'
             name='answer'
             value={formData.answer}
@@ -136,7 +146,7 @@ const CreateMaterial = () => {
             onChange={handleChange}
             className='w-full p-2 border border-gray-300 rounded-sm'
             required
-          />
+          /> */}
         </div>
         <div className='text-center'>
           <SLButton

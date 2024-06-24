@@ -98,12 +98,27 @@ const NavItems = ({ onClose }) => {
     setIsMenuOpen(false)
   }
 
+  const redirectToChat = () => {
+    const user = JSON.parse(localStorage.getItem('user'))
+    const token = localStorage.getItem('token')
+    const userString = encodeURIComponent(JSON.stringify(user))
+
+    const url = `https://chat.solvelitigation.com/?token=${token}&user=${userString}`
+    // const url = `http://localhost:5174/?token=${token}&user=${userString}`
+    window.open(url, '_blank')
+  }
+
   return (
     <>
       <div className='flex max-md:flex-col gap-5 lg:gap-14 text-base items-center'>
         <NavItem onClick={onClose} title='Home Page' to={'/'}>
           Home
         </NavItem>
+        {user && user.userType === 'lawyer' && (
+          <p className='cursor-pointer' onClick={redirectToChat}>
+            Chats
+          </p>
+        )}
         {user &&
           user.isVerified &&
           user.userType === 'guest' &&

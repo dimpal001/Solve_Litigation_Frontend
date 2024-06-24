@@ -71,7 +71,7 @@ const EditCitation = () => {
           },
         }
       )
-      enqueueSnackbar(response.data.message, { variant: 'error' })
+      enqueueSnackbar(response.data.message, { variant: 'success' })
       navigate('/admin-dashboard/review-citation')
     } catch (error) {
       enqueueSnackbar(error.response.data.error, { variant: 'error' })

@@ -379,8 +379,10 @@ const SingleCitationPage = ({ data }) => {
           >
             {data.citationNo}
           </p>
-          <p className='text-center text-3xl py-2'>{data.title}</p>
-          <p className='text-center capitalize'>{data.institutionName}</p>
+          {/* <p className='text-center text-3xl py-2'>{data.title}</p> */}
+          <p className='text-center text-2xl py-2 capitalize'>
+            {data.institutionName}
+          </p>
           {data.apellateType && (
             <p className='text-center text-lg capitalize'>
               {data.apellateType} Appellate Jurisdiction
@@ -394,30 +396,82 @@ const SingleCitationPage = ({ data }) => {
             </p>
           )}
           {data.partyNameAppealant && (
-            <p id='partyName' className='text-center uppercase'>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: data.partyNameAppealant,
-                }}
-              />
-            </p>
+            <div id='partyName' className='text-center pt-3 uppercase'>
+              <div className='flex relative items-center justify-center w-full'>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: data.partyNameAppealant,
+                  }}
+                />
+                <div className='capitalize absolute right-0'>
+                  {' '}
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  &nbsp;......Appellate
+                </div>
+              </div>
+            </div>
           )}
           {data.partyNameAppealant && (
             <p className='text-center text-lg'>Versus</p>
           )}
           {data.partyNameAppealant && (
-            <p id='opponentName' className='text-center uppercase'>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: data.partyNameRespondent,
-                }}
-              />
-            </p>
+            <div id='opponentName' className='text-center uppercase'>
+              <div className='flex relative items-center justify-center w-full'>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: data.partyNameRespondent,
+                  }}
+                />
+                <div className='capitalize absolute right-0 top-0'>
+                  {' '}
+                  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                  &nbsp;......Respondent
+                </div>
+              </div>
+            </div>
           )}
           {data.dateOfOrder && (
             <p className='text-center font-extrabold underline text-lg py-3'>
               Date : {new Date(data.dateOfOrder).toDateString()}
             </p>
+          )}
+
+          {data.advocatePetitioner && (
+            <div>
+              {/* <strong className='text-lg underline'>
+                Advocate Petitioner :{' '}
+              </strong> */}
+              {/* <p>{data.advocatePetitioner}</p> */}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data.advocatePetitioner,
+                }}
+              />
+            </div>
+          )}
+          {data.advocateRespondent && (
+            <div className='pb-7'>
+              {/* <strong className='text-lg underline'>
+                Advocate Respondent :{' '}
+              </strong> */}
+              {/* <p>{data.advocateRespondent}</p> */}
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: data.advocateRespondent,
+                }}
+              />
+            </div>
+          )}
+          {data.index && (
+            <div>
+              <p className='text-lg underline font-semibold'>Index :</p>
+              <div
+                className='pb-5 text-black'
+                dangerouslySetInnerHTML={{
+                  __html: data.index,
+                }}
+              />
+            </div>
           )}
 
           <div id='citation-pdf'>
@@ -469,22 +523,6 @@ const SingleCitationPage = ({ data }) => {
                   Equivalent Citations :{' '}
                 </strong>
                 <p className='text-center'>{data.equivalentCitations}</p>
-              </div>
-            )}
-            {data.advocatePetitioner && (
-              <div>
-                <strong className='text-lg underline'>
-                  Advocate Petitioner :{' '}
-                </strong>
-                <p className='text-center'>{data.advocatePetitioner}</p>
-              </div>
-            )}
-            {data.advocateRespondent && (
-              <div>
-                <strong className='text-lg underline'>
-                  Advocate Respondent :{' '}
-                </strong>
-                <p className='text-center'>{data.advocateRespondent}</p>
               </div>
             )}
           </div>

@@ -470,13 +470,12 @@ const CitationField = ({ data, setData }) => {
         <label className=''>
           <span className='text-lg font-extrabold'>Advocate Petitioner</span>
         </label>
-        <textarea
-          className='p-2 rounded-sm border'
+        <Editor
           value={advocatePetitioner}
-          onChange={(e) =>
+          onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              advocatePetitioner: e.target.value,
+              advocatePetitioner: newContent,
             }))
           }
         />
@@ -485,13 +484,28 @@ const CitationField = ({ data, setData }) => {
         <label className=''>
           <span className='text-lg font-extrabold'>Advocate Respondent</span>
         </label>
-        <textarea
-          className='rounded-sm p-2 border'
+        <Editor
           value={advocateRespondent}
-          onChange={(e) =>
+          onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              advocateRespondent: e.target.value,
+              advocateRespondent: newContent,
+            }))
+          }
+        />
+      </div>
+      <div className='form-control flex flex-col'>
+        <label className=''>
+          <span className='text-lg font-extrabold'>
+            Wheather Reported or Not
+          </span>
+        </label>
+        <Editor
+          value={advocateRespondent}
+          onChange={(newContent) =>
+            setData((prevData) => ({
+              ...prevData,
+              advocateRespondent: newContent,
             }))
           }
         />

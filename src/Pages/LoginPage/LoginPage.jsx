@@ -30,20 +30,6 @@ const LoginPage = () => {
     setCaptcha(Math.random().toString(36).slice(8))
   }
 
-  const redirectToChat = () => {
-    const user = JSON.parse(localStorage.getItem('user'))
-    const token = localStorage.getItem('token')
-    const userString = encodeURIComponent(JSON.stringify(user))
-
-    const url = `https://chat.solvelitigation.com/lawyer/?token=${token}&user=${userString}`
-    // const url = `http://localhost:5174/lawyer/?token=${token}&user=${userString}`
-    window.location.href = url
-
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    localStorage.removeItem('tokenExpiration')
-  }
-
   const handleLogout = () => {
     localStorage.removeItem('token')
     localStorage.removeItem('user')
@@ -86,9 +72,7 @@ const LoginPage = () => {
       user.isVerified
         ? user.userType === ('admin' || 'staff')
           ? navigate('/admin-dashboard/')
-          : user.userType === 'guest'
-          ? navigate('/')
-          : redirectToChat()
+          : navigate('/')
         : navigate('/verify-email')
     } catch (error) {
       setIsLoading(false)

@@ -63,7 +63,13 @@ const DetailedQuestionPage = () => {
         </h1>
         <p className='mt-4'>
           <span className='text-2xl font-bold text-primary'>Ans : </span>
-          {questionData.answer}
+          {/* {questionData.answer} */}
+          <div
+            className='text-justify'
+            dangerouslySetInnerHTML={{
+              __html: questionData.answer,
+            }}
+          />
         </p>
       </div>
       <div className='mt-5'>

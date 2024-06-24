@@ -1,12 +1,8 @@
 import {
   IconButton,
-  Input,
   Avatar,
   Badge,
   Button,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -42,12 +38,14 @@ const CitationsPage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState('all')
+  const [query, setQuery] = useState('')
 
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleChangeApellate = async (apellate) => {
     setLast10Citations([])
+    setFetchingActs([])
     setSelectedFilter('all')
     setFetchingLaws([])
     setFetchingPOL([])
@@ -59,6 +57,7 @@ const CitationsPage = () => {
 
   const handleChangeLaw = async (law) => {
     setSelectedFilter('all')
+    setFetchingActs([])
     setSelectedPOL()
     setSelectedLaw(law)
     await fetchPOL(law)
@@ -66,6 +65,7 @@ const CitationsPage = () => {
 
   const handleChangePOL = async (pol) => {
     setIsFilterModalOpen(false)
+    setFetchingActs([])
     setSelectedFilter('all')
     setSelectedPOL(pol)
     setIsLoading(true)
@@ -74,6 +74,7 @@ const CitationsPage = () => {
 
   const fetchLaw = async (apellate) => {
     try {
+      setFetchingActs([])
       const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/get-laws-by-apellateType`,
@@ -94,6 +95,7 @@ const CitationsPage = () => {
 
   const fetchApellate = async () => {
     try {
+      setFetchingActs([])
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/contents/apellate-list`,
@@ -111,6 +113,7 @@ const CitationsPage = () => {
 
   const fetchPOL = async (law) => {
     try {
+      setFetchingActs([])
       const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/get-pointOfLaw-by-law`,
@@ -132,6 +135,7 @@ const CitationsPage = () => {
 
   const fetchCitations = async (POL) => {
     try {
+      setFetchingActs([])
       const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/get-citations-by-filter`,
@@ -185,6 +189,7 @@ const CitationsPage = () => {
   const fetchLast10Citations = async () => {
     try {
       setFetchingCitations([])
+      setFetchingActs([])
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/last-10-citations`,
@@ -194,13 +199,52 @@ const CitationsPage = () => {
           },
         }
       )
-      setLast10Citations(response.data.last10Citations)
+      setFetchingCitations(response.data.last10Citations)
+      setFilteredCitations(response.data.last10Citations)
     } catch (error) {
       console.log(error)
       handleLogout()
       if (error.response.status === 401) {
         handleLogout()
       }
+    }
+  }
+
+  const searchJudgement = async () => {
+    if (query === '') {
+      enqueueSnackbar('Type something in the search box', { variant: 'error' })
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await axios.get(
+        `${api}/api/solve_litigation/citation/search-citations`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            query: query,
+          },
+        }
+      )
+      if (response) {
+        setSelectedFilter('')
+        setFetchingCitations([])
+        setFetchingCitations(response.data.matchedCitations)
+        setFilteredCitations(response.data.matchedCitations)
+        setLast10Citations([])
+        setFetchingActs([])
+      }
+
+      console.log(fetchingActs)
+      console.log('Citations : ', fetchingCitations)
+    } catch (error) {
+      console.error('Error fetching citations:', error)
+      enqueueSnackbar('Failed to fetch citations', { variant: 'error' })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -313,15 +357,21 @@ const CitationsPage = () => {
         </div>
         <div className='flex justify-center lg:pb-3'>
           <div className='flex gap-2 lg:w-[50%]'>
-            <InputGroup>
-              <InputLeftElement pointerEvents='none'>
-                <FaSearch color={Colors.primary} />
-              </InputLeftElement>
-              <Input rounded={'sm'} type='text' placeholder='Search here ...' />
-              <InputRightElement>
-                <FaArrowRight color={Colors.primary} />
-              </InputRightElement>
-            </InputGroup>
+            <div className='flex w-full gap-5 rounded-sm border px-3 items-center'>
+              <FaSearch color={Colors.primary} />
+              <input
+                type='text'
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder='Search here ...'
+                className='p-2 w-full group focus:outline-none bg-transparent'
+              />
+              <FaArrowRight
+                className='cursor-pointer'
+                color={Colors.primary}
+                onClick={searchJudgement}
+              />
+            </div>
             <div className='lg:hidden'>
               <IconButton
                 onClick={() => setIsFilterModalOpen(true)}
@@ -510,23 +560,6 @@ const CitationsPage = () => {
                           >
                             {law}
                           </div>
-                          // <Button key={index}
-                          //   overflowX={'hidden'}
-                          //   _focus={{
-                          //     bgColor: Colors.primary,
-                          //     textColor: 'white'
-                          //   }}
-                          //   _hover={{
-                          //     bgColor: Colors.primary,
-                          //     textColor: 'white'
-                          //   }}
-                          //   size={{ base: '10px', lg: 'md' }} px={'8px'}
-                          //   py={'7px'} textTransform={'capitalize'} rounded={'sm'}
-                          //   fontSize={14} value={law}
-                          //   bgColor={selectedLaw === law && Colors.primary}
-                          //   color={selectedLaw === law && 'white'}
-                          //   onClick={(e) => handleChangeLaw(e.target.value)}
-                          // >{law}</Button>
                         ))}
                       </div>
                     </div>
@@ -549,33 +582,12 @@ const CitationsPage = () => {
                           >
                             {POL}
                           </div>
-                          // <Button
-                          //   key={index}
-                          //   // width={'230px'}
-                          //   _focus={{
-                          //     bgColor: Colors.primary,
-                          //     textColor: 'white',
-                          //   }}
-                          //   _hover={{
-                          //     bgColor: Colors.primary,
-                          //     textColor: 'white',
-                          //   }}
-                          //   size={{ base: '10px', lg: 'md' }}
-                          //   px={'8px'}
-                          //   bgColor={selectedPOL === POL && Colors.primary}
-                          //   color={selectedPOL === POL && 'white'}
-                          //   py={'7px'}
-                          //   textTransform={'capitalize'}
-                          //   rounded={'sm'}
-                          //   fontSize={14}
-                          //   value={POL}
-                          //   onClick={(e) => handleChangePOL(e.target.value)}
-                          // >
-                          //   {POL}
-                          // </Button>
                         ))}
                       </div>
                     </div>
+                  )}
+                  {fetchCitations.length === 0 && fetchingActs.length === 0 && (
+                    <p className='text-center p-3'>No citations found.</p>
                   )}
                   {fetchingCitations.length !== 0 && (
                     <div>
