@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Center, Checkbox } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
-import { CustomInput, PrimaryButton } from '../../Components/Customs'
-import { Colors } from '../../Components/Colors'
+import { CustomInput, SLButton } from '../../Components/Customs'
 import { useNavigate } from 'react-router-dom'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
@@ -16,17 +14,16 @@ const RegisterPage = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [isShowPassword, setIsShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isLawyer, setIsLawyer] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phoneNumber: '',
     password: '',
     confirmPassword: '',
-    registrationType: '',
+    userType: '',
     state: '',
     district: '',
-    userType: 'guest',
+    specialist: '',
   })
   const navigate = useNavigate()
 
@@ -90,13 +87,6 @@ const RegisterPage = () => {
     })
   }
 
-  useEffect(() => {
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      userType: isLawyer ? 'lawyer' : 'guest',
-    }))
-  }, [isLawyer])
-
   const isSubmitDisabled = () => {
     const isEmailEmpty = formData.email.trim() === ''
     const isPasswordEmpty = formData.password.trim() === ''
@@ -140,56 +130,71 @@ const RegisterPage = () => {
   }
 
   return (
-    <Center className='flex justify-center w-full'>
+    <div className='flex justify-center w-full'>
       <div
         data-aos='fade-up'
-        className='shadow-xl max-sm:mt-10 border lg:w-[640px] p-10 rounded-xl'
+        className='shadow-xl mt-10 border w-full max-w-xl p-10 rounded-xl'
       >
-        <div className='flex-col gap-10'>
-          <Center>
+        <div className='flex flex-col gap-10'>
+          <div className='flex justify-center'>
             <img
-              className='max-sm:hidden'
+              className='hidden sm:block'
               style={{ width: '100px' }}
               src={Logo}
-              alt=''
+              alt='Logo'
             />
-          </Center>
+          </div>
 
           <div data-aos='fade-up'>
-            <p className='text-center font-extrabold pt-5'>
-              Sign Up Information
-            </p>
-            <div className='text-center flex-col flex gap-3 p-1 py-4'>
+            <p className='text-center font-extrabold'>Sign Up Information</p>
+            <div className='text-center flex flex-col gap-3 p-1 py-4'>
               <div>
+                <select
+                  required
+                  title='Select User Type'
+                  name='userType'
+                  value={formData.userType}
+                  onChange={handleChange}
+                  className='w-full p-2 bg-transparent border mb-3'
+                  id='userType'
+                >
+                  <option value=''>Select a user type</option>
+                  <option value='guest'>Individual</option>
+                  <option value='lawyer'>Lawyer</option>
+                  <option value='ca'>Chartered Accountant</option>
+                  <option value='cs'>Company Secratery</option>
+                  <option value='cf'>Company/Firm</option>
+                  <option value='student'>Student</option>
+                </select>
                 <CustomInput
                   type='text'
                   name='fullName'
                   value={formData.fullName}
                   onChange={handleChange}
-                  placeholder={'Full Name'}
+                  placeholder='Full Name'
                 />
               </div>
-              <div className='flex max-sm:flex-col gap-3'>
+              <div className='flex flex-col sm:flex-row gap-3'>
                 <CustomInput
                   type='email'
                   name='email'
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder={'Email address'}
+                  placeholder='Email address'
                 />
                 <CustomInput
                   type='number'
                   name='phoneNumber'
                   value={formData.phoneNumber}
                   onChange={handleChange}
-                  placeholder={'Phone Number'}
+                  placeholder='Phone Number'
                 />
               </div>
-              <div className='flex max-sm:flex-col gap-3'>
+              <div className='flex flex-col sm:flex-row gap-3'>
                 <CustomInput
                   type='text'
                   name='state'
-                  placeholder={'State name'}
+                  placeholder='State name'
                   list='state'
                   onChange={handleStateChange}
                   value={selectedState}
@@ -202,7 +207,7 @@ const RegisterPage = () => {
                   ))}
                 </datalist>
                 <CustomInput
-                  isDisabled={selectedState ? false : true}
+                  disabled={!selectedState}
                   type='text'
                   name='district'
                   placeholder='District name'
@@ -222,59 +227,72 @@ const RegisterPage = () => {
                   ))}
                 </datalist>
               </div>
-              <div className='flex max-sm:flex-col gap-3'>
+              {formData.userType === 'lawyer' && (
+                <div className='flex flex-col sm:flex-row gap-3'>
+                  <select
+                    required
+                    title='Select Specialization'
+                    name='specialist'
+                    value={formData.specialist}
+                    onChange={handleChange}
+                    className='w-full p-2 bg-transparent border mb-3'
+                    id='specialist'
+                  >
+                    <option value=''>Select Specialization</option>
+                    <option value='criminal'>Criminal</option>
+                    <option value='civil'>Civil</option>
+                    <option value='corporate'>Corporate</option>
+                    <option value='family'>Family</option>
+                  </select>
+                </div>
+              )}
+              <div className='flex flex-col sm:flex-row gap-3'>
                 <CustomInput
                   type={isShowPassword ? 'text' : 'password'}
                   name='password'
                   value={formData.password}
                   onChange={handleChange}
-                  placeholder={'Password'}
+                  placeholder='Password'
                 />
                 <CustomInput
                   type={isShowPassword ? 'text' : 'password'}
                   name='confirmPassword'
                   value={formData.confirmPassword}
                   onChange={handleChange}
-                  placeholder={'Confirm Password'}
+                  placeholder='Confirm Password'
                 />
               </div>
               <div className='flex flex-col'>
-                <Checkbox
-                  style={{
-                    bgColor: Colors.secondary,
-                  }}
-                  onChange={() => {
-                    setIsShowPassword(!isShowPassword)
-                  }}
-                >
-                  Show Password
-                </Checkbox>
-                <Checkbox
-                  style={{
-                    bgColor: Colors.secondary,
-                  }}
-                  onChange={() => {
-                    setIsLawyer(!isLawyer)
-                  }}
-                >
-                  Registered as <span className='text-primary'>Lawyer</span>
-                </Checkbox>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    className='form-checkbox'
+                    onChange={() => {
+                      setIsShowPassword(!isShowPassword)
+                    }}
+                  />
+                  <span className='ml-2'>Show Password</span>
+                </label>
               </div>
               <div className='w-full flex justify-center pt-3'>
-                <PrimaryButton
-                  width={{ base: '45%', md: '35%' }}
-                  title={'Submit'}
+                <SLButton
+                  className={`${
+                    isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                   isLoading={isSubmitting}
-                  loadingText={'Submitting...'}
+                  loadingText={'Please wait...'}
+                  iconColor={'white'}
                   onClick={handleSubmit}
-                  isDisabled={isSubmitDisabled()}
+                  title={'Submit'}
+                  variant={'primary'}
+                  disabled={isSubmitDisabled() || isSubmitting}
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
-    </Center>
+    </div>
   )
 }
 

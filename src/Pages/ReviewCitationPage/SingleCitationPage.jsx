@@ -230,10 +230,12 @@ const SingleCitationPage = ({ data }) => {
         <title>${data.citationNo}</title>
         <style>
         @page {
-          margin: 0;
+          margin-top: 1.1in;
+          margin-bottom: 1.1in;
+          margin: 1in;
         }
         body {
-          margin: 1in;
+          margin: 0;
         }
         /* Hide header/footer elements that show date, page numbers, etc. */
         @media print {
@@ -379,15 +381,24 @@ const SingleCitationPage = ({ data }) => {
           >
             {data.citationNo}
           </p>
+
+          {/* {data.equivalentCitations && (
+            <p className='text-center py-2 capitalize'>
+              Equivalent Citations : {data.equivalentCitations}
+            </p>
+          )} */}
+
           {/* <p className='text-center text-3xl py-2'>{data.title}</p> */}
           <p className='text-center text-2xl py-2 capitalize'>
             {data.institutionName}
           </p>
+
           {data.apellateType && (
             <p className='text-center text-lg capitalize'>
               {data.apellateType} Appellate Jurisdiction
             </p>
           )}
+
           {data.judgeName && (
             <p className='text-center text-lg capitalize'>
               {' '}
@@ -395,6 +406,18 @@ const SingleCitationPage = ({ data }) => {
               <span className='uppercase'>{data.judgeName}</span>
             </p>
           )}
+
+          {data.caseNo && (
+            <div>
+              <div
+                className='pb-5 text-black text-center pt-5 text-2xl'
+                dangerouslySetInnerHTML={{
+                  __html: data.caseNo,
+                }}
+              />
+            </div>
+          )}
+
           {data.partyNameAppealant && (
             <div id='partyName' className='text-center pt-3 uppercase'>
               <div className='flex relative items-center justify-center w-full'>
@@ -430,17 +453,12 @@ const SingleCitationPage = ({ data }) => {
               </div>
             </div>
           )}
-          {data.dateOfOrder && (
-            <p className='text-center font-extrabold underline text-lg py-3'>
-              Date : {new Date(data.dateOfOrder).toDateString()}
-            </p>
-          )}
 
           {data.advocatePetitioner && (
             <div>
-              {/* <strong className='text-lg underline'>
-                Advocate Petitioner :{' '}
-              </strong> */}
+              <strong className='text-lg underline'>
+                Advocate for Petitioner / Appellant :{' '}
+              </strong>
               {/* <p>{data.advocatePetitioner}</p> */}
               <div
                 dangerouslySetInnerHTML={{
@@ -449,11 +467,12 @@ const SingleCitationPage = ({ data }) => {
               />
             </div>
           )}
+
           {data.advocateRespondent && (
             <div className='pb-7'>
-              {/* <strong className='text-lg underline'>
-                Advocate Respondent :{' '}
-              </strong> */}
+              <strong className='text-lg underline'>
+                Advocate for Respondent :{' '}
+              </strong>
               {/* <p>{data.advocateRespondent}</p> */}
               <div
                 dangerouslySetInnerHTML={{
@@ -462,13 +481,13 @@ const SingleCitationPage = ({ data }) => {
               />
             </div>
           )}
-          {data.index && (
+
+          {data.whetherReported && (
             <div>
-              <p className='text-lg underline font-semibold'>Index :</p>
               <div
                 className='pb-5 text-black'
                 dangerouslySetInnerHTML={{
-                  __html: data.index,
+                  __html: data.whetherReported,
                 }}
               />
             </div>
@@ -485,6 +504,25 @@ const SingleCitationPage = ({ data }) => {
                 />
               </div>
             )}
+
+            {data.dateOfOrder && (
+              <p className='text-center font-extrabold underline text-xl pt-10 py-5'>
+                Date : {new Date(data.dateOfOrder).toLocaleDateString('en-GB')}
+              </p>
+            )}
+
+            {data.index && (
+              <div>
+                <p className='text-lg underline font-semibold'>Index :</p>
+                <div
+                  className='pb-5 text-black'
+                  dangerouslySetInnerHTML={{
+                    __html: data.index,
+                  }}
+                />
+              </div>
+            )}
+
             {data.judgements && (
               <div>
                 {data.type === 'judgement' && (
@@ -517,6 +555,7 @@ const SingleCitationPage = ({ data }) => {
                 <p className='text-center'>{data.referedJudgements}</p>
               </div>
             )}
+
             {data.equivalentCitations && (
               <div>
                 <strong className='text-lg underline'>
@@ -525,6 +564,18 @@ const SingleCitationPage = ({ data }) => {
                 <p className='text-center'>{data.equivalentCitations}</p>
               </div>
             )}
+
+            <p className='text-red-600 pt-10 text-justify text-sm'>
+              <strong className='underline'>Disclaimer :</strong> This text of
+              the judgment/order is provided for informational purposes to our
+              subscribers until it is officially reported in Supreme Court Cases
+              or the relevant law report/journal. It has not yet been processed,
+              verified, or authenticated based on the certified copy. The Guide
+              Notes in bold are only indicative of the subject matter addressed
+              by the Court. Therefore, the editors, publishers, and printers are
+              not liable for any actions taken or not taken, or any advice given
+              or accepted, based on this text.
+            </p>
           </div>
         </div>
       </div>

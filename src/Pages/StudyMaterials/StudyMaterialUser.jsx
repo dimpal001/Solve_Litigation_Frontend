@@ -3,6 +3,9 @@ import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useSnackbar } from 'notistack'
 import { Link } from 'react-router-dom'
+import { FaArrowRight, FaSearch } from 'react-icons/fa'
+import { Colors } from '../../Components/Colors'
+import { SLSpinner } from '../../Components/Customs'
 
 const StudyMaterialUser = () => {
   const [topics, setTopics] = useState([])
@@ -10,6 +13,7 @@ const StudyMaterialUser = () => {
   const [selectedTopic, setSelectedTopic] = useState('all')
   const [loading, setLoading] = useState(false)
   const [showAllTopics, setShowAllTopics] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const { enqueueSnackbar } = useSnackbar()
 
   const fetchTopics = async () => {
@@ -28,6 +32,7 @@ const StudyMaterialUser = () => {
       enqueueSnackbar('Failed to fetch topics', { variant: 'error' })
     }
   }
+  const [query, setQuery] = useState('')
 
   const fetchQuestions = async (topicId = null, page = 1) => {
     setLoading(true)
@@ -55,11 +60,46 @@ const StudyMaterialUser = () => {
   }, [])
 
   const handleTopicClick = (topicId) => {
+    setQuery('')
     setSelectedTopic(topicId)
     if (topicId === 'all') {
       fetchQuestions()
     } else {
       fetchQuestions(topicId)
+    }
+  }
+
+  const searchQuestions = async (e) => {
+    e.preventDefault()
+    if (query === '') {
+      enqueueSnackbar('Type something in the search box', { variant: 'error' })
+      return
+    }
+
+    try {
+      setIsLoading(true)
+      const token = localStorage.getItem('token')
+      const response = await axios.get(
+        `${api}/api/solve_litigation/study-material/search-questions`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            query: query,
+          },
+        }
+      )
+      if (response) {
+        setQuestions(response.data)
+        setSelectedTopic('')
+      }
+    } catch (error) {
+      fetchQuestions()
+      console.error('Error fetching citations:', error)
+      enqueueSnackbar('Failed to fetch citations', { variant: 'error' })
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -105,11 +145,37 @@ const StudyMaterialUser = () => {
           </div>
         )}
       </div>
+      <div className='flex gap-2 justify-center'>
+        {/* <div className='flex w-[40%] gap-5 rounded-sm border px-3 items-center'> */}
+        <form
+          onSubmit={searchQuestions}
+          className='flex w-[40%] gap-5 rounded-sm border px-3 items-center'
+        >
+          <FaSearch color={Colors.primary} />
+          <input
+            type='text'
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder='Search here ...'
+            className='p-2 w-full group focus:outline-none bg-transparent'
+          />
+          {isLoading ? (
+            <SLSpinner width={'30px'} />
+          ) : (
+            <FaArrowRight
+              type='submit'
+              className='cursor-pointer'
+              color={Colors.primary}
+            />
+          )}
+        </form>
+        {/* </div> */}
+      </div>
       <div className='lg:px-[50px]'>
         {loading ? (
           <p className='text-center'>Loading...</p>
         ) : questions.length === 0 ? (
-          <p className='text-center'>No questions found</p>
+          <p className='text-center py-5 text-red-500'>No questions found</p>
         ) : (
           <div className='lg:px-[120px]'>
             {questions.map((qa, index) => (

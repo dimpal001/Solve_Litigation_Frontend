@@ -13,7 +13,7 @@ import {
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 import axios from 'axios'
-import { PrimaryOutlineButton } from '../../Components/Customs'
+import { PrimaryOutlineButton, SLSpinner } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import Loading from '../../Components/Loading'
@@ -39,11 +39,14 @@ const CitationsPage = () => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [query, setQuery] = useState('')
+  const [noMatchFound, setNoMatchFound] = useState(false)
 
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleChangeApellate = async (apellate) => {
+    setNoMatchFound(false)
+    setQuery('')
     setLast10Citations([])
     setFetchingActs([])
     setSelectedFilter('all')
@@ -207,16 +210,22 @@ const CitationsPage = () => {
       if (error.response.status === 401) {
         handleLogout()
       }
+    } finally {
+      setIsLoading(false)
     }
   }
 
-  const searchJudgement = async () => {
+  const searchJudgement = async (e) => {
+    e.preventDefault()
     if (query === '') {
       enqueueSnackbar('Type something in the search box', { variant: 'error' })
       return
     }
 
     try {
+      setNoMatchFound(false)
+      setSelectedApellate('')
+      setIsLoading(true)
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/search-citations`,
@@ -236,6 +245,10 @@ const CitationsPage = () => {
         setFilteredCitations(response.data.matchedCitations)
         setLast10Citations([])
         setFetchingActs([])
+
+        if (response.data.matchedCitations.length === 0) {
+          setNoMatchFound(true)
+        }
       }
 
       console.log(fetchingActs)
@@ -275,6 +288,7 @@ const CitationsPage = () => {
   }
 
   const handleLatest = () => {
+    setQuery('')
     setSelectedApellate('latest')
     fetchLast10Citations()
     setFetchingLaws([])
@@ -357,7 +371,10 @@ const CitationsPage = () => {
         </div>
         <div className='flex justify-center lg:pb-3'>
           <div className='flex gap-2 lg:w-[50%]'>
-            <div className='flex w-full gap-5 rounded-sm border px-3 items-center'>
+            <form
+              onSubmit={searchJudgement}
+              className='flex w-full gap-5 rounded-sm border px-3 items-center'
+            >
               <FaSearch color={Colors.primary} />
               <input
                 type='text'
@@ -366,12 +383,15 @@ const CitationsPage = () => {
                 placeholder='Search here ...'
                 className='p-2 w-full group focus:outline-none bg-transparent'
               />
-              <FaArrowRight
-                className='cursor-pointer'
-                color={Colors.primary}
-                onClick={searchJudgement}
-              />
-            </div>
+              {isLoading ? (
+                <SLSpinner width={'30px'} />
+              ) : (
+                <FaArrowRight
+                  className='cursor-pointer'
+                  color={Colors.primary}
+                />
+              )}
+            </form>
             <div className='lg:hidden'>
               <IconButton
                 onClick={() => setIsFilterModalOpen(true)}
@@ -524,7 +544,7 @@ const CitationsPage = () => {
               <Loading />
             ) : (
               <div className='flex flex-col-reverse justify-between gap-10 w-full'>
-                <div className=''>
+                <div>
                   <div className='flex flex-col gap-3'>
                     <div>
                       {last10Citations && last10Citations.length > 0 && (
@@ -538,6 +558,9 @@ const CitationsPage = () => {
                         ))}
                     </div>
                   </div>
+                  {noMatchFound && (
+                    <p className='text-center text-red-500'>No match found.</p>
+                  )}
                 </div>
                 <div
                   className={`flex ${

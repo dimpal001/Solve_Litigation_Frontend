@@ -1,15 +1,14 @@
 import {
-  Button,
+  CustomInput,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-  Spinner,
-} from '@chakra-ui/react'
-import { CustomInput, PrimaryButton } from '../../Components/Customs'
+  SLButton,
+  SLSpinner,
+} from '../../Components/Customs'
 import { useContext, useState } from 'react'
 import { api } from '../../Components/Apis'
 import { UserContext } from '../../UserContext'
@@ -66,9 +65,8 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
   return (
     <div>
       <Modal size={'md'} isOpen={isModalOpen} onClose={closeModal}>
-        <ModalOverlay />
         <ModalContent borderRadius={0}>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={closeModal} />
           <ModalHeader>Change Password</ModalHeader>
           <ModalBody>
             <div className='flex flex-col gap-3'>
@@ -98,7 +96,7 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
                 </p>
               )}
               <div className='flex justify-center pt-2'>
-                {isLoading && <Spinner color={Colors.primary} />}
+                {isLoading && <SLSpinner color={Colors.primary} />}
               </div>
             </div>
             <div>
@@ -114,10 +112,16 @@ const ChangePasswordModal = ({ isModalOpen, closeModal }) => {
           </ModalBody>
 
           <ModalFooter className='flex gap-3'>
-            <Button colorScheme='gray' onClick={closeModal} rounded={'sm'}>
-              Close
-            </Button>
-            <PrimaryButton onClick={handleSubmit} title={'Submit'} />
+            <SLButton
+              variant={'secondary'}
+              onClick={closeModal}
+              title={'Close'}
+            />
+            <SLButton
+              variant={'primary'}
+              onClick={handleSubmit}
+              title={'Submit'}
+            />
           </ModalFooter>
         </ModalContent>
       </Modal>

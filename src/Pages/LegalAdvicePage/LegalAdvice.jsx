@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { SLButton } from '../../Components/Customs'
 
 const LegalAdvice = () => {
@@ -35,12 +34,6 @@ const LegalAdvice = () => {
             title={'Chat with Lawyer'}
             variant={'primary'}
           />
-          {/* <Link to={'/make-a-request'}>
-            <SLButton title={'Make a request'} variant={'primary'} />
-          </Link> */}
-          <Link to={'/previous-requests'}>
-            <SLButton title={'See Previous Requests'} variant={'secondary'} />
-          </Link>
         </div>
       </div>
     </div>

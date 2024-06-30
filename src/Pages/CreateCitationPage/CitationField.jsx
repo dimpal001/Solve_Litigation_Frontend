@@ -28,6 +28,7 @@ const CitationField = ({ data, setData }) => {
     judgements,
     dateOfOrder,
     judgeName,
+    whetherReported,
     headNote,
     referedJudgements,
     apellates,
@@ -497,15 +498,15 @@ const CitationField = ({ data, setData }) => {
       <div className='form-control flex flex-col'>
         <label className=''>
           <span className='text-lg font-extrabold'>
-            Wheather Reported or Not
+            Whether Reported or Not
           </span>
         </label>
         <Editor
-          value={advocateRespondent}
+          value={whetherReported}
           onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              advocateRespondent: newContent,
+              whetherReported: newContent,
             }))
           }
         />

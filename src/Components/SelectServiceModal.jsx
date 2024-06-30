@@ -1,20 +1,18 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  Checkbox,
-} from '@chakra-ui/react'
+import { Checkbox } from '@chakra-ui/react'
 import { enqueueSnackbar } from 'notistack'
 import axios from 'axios'
 
 import { api } from '../../src/Components/Apis'
 import { useContext, useState, useEffect } from 'react'
-import { PrimaryButton } from './Customs'
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  SLButton,
+} from './Customs'
 import { UserContext } from '../UserContext'
 
 const SelectServiceModal = ({ isOpen, setIsOpen }) => {
@@ -96,11 +94,11 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
 
   return (
     <div>
-      <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <ModalOverlay />
+      <Modal size={'xl'} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+        {/* <ModalOverlay /> */}
         <ModalContent>
           <ModalHeader>Please select the service(s) you need</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={() => setIsOpen(false)} />
           <ModalBody>
             {isLoading ? (
               <div>Loading...</div>
@@ -131,18 +129,17 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
             )}
           </ModalBody>
           <ModalFooter>
-            <Button
-              colorScheme='gray'
-              rounded={'sm'}
+            <SLButton
+              variant={'secondary'}
               mr={3}
               onClick={() => setIsOpen(false)}
-            >
-              Close
-            </Button>
-            <PrimaryButton
+              title={'Close'}
+            />
+            <SLButton
+              variant={'primary'}
               isLoading={isSubmitting}
-              loadingText={'Submitting...'}
-              title={'Submit'}
+              loadingText={'Updating...'}
+              title={'Update'}
               onClick={handleSubmit}
             />
           </ModalFooter>

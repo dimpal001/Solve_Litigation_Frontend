@@ -1,17 +1,12 @@
 import {
-  FormControl,
+  CustomInput,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react'
-import {
-  CustomInput,
-  PrimaryButton,
-  TextButton,
+  SLButton,
 } from '../../Components/Customs'
 import { useContext, useState } from 'react'
 import axios from 'axios'
@@ -56,32 +51,35 @@ const ChangeEmailPhone = ({
   return (
     <div>
       <Modal size={'sm'} isOpen={isModalOpen} onClose={closeModal}>
-        <ModalOverlay />
+        {/* <ModalOverlay /> */}
         <ModalContent borderRadius={0}>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={closeModal} />
           <ModalHeader>
             {selectedModal === 'email' ? 'Change Email' : 'Change Phone Number'}
           </ModalHeader>
           <ModalBody>
             <div>
-              <FormControl>
-                <CustomInput
-                  onChange={(e) => setData(e.target.value)}
-                  value={data}
-                  size={'sm'}
-                  placeholder={
-                    selectedModal === 'email'
-                      ? 'Enter a new email address'
-                      : 'Enter a new phone number'
-                  }
-                />
-              </FormControl>
+              <CustomInput
+                onChange={(e) => setData(e.target.value)}
+                value={data}
+                size={'sm'}
+                placeholder={
+                  selectedModal === 'email'
+                    ? 'Enter a new email address'
+                    : 'Enter a new phone number'
+                }
+              />
             </div>
           </ModalBody>
 
           <ModalFooter>
-            <TextButton size={'sm'} onClick={closeModal} title={'Cancel'} />
-            <PrimaryButton
+            <SLButton
+              onClick={closeModal}
+              variant={'secondary'}
+              title={'Close'}
+            />
+            <SLButton
+              variant={'primary'}
               size={'sm'}
               isLoading={isLoading}
               loadingText={'Submitting...'}

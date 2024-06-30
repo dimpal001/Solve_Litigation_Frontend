@@ -1,5 +1,14 @@
 import { Link } from 'react-router-dom'
-import { PrimaryButton } from '../../Components/Customs'
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  PrimaryButton,
+  SLButton,
+} from '../../Components/Customs'
 import Image from '../../assets/hero_thumbnail.svg'
 import { useContext, useEffect, useState } from 'react'
 import AOS from 'aos'
@@ -15,6 +24,7 @@ const HomePage = () => {
   const [isSelectServiceModalOpen, setIsSelectServiceModalOpen] =
     useState(false)
   const [notifications, setNotifications] = useState([])
+  const [isBioOpenModal, setIsBioModalOpen] = useState(false)
 
   const fetchNotification = async () => {
     try {
@@ -28,6 +38,9 @@ const HomePage = () => {
   }
 
   useEffect(() => {
+    if (user && user.userType === 'lawyer') {
+      setIsBioModalOpen(true)
+    }
     fetchNotification()
     const userData = JSON.parse(localStorage.getItem('user'))
     if (
@@ -66,6 +79,30 @@ const HomePage = () => {
           </div>
         </Marquee>
       </div>
+      <Modal size={'xl'} isOpen={isBioOpenModal}>
+        <ModalContent>
+          <ModalCloseButton onClick={() => setIsBioModalOpen(false)} />
+          <ModalHeader>{user && user.fullName}, add your bio</ModalHeader>
+          <ModalBody>
+            <div>
+              <textarea
+                name=''
+                autoFocus
+                placeholder='Type your bio here...'
+                className='p-2 mt-1 focus:border-primary focus:outline-none border w-full'
+              ></textarea>
+            </div>
+            <ModalFooter>
+              <SLButton
+                title={'Close'}
+                onClick={() => setIsBioModalOpen(false)}
+                variant={'secondary'}
+              />
+              <SLButton title={'Update'} variant={'primary'} />
+            </ModalFooter>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
       <div className='lg:flex flex-row-reverse lg:h-[500px] max-sm:pb-[100px] items-center gap-10 px-10 lg:px-32'>
         <div className='lg:w-[50%] flex max-md:pt-10 justify-center relative z-[5] items-center'>
           <img
