@@ -1,24 +1,19 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalBody,
-  ModalCloseButton,
-  Checkbox,
-} from '@chakra-ui/react'
 import { VscDebugBreakpointLog } from 'react-icons/vsc'
 import axios from 'axios'
 import { enqueueSnackbar } from 'notistack'
 
 import {
-  PrimaryButton,
-  PrimaryRedOutlineButton,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  SLButton,
 } from '../../Components/Customs'
-import { MdModeEditOutline, MdOutlineCloudUpload } from 'react-icons/md'
 import { useContext } from 'react'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
 import { useNavigate } from 'react-router-dom'
+import { Checkbox } from '@chakra-ui/react'
 
 const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   const { user } = useContext(UserContext)
@@ -52,11 +47,10 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   return (
     <div className='max-h-[300px]'>
       <Modal size={'full'} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
         <ModalContent
           style={{ maxHeight: '520px', overflow: 'scroll', paddingInline: 80 }}
         >
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody>
             <div className='flex mx-[200px] flex-col bg-slate-100 rounded-sm gap-6 p-7'>
               <div>
@@ -243,14 +237,10 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                 <Checkbox isChecked={data.overRuled === true ? true : false} />
               </div>
               <div className='flex gap-5 justify-end'>
-                <PrimaryRedOutlineButton
-                  leftIcon={<MdModeEditOutline size={20} />}
-                  onClick={onClose}
-                  title={'Edit'}
-                />
-                <PrimaryButton
+                <SLButton variant={'error'} onClick={onClose} title={'Edit'} />
+                <SLButton
+                  variant={'success'}
                   onClick={handleUplaod}
-                  rightIcon={<MdOutlineCloudUpload size={20} />}
                   title={'Upload'}
                 />
               </div>

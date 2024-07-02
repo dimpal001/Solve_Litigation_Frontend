@@ -6,7 +6,6 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  PrimaryButton,
   SLButton,
 } from '../../Components/Customs'
 import Image from '../../assets/hero_thumbnail.svg'
@@ -130,7 +129,7 @@ const HomePage = () => {
             resources have got you covered.
           </p>
           <Link to={user ? '/citations' : '/register'}>
-            <PrimaryButton title={'Get Started'} />
+            <SLButton variant={'primary'} title={'Get Started'} />
           </Link>
         </div>
       </div>

@@ -1,5 +1,4 @@
 import { Center } from '@chakra-ui/react'
-import { PrimaryButton } from './Customs'
 import { useContext, useState } from 'react'
 import axios from 'axios'
 import { MdErrorOutline } from 'react-icons/md'
@@ -7,6 +6,7 @@ import { api } from './Apis'
 import { UserContext } from '../UserContext'
 import { useNavigate } from 'react-router-dom'
 import { enqueueSnackbar } from 'notistack'
+import { SLButton } from './Customs'
 
 const ReVerifyEmail = () => {
   const [isSending, setIsSending] = useState(false)
@@ -50,7 +50,7 @@ const ReVerifyEmail = () => {
             <div>
               <form className='text-center flex-col flex gap-3 p-1 py-4'>
                 <div className='w-full flex justify-center'>
-                  <PrimaryButton
+                  <SLButton
                     type={'submit'}
                     isLoading={isSending}
                     loadingText={'Sending...'}

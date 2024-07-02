@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import AdminHeader from './AdminHeader'
-import { PrimaryButton } from '../../Components/Customs'
+import { SLButton } from '../../Components/Customs'
 import { useContext, useEffect } from 'react'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
@@ -34,7 +34,7 @@ const Layout = () => {
       </div>
       <div className='h-screen lg:hidden flex flex-col gap-5 items-center justify-center'>
         <p className='text-center'>Mobile view is not available</p>
-        <PrimaryButton title={'Logout'} onClick={handleLogout} />
+        <SLButton title={'Logout'} onClick={handleLogout} />
       </div>
     </div>
   )

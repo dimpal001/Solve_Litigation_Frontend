@@ -1,24 +1,18 @@
-import {
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react'
 import axios from 'axios'
-
-import {
-  PrimaryButton,
-  PrimaryRedOutlineButton,
-} from '../../Components/Customs'
-import { MdModeEditOutline, MdOutlineCloudUpload } from 'react-icons/md'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
 import { useNavigate } from 'react-router-dom'
 import { enqueueSnackbar } from 'notistack'
+import {
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  SLButton,
+} from '../../Components/Customs'
 
 const ReviewActModal = ({ data, isOpen, onClose }) => {
   const navigate = useNavigate()
@@ -59,7 +53,6 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
   return (
     <div className='max-h-[300px]'>
       <Modal size={'full'} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
         <ModalContent
           style={{ maxHeight: '520px', overflow: 'scroll', paddingInline: 80 }}
         >
@@ -121,16 +114,12 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
           </ModalBody>
 
           <ModalFooter className='flex gap-5'>
-            <PrimaryRedOutlineButton
-              leftIcon={<MdModeEditOutline size={20} />}
-              onClick={onClose}
-              title={'Edit'}
-            />
-            <PrimaryButton
+            <SLButton variant={'error'} onClick={onClose} title={'Edit'} />
+            <SLButton
+              variant={'success'}
               isLoading={isUploading}
               loadingText={'Uploading...'}
               onClick={handleUplaod}
-              rightIcon={<MdOutlineCloudUpload size={20} />}
               title={'Upload'}
             />
           </ModalFooter>

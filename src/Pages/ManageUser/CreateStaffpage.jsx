@@ -1,5 +1,5 @@
 import { Checkbox, FormControl, FormLabel } from '@chakra-ui/react'
-import { CustomInput, PrimaryButton } from '../../Components/Customs'
+import { CustomInput, SLButton } from '../../Components/Customs'
 import { useState } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
@@ -143,7 +143,8 @@ const CreateStaffpage = () => {
               </Checkbox>
             </div>
             <div className='flex justify-center pt-8'>
-              <PrimaryButton
+              <SLButton
+                variant={'primary'}
                 onClick={handleSubmit}
                 isLoading={isCreating}
                 loadingText={'Creating...'}

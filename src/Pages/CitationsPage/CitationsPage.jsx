@@ -13,7 +13,7 @@ import {
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 import axios from 'axios'
-import { PrimaryOutlineButton, SLSpinner } from '../../Components/Customs'
+import { SLButton, SLSpinner } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import Loading from '../../Components/Loading'
@@ -311,63 +311,26 @@ const CitationsPage = () => {
     <div>
       <div className='md:px-32 py-3'>
         <div className='flex max-lg:hidden justify-center gap-5 pb-5'>
-          <Button
-            _focus={{
-              bgColor: Colors.primary,
-              textColor: 'white',
-            }}
-            bgColor={selectedApellate === 'latest' && Colors.primary}
-            color={selectedApellate === 'latest' && 'white'}
+          <SLButton
+            variant={selectedApellate === 'latest' ? 'primary' : 'outline'}
             onClick={handleLatest}
-            size={{ base: '10px', lg: 'md' }}
-            px={'8px'}
-            py={'7px'}
-            textTransform={'capitalize'}
-            rounded={'sm'}
-            fontSize={14}
-          >
-            Latest
-          </Button>
+            title={'Latest'}
+          />
           {fetchingApellates &&
             fetchingApellates.map((data, index) => (
-              <Button
+              <SLButton
                 key={index}
-                _focus={{
-                  bgColor: Colors.primary,
-                  textColor: 'white',
-                }}
-                _hover={{
-                  bgColor: Colors.primary,
-                  textColor: 'white',
-                }}
-                size={{ base: '10px', lg: 'md' }}
-                px={'8px'}
-                py={'7px'}
-                textTransform={'capitalize'}
-                rounded={'sm'}
-                fontSize={14}
-                bgColor={selectedApellate === data.name && Colors.primary}
-                color={selectedApellate === data.name && 'white'}
+                className={'capitalize'}
+                variant={selectedApellate === data.name ? 'primary' : 'outline'}
+                title={data.name}
                 onClick={() => handleChangeApellate(data.name)}
-              >
-                {data.name}
-              </Button>
+              />
             ))}
-          <Button
-            _focus={{
-              bgColor: Colors.primary,
-              textColor: 'white',
-            }}
-            size={{ base: '10px', lg: 'md' }}
-            px={'8px'}
-            py={'7px'}
-            textTransform={'capitalize'}
-            rounded={'sm'}
-            fontSize={14}
-            onClick={handleFetchActs}
-          >
-            Acts
-          </Button>
+          <SLButton
+            variant={'outline'}
+            className={'focus:bg-primary focus:text-white'}
+            title={'Acts'}
+          />
         </div>
         <div className='flex justify-center lg:pb-3'>
           <div className='flex gap-2 lg:w-[50%]'>
@@ -615,24 +578,24 @@ const CitationsPage = () => {
                   {fetchingCitations.length !== 0 && (
                     <div>
                       <div className='flex max-md:px-3 gap-3 pb-3'>
-                        <PrimaryOutlineButton
-                          size={'sm'}
-                          bgColor={selectedFilter === 'all' && Colors.primary}
-                          color={selectedFilter === 'all' && 'white'}
+                        <SLButton
+                          variant={
+                            selectedFilter === 'all' ? 'primary' : 'outline'
+                          }
                           onClick={handleFilterAll}
                           title={'All'}
                         />
-                        <PrimaryOutlineButton
-                          size={'sm'}
-                          bgColor={selectedFilter === 'hc' && Colors.primary}
-                          color={selectedFilter === 'hc' && 'white'}
+                        <SLButton
+                          variant={
+                            selectedFilter === 'hc' ? 'primary' : 'outline'
+                          }
                           onClick={handleFilterHighCourt}
                           title={'High Court'}
                         />
-                        <PrimaryOutlineButton
-                          size={'sm'}
-                          bgColor={selectedFilter === 'sc' && Colors.primary}
-                          color={selectedFilter === 'sc' && 'white'}
+                        <SLButton
+                          variant={
+                            selectedFilter === 'sc' ? 'primary' : 'outline'
+                          }
                           onClick={handleFilterSupremeCourt}
                           title={'Supreme Court'}
                         />

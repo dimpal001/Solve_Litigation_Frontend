@@ -200,15 +200,6 @@ const LoginPage = () => {
                     title={'Login'}
                     variant={'primary'}
                   />
-                  {/* <PrimaryButton
-                    type={'submit'}
-                    isLoading={isLoading}
-                    loadingText={'Signing in...'}
-                    width={'100%'}
-                    title={'Login'}
-                    onClick={handleLogin}
-                    isDisabled={isSubmitDisabled()}
-                  /> */}
                 </div>
                 <div>
                   <Link to={'/reset-password'}>

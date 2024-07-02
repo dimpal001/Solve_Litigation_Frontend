@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
-import { LinkButton, PrimaryButton, SLButton } from '../../Components/Customs'
+import { LinkButton, SLButton } from '../../Components/Customs'
 import { Divider } from '@chakra-ui/react'
 import { Colors } from '../../Components/Colors'
 import ConfirmLogout from '../../Components/ConfirmLogout'

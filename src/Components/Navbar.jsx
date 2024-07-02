@@ -2,7 +2,6 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.svg'
 import { useContext, useRef, useState } from 'react'
 import { UserContext } from '../UserContext'
-import { PrimaryOutlineButton } from './Customs'
 import ProfileMenu from './ProfileMenu'
 import ConfirmLogout from './ConfirmLogout'
 import {
@@ -15,6 +14,7 @@ import {
 } from '@chakra-ui/react'
 import { CgMenuRight } from 'react-icons/cg'
 import { Colors } from './Colors'
+import { SLButton } from './Customs'
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -47,10 +47,14 @@ const Navbar = () => {
         <div className='md:hidden flex gap-5'>
           {!user ? (
             <Link to={'/login'}>
-              <PrimaryOutlineButton title={'Login'} />
+              <SLButton variant={'primary'} title={'Login'} />
             </Link>
           ) : (
-            <PrimaryOutlineButton onClick={handleLogout} title={'Logout'} />
+            <SLButton
+              variant={'error'}
+              onClick={handleLogout}
+              title={'Logout'}
+            />
           )}
           <CgMenuRight
             size={35}
@@ -153,7 +157,7 @@ const NavItems = ({ onClose }) => {
               Login
             </NavItem>
             <NavItem onClick={onClose} title='Register Page' to={'/register'}>
-              <PrimaryOutlineButton title={'Register'} />
+              <SLButton variant={'primary'} title={'Register'} />
             </NavItem>
           </>
         ) : (

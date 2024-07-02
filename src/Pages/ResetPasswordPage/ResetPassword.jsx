@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CustomInput, PrimaryButton } from '../../Components/Customs'
+import { CustomInput, SLButton } from '../../Components/Customs'
 import Logo from '../../assets/logo.svg'
 import { Center } from '@chakra-ui/react'
 import { useState } from 'react'
@@ -79,7 +79,8 @@ const ResetPassword = () => {
                     : ''}
                 </p>
                 <div className='w-full flex justify-between'>
-                  <PrimaryButton
+                  <SLButton
+                    variant={'primary'}
                     type={'submit'}
                     isLoading={isSubmitting}
                     loadingText={'Sending...'}

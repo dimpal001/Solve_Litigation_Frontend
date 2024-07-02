@@ -1,5 +1,5 @@
 import { Center } from '@chakra-ui/react'
-import { CustomInput, PrimaryButton } from '../../Components/Customs'
+import { CustomInput, SLButton } from '../../Components/Customs'
 import { RiLockPasswordLine } from 'react-icons/ri'
 import { Colors } from '../../Components/Colors'
 import { useState } from 'react'
@@ -85,7 +85,8 @@ const ResetLinkPage = () => {
                   <div>
                     <form className='text-center flex-col flex gap-3 p-1 py-4'>
                       <div className='w-full flex justify-center'>
-                        <PrimaryButton
+                        <SLButton
+                          variant={'error'}
                           type={'submit'}
                           isLoading={isReseting}
                           loadingText={'Reseting...'}
@@ -114,7 +115,8 @@ const ResetLinkPage = () => {
                       type={'password'}
                       placeholder={'Confirm Password'}
                     />
-                    <PrimaryButton
+                    <SLButton
+                      variant={'primary'}
                       title={'Change Password'}
                       onClick={handleChangePassword}
                       isLoading={isChanging}

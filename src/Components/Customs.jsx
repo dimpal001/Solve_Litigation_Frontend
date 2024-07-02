@@ -2,44 +2,7 @@ import { Button, Input, Spinner } from '@chakra-ui/react'
 import { Colors } from './Colors'
 import { useEffect, useState } from 'react'
 
-export const PrimaryButton = ({
-  title,
-  type,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  size,
-  isLoading,
-  loadingText,
-}) => {
-  return (
-    <>
-      <Button
-        type={type}
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        size={size}
-        bgColor={Colors.primary}
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: Colors.primaryHover,
-          boxShadow: 'lg',
-        }}
-        color={'white'}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      >
-        {title}
-      </Button>
-    </>
-  )
-}
-
+// T CSS
 export const SLButton = ({
   title,
   type,
@@ -60,6 +23,10 @@ export const SLButton = ({
       className={`px-4 ${
         isDisabled && 'bg-blue-400 cursor-not-allowed hover:bg-blue-400'
       } ${width && `w-full`} py-2 ${className}
+      ${
+        variant === 'outline' &&
+        'bg-slate-200 hover:bg-primary hover:text-gray-100 text-black'
+      }
       ${variant === 'primary' && 'bg-primary hover:bg-secondary text-white'}
       ${variant === 'secondary' && 'bg-gray-300 hover:bg-gray-400 text-black'}
       ${variant === 'success' && 'bg-success hover:bg-successHover text-white'}
@@ -74,42 +41,7 @@ export const SLButton = ({
   )
 }
 
-export const GreenPrimaryButton = ({
-  title,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  size,
-  isLoading,
-  loadingText,
-}) => {
-  return (
-    <>
-      <Button
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        size={size}
-        bgColor='#19a60a'
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: '#239c16',
-          boxShadow: 'lg',
-        }}
-        color={'white'}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      >
-        {title}
-      </Button>
-    </>
-  )
-}
-
+// Chakra UI
 export const PrimaryOutlineButton = ({
   title,
   rightIcon,
@@ -156,6 +88,7 @@ export const PrimaryOutlineButton = ({
   )
 }
 
+// Chakra UI
 export const PrimaryRedOutlineButton = ({
   title,
   rightIcon,
@@ -198,6 +131,7 @@ export const PrimaryRedOutlineButton = ({
   )
 }
 
+// Chakra UI
 export const LinkButton = ({
   title,
   rightIcon,
@@ -241,6 +175,7 @@ export const LinkButton = ({
   )
 }
 
+// Chakra UI
 export const SecondaryButton = ({
   title,
   rightIcon,
@@ -275,6 +210,7 @@ export const SecondaryButton = ({
   )
 }
 
+// Chakra UI
 export const NormalButton = ({
   title,
   rightIcon,
@@ -310,6 +246,7 @@ export const NormalButton = ({
   )
 }
 
+// Chakra UI
 export const RedButton = ({
   title,
   rightIcon,
@@ -347,6 +284,7 @@ export const RedButton = ({
   )
 }
 
+// Chakra UI
 export const CustomInput = ({
   placeholder,
   onChange,
@@ -380,6 +318,7 @@ export const CustomInput = ({
   )
 }
 
+// T CSS
 export const TextButton = ({ title, onClick, size }) => {
   return (
     <p
@@ -391,6 +330,7 @@ export const TextButton = ({ title, onClick, size }) => {
   )
 }
 
+// T CSS
 export const Modal = ({ isOpen, children, size }) => {
   const [showModal, setShowModal] = useState(isOpen)
 
@@ -450,10 +390,12 @@ export const Modal = ({ isOpen, children, size }) => {
   )
 }
 
+// T CSS
 export const ModalContent = ({ children }) => {
   return <div>{children}</div>
 }
 
+// T CSS
 export const ModalHeader = ({ children }) => {
   return (
     <div className='text-2xl border-b pb-3 font-extrabold text-primary mb-4'>
@@ -462,6 +404,7 @@ export const ModalHeader = ({ children }) => {
   )
 }
 
+// T CSS
 export const ModalCloseButton = ({ onClick }) => {
   return (
     <button
@@ -486,6 +429,7 @@ export const ModalCloseButton = ({ onClick }) => {
   )
 }
 
+// T CSS
 export const ModalBody = ({ children }) => {
   return (
     <div className='text-gray-700 max-h-[600px] md:max-h-[500px] overflow-scroll'>
@@ -494,14 +438,17 @@ export const ModalBody = ({ children }) => {
   )
 }
 
+// T CSS
 export const ModalFooter = ({ children }) => {
   return <div className='flex justify-end gap-2 mt-5'>{children}</div>
 }
 
+// Chakra UI
 export const MySpinner = () => {
   return <Spinner color={Colors.primary} />
 }
 
+// T CSS
 export const SLSpinner = ({ className, iconColor, width }) => {
   return (
     <svg
@@ -550,6 +497,7 @@ export const SLSpinner = ({ className, iconColor, width }) => {
   )
 }
 
+// T CSS
 export const SLRefreshIcon = ({ className, onClick }) => {
   return (
     <svg
@@ -585,6 +533,7 @@ export const SLRefreshIcon = ({ className, onClick }) => {
   )
 }
 
+// T CSS
 export const SLPrimarySpinner = ({ className }) => {
   return (
     <div className='flex justify-center w-full'>
@@ -669,6 +618,7 @@ export const SLPrimarySpinner = ({ className }) => {
   )
 }
 
+// T CSS
 export const Avatar = () => {
   return (
     <div className='bg-primary p-1'>
@@ -677,6 +627,7 @@ export const Avatar = () => {
   )
 }
 
+// T CSS
 export const UploadIcon = ({ size }) => {
   return (
     <svg
@@ -705,6 +656,7 @@ export const UploadIcon = ({ size }) => {
   )
 }
 
+// T CSS
 export const SendIcon = () => {
   return (
     <svg

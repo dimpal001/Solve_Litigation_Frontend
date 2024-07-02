@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Img from '../assets/server down.svg'
-import { PrimaryButton } from './Customs'
 import { enqueueSnackbar } from 'notistack'
+import { SLButton } from './Customs'
 
 const Error404 = () => {
   const navigate = useNavigate()
@@ -33,7 +33,7 @@ const Error404 = () => {
             Sorry we couldn&apos;t find the page you&apos;re looking for
           </p>
           <Link title='Home Page' to={'/'}>
-            <PrimaryButton title={'Back to Homepage'} />
+            <SLButton title={'Back to Homepage'} />
           </Link>
         </div>
         <div className='w-full lg:flex lg:justify-end lg:w-1/2 mx-5 my-12'>

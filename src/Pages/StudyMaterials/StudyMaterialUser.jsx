@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack'
 import { Link } from 'react-router-dom'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import { Colors } from '../../Components/Colors'
-import { SLSpinner } from '../../Components/Customs'
+import { SLButton, SLSpinner } from '../../Components/Customs'
 
 const StudyMaterialUser = () => {
   const [topics, setTopics] = useState([])
@@ -14,6 +14,8 @@ const StudyMaterialUser = () => {
   const [loading, setLoading] = useState(false)
   const [showAllTopics, setShowAllTopics] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [pageNo, setPageNo] = useState(0)
+  const [totalPage, setTotalPage] = useState()
   const { enqueueSnackbar } = useSnackbar()
 
   const fetchTopics = async () => {
@@ -34,18 +36,19 @@ const StudyMaterialUser = () => {
   }
   const [query, setQuery] = useState('')
 
-  const fetchQuestions = async (topicId = null, page = 1) => {
+  const fetchQuestions = async (topicId = null, page = 0) => {
     setLoading(true)
     try {
       const url = topicId
-        ? `${api}/api/solve_litigation/study-material/topics/${topicId}/questions?page=${page}&limit=20`
-        : `${api}/api/solve_litigation/study-material/questions?page=${page}&limit=20`
+        ? `${api}/api/solve_litigation/study-material/topics/${topicId}/questions/${page}`
+        : `${api}/api/solve_litigation/study-material/questions/${page}`
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
       })
-      setQuestions(response.data)
+      setQuestions(response.data.questions)
+      setTotalPage(response.data.totalPages)
     } catch (error) {
       console.error(error)
       enqueueSnackbar('Failed to fetch questions', { variant: 'error' })
@@ -60,6 +63,7 @@ const StudyMaterialUser = () => {
   }, [])
 
   const handleTopicClick = (topicId) => {
+    setPageNo(0)
     setQuery('')
     setSelectedTopic(topicId)
     if (topicId === 'all') {
@@ -100,6 +104,15 @@ const StudyMaterialUser = () => {
       enqueueSnackbar('Failed to fetch citations', { variant: 'error' })
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const handlePageChange = (newPage) => {
+    setPageNo(newPage)
+    if (selectedTopic === 'all') {
+      fetchQuestions(null, newPage)
+    } else {
+      fetchQuestions(selectedTopic, newPage)
     }
   }
 
@@ -181,6 +194,25 @@ const StudyMaterialUser = () => {
             {questions.map((qa, index) => (
               <Material key={index} data={qa} />
             ))}
+            <div className='flex items-center justify-center gap-5 py-3 max-md:justify-between'>
+              {pageNo !== 0 && (
+                <SLButton
+                  onClick={() => handlePageChange(pageNo - 1)}
+                  variant={'outline'}
+                  title={'Previous'}
+                />
+              )}
+              <p className='text-primary'>
+                {pageNo + 1} of {totalPage}
+              </p>
+              {totalPage !== pageNo + 1 && (
+                <SLButton
+                  onClick={() => handlePageChange(pageNo + 1)}
+                  variant={'outline'}
+                  title={'Next'}
+                />
+              )}
+            </div>
           </div>
         )}
       </div>

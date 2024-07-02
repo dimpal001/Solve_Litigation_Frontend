@@ -4,16 +4,12 @@ import { api } from '../../Components/Apis'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Loading from '../../Components/Loading'
 import SingleCitationPage from './SingleCitationPage'
-import {
-  GreenPrimaryButton,
-  PrimaryOutlineButton,
-  RedButton,
-} from '../../Components/Customs'
 import { FaRegEdit } from 'react-icons/fa'
 import { UserContext } from '../../UserContext'
 import { MdDeleteOutline } from 'react-icons/md'
 import DeleteCitationModal from './DeleteCitationModal'
 import { enqueueSnackbar } from 'notistack'
+import { SLButton } from '../../Components/Customs'
 
 const ReviewCitation = () => {
   const { user } = useContext(UserContext)
@@ -85,13 +81,15 @@ const ReviewCitation = () => {
             <SingleCitationPage data={citation} />
             <div className='flex justify-center gap-3 pb-10'>
               <Link to={`/admin-dashboard/edit-citation/${id}`}>
-                <PrimaryOutlineButton
+                <SLButton
+                  variant={'primary'}
                   leftIcon={<FaRegEdit size={18} />}
                   title={'Edit'}
                 />
               </Link>
               {user.userType === 'admin' && citation.status === 'pending' && (
-                <GreenPrimaryButton
+                <SLButton
+                  variant={'success'}
                   isLoading={isApproving}
                   loadingText={'Approving...'}
                   onClick={handleApprove}
@@ -99,7 +97,8 @@ const ReviewCitation = () => {
                 />
               )}
               {user.userType === 'admin' && (
-                <RedButton
+                <SLButton
+                  variant={'error'}
                   onClick={() => setIsDeleteModalOpen(true)}
                   leftIcon={<MdDeleteOutline size={20} />}
                   title={'Delete'}
