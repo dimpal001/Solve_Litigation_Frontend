@@ -141,24 +141,38 @@ const ReviewCitationPage = () => {
             <div className='flex justify-between gap-3'>
               <div className='lg:w-3/4'>
                 <div className='flex gap-3'>
-                  <SLButton
-                    className={`${
-                      judgementType === 'pending'
-                        ? 'bg-primary text-white border border-primary'
-                        : 'bg-white text-primary border border-primary'
-                    }`}
-                    title={'Pending Judgements'}
-                    onClick={() => handleChangejudgementType('pending')}
-                  />
-                  <SLButton
-                    className={`${
-                      judgementType === 'approved'
-                        ? 'bg-primary text-white border border-primary'
-                        : 'bg-white text-primary border border-primary'
-                    }`}
-                    title={'Approved Judgements'}
-                    onClick={() => handleChangejudgementType('approved')}
-                  />
+                  <div className='relative'>
+                    <SLButton
+                      className={`${
+                        judgementType === 'pending'
+                          ? 'bg-primary text-white border border-primary'
+                          : 'bg-white text-primary border border-primary'
+                      }`}
+                      title={'Pending Judgements'}
+                      onClick={() => handleChangejudgementType('pending')}
+                    />
+                    {pendingjudgements && pendingjudgements.length > 0 && (
+                      <span className='absolute -top-3 -right-2 text-sm bg-orange-700 text-white font-extrabold w-8 h-8 flex justify-center items-center border rounded-full'>
+                        {pendingjudgements && pendingjudgements.length}
+                      </span>
+                    )}
+                  </div>
+                  <div className='relative'>
+                    <SLButton
+                      className={`${
+                        judgementType === 'approved'
+                          ? 'bg-primary text-white border border-primary'
+                          : 'bg-white text-primary border border-primary'
+                      }`}
+                      title={'Approved Judgements'}
+                      onClick={() => handleChangejudgementType('approved')}
+                    />
+                    {approvedjudgements && approvedjudgements.length > 0 && (
+                      <span className='absolute -top-3 -right-2 text-sm bg-green-700 text-white font-extrabold w-8 h-8 flex justify-center items-center border rounded-full'>
+                        {approvedjudgements && approvedjudgements.length}
+                      </span>
+                    )}
+                  </div>
                   {/* <SLButton
                   onClick={() => setIsFilterModalOpen(true)}
                   variant={'success'}

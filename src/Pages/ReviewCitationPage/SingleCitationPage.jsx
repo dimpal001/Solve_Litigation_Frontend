@@ -297,6 +297,28 @@ const SingleCitationPage = ({ data }) => {
         )}
       </div>
       <div className='max-sm:mx-3 my-3 rounded-sm bg-slate-50 lg:my-5 p-2 lg:p-10'>
+        {user && user.userType === 'admin' && (
+          <div className='py-3'>
+            <p>
+              Created by :{' '}
+              <strong className='text-primary'>
+                {data.uploadedBy.userName}
+              </strong>
+            </p>
+            <p className='uppercase'>
+              Created at :{' '}
+              <strong className='text-primary'>
+                {new Date(data.createdAt).toLocaleString()}
+              </strong>
+            </p>
+            <p className='uppercase'>
+              Last modified at :{' '}
+              <strong className='text-primary'>
+                {new Date(data.lastModifiedDate).toLocaleString()}
+              </strong>
+            </p>
+          </div>
+        )}
         <div className='flex items-center justify-center gap-3 pb-3'>
           {user && user.userType === 'admin' && (
             <div className='flex gap-3'>

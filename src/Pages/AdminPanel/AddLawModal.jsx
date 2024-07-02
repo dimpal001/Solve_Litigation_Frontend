@@ -20,6 +20,8 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [listLaw, setListLaw] = useState([])
   const [selectedLawIds, setSelectedLawIds] = useState([])
+  const [newLawName, setNewLawName] = useState('')
+  const [isUpdating, setIsUpdating] = useState(false)
 
   const fetchLaw = async () => {
     const token = localStorage.getItem('token')
@@ -86,17 +88,12 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
 
       console.log(selectedLawIds)
 
-      const response = await axios.delete(
-        `${api}/api/solve_litigation/contents/delete-laws`,
-        {
-          data: { ids: selectedLawIds },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
-
-      console.log(response)
+      await axios.delete(`${api}/api/solve_litigation/contents/delete-laws`, {
+        data: { ids: selectedLawIds },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
 
       fetchLaw()
 
@@ -113,7 +110,48 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
     }
   }
 
-  const handleCheckboxChange = (event, id) => {
+  const handleUpdateSelectedLaw = async () => {
+    const token = localStorage.getItem('token')
+    if (newLawName === '') {
+      enqueueSnackbar('Enter a valid law name.', {
+        variant: 'error',
+      })
+      return
+    }
+    try {
+      setIsUpdating(true)
+      setIsLoading(true)
+
+      await axios.put(
+        `${api}/api/solve_litigation/contents/update-law`,
+        {
+          _id: selectedLawIds[0],
+          newName: newLawName,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      await fetchLaw() // Assuming fetchLaw is a function that fetches updated law data
+
+      enqueueSnackbar('The law name has been updated.', {
+        variant: 'success',
+      })
+
+      setSelectedLawIds([])
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+    } finally {
+      setIsLoading(false)
+      setIsUpdating(false)
+    }
+  }
+
+  const handleCheckboxChange = (event, id, name) => {
+    setNewLawName(name)
     const isChecked = event.target.checked
     if (isChecked) {
       setSelectedLawIds([...selectedLawIds, id])
@@ -130,7 +168,10 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
           <ModalCloseButton onClick={onClose} />
           <ModalBody className='p-lg flex flex-col gap-3'>
             {listLaw.length !== 0 && (
-              <p className='text-red-600 text-base'>Select to delete</p>
+              <div className='flex justify-between pb-3'>
+                <p className='text-red-600 text-sm'>Select to delete</p>
+                <p className='text-red-600 text-sm'>Select anyone to update</p>
+              </div>
             )}
             <div className='flex flex-col max-h-[350px] overflow-scroll'>
               {!listLaw ? (
@@ -141,7 +182,9 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
                     key={item._id}
                     className='capitalize'
                     isChecked={selectedLawIds.includes(item._id)}
-                    onChange={(e) => handleCheckboxChange(e, item._id)}
+                    onChange={(e) =>
+                      handleCheckboxChange(e, item._id, item.name)
+                    }
                   >
                     {item.name}
                   </Checkbox>
@@ -157,6 +200,27 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
                 loadingText={'Deleting...'}
                 title={'Delete Selected Item(s)'}
               />
+            )}
+            {selectedLawIds.length === 1 && (
+              <div className='flex mt-2'>
+                <input
+                  value={newLawName}
+                  name='newLawName'
+                  onChange={(e) => setNewLawName(e.target.value)}
+                  type='text'
+                  placeholder='Enter edited name...'
+                  className='w-full py-1 px-2 border-primary border'
+                />
+                <SLButton
+                  isLoading={isUpdating}
+                  loadingText={'Updating...'}
+                  onClick={handleUpdateSelectedLaw}
+                  iconColor={'white'}
+                  variant={'primary'}
+                  className={'border-none'}
+                  title={'Update'}
+                />
+              </div>
             )}
           </ModalBody>
           {selectedLawIds.length === 0 && (
