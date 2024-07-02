@@ -305,12 +305,14 @@ const SingleCitationPage = ({ data }) => {
                 {data.uploadedBy.userName}
               </strong>
             </p>
-            <p className='uppercase'>
-              Created at :{' '}
-              <strong className='text-primary'>
-                {new Date(data.createdAt).toLocaleString()}
-              </strong>
-            </p>
+            {data.createdAt && (
+              <p className='uppercase'>
+                Created at :{' '}
+                <strong className='text-primary'>
+                  {new Date(data.createdAt).toLocaleString()}
+                </strong>
+              </p>
+            )}
             <p className='uppercase'>
               Last modified at :{' '}
               <strong className='text-primary'>
