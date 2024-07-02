@@ -118,10 +118,10 @@ const StudyMaterialUser = () => {
 
   return (
     <div>
-      <p className='text-3xl font-extrabold pb-5 text-center pt-5'>
+      <p className='text-3xl font-extrabold pl-3 lg:text-center max-md:py-2 py-5'>
         Study Material
       </p>
-      <div className='flex justify-center flex-wrap gap-2 mb-4'>
+      <div className='flex pl-3 lg:justify-center flex-wrap gap-2 mb-4'>
         <div
           onClick={() => handleTopicClick('all')}
           className={`bg-gray-200 px-3 text-sm rounded-sm p-2 cursor-pointer flex justify-center items-center ${
@@ -162,7 +162,7 @@ const StudyMaterialUser = () => {
         {/* <div className='flex w-[40%] gap-5 rounded-sm border px-3 items-center'> */}
         <form
           onSubmit={searchQuestions}
-          className='flex w-[40%] gap-5 rounded-sm border px-3 items-center'
+          className='flex lg:w-[40%] w-[95%] max-md:mb-2 gap-5 rounded-sm border px-3 items-center'
         >
           <FaSearch color={Colors.primary} />
           <input
@@ -194,25 +194,27 @@ const StudyMaterialUser = () => {
             {questions.map((qa, index) => (
               <Material key={index} data={qa} />
             ))}
-            <div className='flex items-center justify-center gap-5 py-3 max-md:justify-between'>
-              {pageNo !== 0 && (
-                <SLButton
-                  onClick={() => handlePageChange(pageNo - 1)}
-                  variant={'outline'}
-                  title={'Previous'}
-                />
-              )}
-              <p className='text-primary'>
-                {pageNo + 1} of {totalPage}
-              </p>
-              {totalPage !== pageNo + 1 && (
-                <SLButton
-                  onClick={() => handlePageChange(pageNo + 1)}
-                  variant={'outline'}
-                  title={'Next'}
-                />
-              )}
-            </div>
+            {!query && (
+              <div className='flex items-center max-md:px-4 justify-center gap-5 py-3 max-md:justify-between'>
+                {pageNo !== 0 && (
+                  <SLButton
+                    onClick={() => handlePageChange(pageNo - 1)}
+                    variant={'outline'}
+                    title={'Previous'}
+                  />
+                )}
+                <p className='text-primary'>
+                  {pageNo + 1} of {totalPage}
+                </p>
+                {totalPage !== pageNo + 1 && (
+                  <SLButton
+                    onClick={() => handlePageChange(pageNo + 1)}
+                    variant={'outline'}
+                    title={'Next'}
+                  />
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>

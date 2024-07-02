@@ -30,7 +30,6 @@ const CitationsPage = () => {
   const [selectedPOL, setSelectedPOL] = useState(null)
   const [fetchingLaws, setFetchingLaws] = useState([])
   const [fetchingApellates, setFetchingApellates] = useState([])
-  const [last10Citations, setLast10Citations] = useState([])
   const [fetchingPOL, setFetchingPOL] = useState([])
   const [fetchingCitations, setFetchingCitations] = useState([])
   const [fetchingActs, setFetchingActs] = useState([])
@@ -39,15 +38,16 @@ const CitationsPage = () => {
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [query, setQuery] = useState('')
-  const [noMatchFound, setNoMatchFound] = useState(false)
+  const [pageNo, setPageNo] = useState(0)
+  const [totalPage, setTotalPage] = useState()
+  const [isPagination, setIsPagination] = useState(false)
 
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
 
   const handleChangeApellate = async (apellate) => {
-    setNoMatchFound(false)
+    setIsPagination(false)
     setQuery('')
-    setLast10Citations([])
     setFetchingActs([])
     setSelectedFilter('all')
     setFetchingLaws([])
@@ -138,6 +138,7 @@ const CitationsPage = () => {
 
   const fetchCitations = async (POL) => {
     try {
+      setIsPagination(false)
       setFetchingActs([])
       const token = localStorage.getItem('token')
       const response = await axios.post(
@@ -164,6 +165,7 @@ const CitationsPage = () => {
 
   const fetchActs = async () => {
     try {
+      setIsPagination(false)
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/act/get-all-acts`,
@@ -189,13 +191,13 @@ const CitationsPage = () => {
     enqueueSnackbar('Session Expired!', { variant: 'error' })
   }
 
-  const fetchLast10Citations = async () => {
+  const fetchLast10Citations = async (page = 0) => {
     try {
       setFetchingCitations([])
       setFetchingActs([])
       const token = localStorage.getItem('token')
       const response = await axios.get(
-        `${api}/api/solve_litigation/citation/last-10-citations`,
+        `${api}/api/solve_litigation/citation/last-10-citations/${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -204,6 +206,8 @@ const CitationsPage = () => {
       )
       setFetchingCitations(response.data.last10Citations)
       setFilteredCitations(response.data.last10Citations)
+      setTotalPage(response.data.totalPages)
+      setIsPagination(true)
     } catch (error) {
       console.log(error)
       handleLogout()
@@ -223,7 +227,7 @@ const CitationsPage = () => {
     }
 
     try {
-      setNoMatchFound(false)
+      setIsPagination(false)
       setSelectedApellate('')
       setIsLoading(true)
       const token = localStorage.getItem('token')
@@ -243,12 +247,7 @@ const CitationsPage = () => {
         setFetchingCitations([])
         setFetchingCitations(response.data.matchedCitations)
         setFilteredCitations(response.data.matchedCitations)
-        setLast10Citations([])
         setFetchingActs([])
-
-        if (response.data.matchedCitations.length === 0) {
-          setNoMatchFound(true)
-        }
       }
 
       console.log(fetchingActs)
@@ -299,12 +298,16 @@ const CitationsPage = () => {
   const handleFetchActs = () => {
     setIsFilterModalOpen(false)
     setSelectedApellate('act')
-    setLast10Citations([])
     setFetchingCitations([])
     setFetchingLaws([])
     setFilteredCitations([])
     setFetchingPOL([])
     fetchActs()
+  }
+
+  const handlePageChange = (newPage) => {
+    setPageNo(newPage)
+    fetchLast10Citations(newPage)
   }
 
   return (
@@ -333,7 +336,7 @@ const CitationsPage = () => {
           />
         </div>
         <div className='flex justify-center lg:pb-3'>
-          <div className='flex gap-2 lg:w-[50%]'>
+          <div className='flex gap-2 items-center max-md:px-1 lg:w-[50%]'>
             <form
               onSubmit={searchJudgement}
               className='flex w-full gap-5 rounded-sm border px-3 items-center'
@@ -507,31 +510,13 @@ const CitationsPage = () => {
               <Loading />
             ) : (
               <div className='flex flex-col-reverse justify-between gap-10 w-full'>
-                <div>
-                  <div className='flex flex-col gap-3'>
-                    <div>
-                      {last10Citations && last10Citations.length > 0 && (
-                        <p className='px-2 py-3 max-md:text-center text-primary text-2xl'>
-                          Latest judgements
-                        </p>
-                      )}
-                      {last10Citations &&
-                        last10Citations.map((citation, index) => (
-                          <Citation key={index} data={citation} />
-                        ))}
-                    </div>
-                  </div>
-                  {noMatchFound && (
-                    <p className='text-center text-red-500'>No match found.</p>
-                  )}
-                </div>
                 <div
                   className={`flex ${
                     fetchingLaws.length !== 0 && 'p-3'
-                  } max-lg:hidden w-full gap-8`}
+                  } w-full gap-8`}
                 >
                   {fetchingLaws.length !== 0 && (
-                    <div>
+                    <div className='max-md:hidden'>
                       <p className='text-lg font-medium py-1'>Select a law</p>
                       <div className='flex flex-col gap-2'>
                         {fetchingLaws.map((law, index) => (
@@ -551,7 +536,7 @@ const CitationsPage = () => {
                     </div>
                   )}
                   {fetchingPOL.length !== 0 && (
-                    <div>
+                    <div className='max-md:hidden'>
                       <p className='text-lg font-medium py-1'>
                         Select a point of law
                       </p>
@@ -576,9 +561,10 @@ const CitationsPage = () => {
                     <p className='text-center p-3'>No citations found.</p>
                   )}
                   {fetchingCitations.length !== 0 && (
-                    <div>
+                    <div className='w-full'>
                       <div className='flex max-md:px-3 gap-3 pb-3'>
                         <SLButton
+                          className={'text-sm'}
                           variant={
                             selectedFilter === 'all' ? 'primary' : 'outline'
                           }
@@ -586,6 +572,7 @@ const CitationsPage = () => {
                           title={'All'}
                         />
                         <SLButton
+                          className={'text-sm'}
                           variant={
                             selectedFilter === 'hc' ? 'primary' : 'outline'
                           }
@@ -593,6 +580,7 @@ const CitationsPage = () => {
                           title={'High Court'}
                         />
                         <SLButton
+                          className={'text-sm'}
                           variant={
                             selectedFilter === 'sc' ? 'primary' : 'outline'
                           }
@@ -604,6 +592,27 @@ const CitationsPage = () => {
                         filteredCitations.map((citation, index) => (
                           <Citation key={index} data={citation} />
                         ))}
+                      {isPagination && (
+                        <div className='flex items-center max-md:px-4 justify-center gap-5 py-3 max-md:justify-between'>
+                          {pageNo !== 0 && (
+                            <SLButton
+                              onClick={() => handlePageChange(pageNo - 1)}
+                              variant={'outline'}
+                              title={'Previous'}
+                            />
+                          )}
+                          <p className='text-primary'>
+                            {pageNo + 1} of {totalPage}
+                          </p>
+                          {totalPage !== pageNo + 1 && (
+                            <SLButton
+                              onClick={() => handlePageChange(pageNo + 1)}
+                              variant={'outline'}
+                              title={'Next'}
+                            />
+                          )}
+                        </div>
+                      )}
                     </div>
                   )}
                   {fetchingActs.length !== 0 && (
@@ -626,8 +635,8 @@ const CitationsPage = () => {
 const Citation = ({ data }) => {
   return (
     <div>
-      <Link to={`/detailed-citation/${data._id}`}>
-        <div className='p-2 max-sm:px-5 lg:my-3 group hover:bg-slate-50 lg:border-b bg-slate-50'>
+      <Link to={`/detailed-citation/${data._id}`} className='w-full'>
+        <div className='p-2 max-sm:px-5 lg:my-3 group w-full hover:bg-slate-50 lg:border-b bg-slate-50'>
           <div className='flex items-center'>
             <div>
               <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />
