@@ -148,6 +148,9 @@ const NavItems = ({ onClose }) => {
         <NavItem onClick={onClose} title='Service Page' to={'/services'}>
           Services
         </NavItem>
+        <NavItem onClick={onClose} title='Liquid Text' to={'/liquid-text'}>
+          Liquid Text
+        </NavItem>
         <NavItem onClick={onClose} title='Contact Page' to={'/contact-us'}>
           Contact
         </NavItem>

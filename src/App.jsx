@@ -44,6 +44,7 @@ import ManageTopic from './Pages/ManageTopic/ManageTopic'
 import ViewMaterial from './Pages/StudyMaterials/ViewMaterial'
 import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
 import DetailedQuestionPage from './Pages/StudyMaterials/DetailedQuestionPage'
+import LiquidTextMainPage from './Pages/LiquidText/LiquidTextMainPage'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -146,6 +147,9 @@ const App = () => {
             )}
             {user && user.isVerified && (
               <Route path='/citations' element={<CitationsPage />} />
+            )}
+            {user && user.isVerified && (
+              <Route path='/liquid-text' element={<LiquidTextMainPage />} />
             )}
             <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             {user && !user.isVerified && (
