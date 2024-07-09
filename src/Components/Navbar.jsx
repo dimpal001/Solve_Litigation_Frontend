@@ -145,13 +145,15 @@ const NavItems = ({ onClose }) => {
         <NavItem onClick={onClose} title='Service Page' to={'/services'}>
           Services
         </NavItem>
-        <NavItem
-          onClick={onClose}
-          title='Prepare Argument'
-          to={'/prepare-argument'}
-        >
-          Prepare Argument
-        </NavItem>
+        {user && (
+          <NavItem
+            onClick={onClose}
+            title='Prepare Argument'
+            to={'/prepare-argument'}
+          >
+            Prepare Argument
+          </NavItem>
+        )}
         <NavItem onClick={onClose} title='Contact Page' to={'/contact-us'}>
           Contact
         </NavItem>
