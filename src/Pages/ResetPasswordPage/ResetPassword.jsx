@@ -1,7 +1,6 @@
 import axios from 'axios'
 import { CustomInput, SLButton } from '../../Components/Customs'
 import Logo from '../../assets/logo.svg'
-import { Center } from '@chakra-ui/react'
 import { useState } from 'react'
 import { api } from '../../Components/Apis'
 import { enqueueSnackbar } from 'notistack'
@@ -42,20 +41,20 @@ const ResetPassword = () => {
   }
 
   return (
-    <Center className='justify-center w-full'>
+    <div className='justify-center flex min-h-[600px] items-center w-full'>
       <div
         data-aos='fade-up'
-        className='shadow-xl max-sm:mt-20 border lg:w-[500px] p-10 rounded-xl'
+        className='shadow-xl max-sm:mt-20 border lg:w-[500px] p-10 rounded-sm'
       >
         <div className='flex-col gap-10'>
-          <Center>
+          <div className='flex justify-center'>
             <img
               className='max-sm:hidden'
               style={{ width: '100px' }}
               src={Logo}
               alt=''
             />
-          </Center>
+          </div>
 
           <div>
             <p className='text-center font-extrabold pt-5'>Forgot password</p>
@@ -94,7 +93,7 @@ const ResetPassword = () => {
           </div>
         </div>
       </div>
-    </Center>
+    </div>
   )
 }
 

@@ -111,7 +111,7 @@ const NavItems = ({ onClose }) => {
 
   return (
     <>
-      <div className='flex max-md:flex-col gap-5 lg:gap-14 text-base items-center'>
+      <div className='flex max-md:flex-col gap-5 lg:gap-8 text-base items-center'>
         <NavItem onClick={onClose} title='Home Page' to={'/'}>
           Home
         </NavItem>
@@ -142,9 +142,6 @@ const NavItems = ({ onClose }) => {
               Study Material
             </NavItem>
           )}
-        <NavItem onClick={onClose} title='Service Page' to={'/services'}>
-          Services
-        </NavItem>
         {user && (
           <NavItem
             onClick={onClose}
@@ -154,6 +151,10 @@ const NavItems = ({ onClose }) => {
             Prepare Argument
           </NavItem>
         )}
+        <NavItem onClick={onClose} title='Service Page' to={'/services'}>
+          Services
+        </NavItem>
+
         <NavItem onClick={onClose} title='Contact Page' to={'/contact-us'}>
           Contact
         </NavItem>

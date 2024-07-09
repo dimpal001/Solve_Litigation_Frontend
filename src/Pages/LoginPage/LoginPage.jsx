@@ -45,12 +45,27 @@ const LoginPage = () => {
   const handleLogin = async (e) => {
     e.preventDefault()
     refreshString()
+
+    if (formData.emailOrPhoneNumber === '') {
+      enqueueSnackbar('Enter a valid email or phone number!', {
+        variant: 'error',
+      })
+      return
+    }
+
+    if (formData.password === '') {
+      enqueueSnackbar('Enter a valid password!', {
+        variant: 'error',
+      })
+      return
+    }
+
     try {
       const enteredCaptcha = formData.captcha
-      // if (enteredCaptcha !== captcha) {
-      //   enqueueSnackbar('Incorrect captcha entered!', { variant: 'error' })
-      //   return
-      // }
+      if (enteredCaptcha !== captcha) {
+        enqueueSnackbar('Incorrect captcha entered!', { variant: 'error' })
+        return
+      }
       setIsLoading(true)
       const response = await axios.post(
         `${api}/api/solve_litigation/auth/login`,
@@ -96,29 +111,11 @@ const LoginPage = () => {
   }
 
   const handleChange = (e) => {
-    const handleLogout = () => {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      localStorage.removeItem('tokenExpiration')
-      localStorage.removeItem('loginTimestamp')
-      setUser(null)
-      enqueueSnackbar('You have been logged out due to inactivity', {
-        variant: 'info',
-      })
-      navigate('/login')
-    }
     const { name, value } = e.target
     setFormData({
       ...formData,
       [name]: value,
     })
-  }
-
-  const isSubmitDisabled = () => {
-    const isEmailOrPhoneNumberEmpty = formData.emailOrPhoneNumber.trim() === ''
-    const isPasswordEmpty = formData.password.trim() === ''
-
-    return isEmailOrPhoneNumberEmpty || isPasswordEmpty
   }
 
   useEffect(() => {
@@ -134,7 +131,7 @@ const LoginPage = () => {
     <Center className='justify-center w-full'>
       <div
         data-aos='fade-up'
-        className='shadow-xl max-sm:mt-20 border lg:w-[500px] p-10 rounded-xl'
+        className='shadow-xl max-sm:mt-20 border lg:w-[500px] p-10 rounded-sm'
       >
         <div className='flex-col gap-10'>
           <Center>
@@ -175,19 +172,20 @@ const LoginPage = () => {
                 </Checkbox>
                 <div>
                   <div className='flex items-center justify-center gap-5'>
-                    {/* <p>{captcha}</p> */}
-                    {/* <MdRefresh
+                    <p>{captcha}</p>
+                    <MdRefresh
                       onClick={refreshString}
                       color='red'
                       className='cursor-pointer'
-                    /> */}
+                    />
                   </div>
-                  {/* <CustomInput
+                  <CustomInput
+                    autoComplete={'off'}
                     name='captcha'
                     value={formData.captcha}
                     onChange={handleChange}
                     placeholder={'Enter the captcha'}
-                  /> */}
+                  />
                 </div>
                 <div className='w-full flex justify-between pt-3'>
                   <SLButton

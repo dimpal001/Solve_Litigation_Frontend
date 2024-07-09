@@ -46,6 +46,7 @@ import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
 import DetailedQuestionPage from './Pages/StudyMaterials/DetailedQuestionPage'
 import LiquidTextMainPage from './Pages/LiquidText/LiquidTextMainPage'
 import LiquidTextHomePage from './Pages/LiquidText/LiquidTextHomePage'
+import TermsAndConditionsPage from './Components/TermsAndConditionsPage'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -188,7 +189,11 @@ const App = () => {
               />
             )}
 
-            <Route path='/*' element={<Error404 />} />
+            <Route
+              path='/terms-and-conditions'
+              element={<TermsAndConditionsPage />}
+            />
+            <Route path='/*' element={user ? <Error404 /> : <LoginPage />} />
           </Routes>
         </div>
         <div

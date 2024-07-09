@@ -287,6 +287,7 @@ export const RedButton = ({
 // T CSS
 export const CustomInput = ({
   placeholder,
+  autoComplete,
   onChange,
   className,
   value,
@@ -300,6 +301,7 @@ export const CustomInput = ({
   return (
     <>
       <input
+        autoComplete={autoComplete}
         placeholder={placeholder}
         value={value}
         name={name}

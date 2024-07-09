@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Logo from '../../assets/logo.svg'
 import { CustomInput, SLButton } from '../../Components/Customs'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import StateData from './states-and-districts.json'
@@ -14,6 +14,7 @@ const RegisterPage = () => {
   const [selectedDistrict, setSelectedDistrict] = useState(null)
   const [isShowPassword, setIsShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isAcceptTC, setIsAcceptTC] = useState(false)
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -50,6 +51,16 @@ const RegisterPage = () => {
       enqueueSnackbar('District name should not be empty!', {
         variant: 'error',
       })
+      return
+    }
+
+    if (!isAcceptTC) {
+      enqueueSnackbar(
+        'Oops! You have to accept the terms and conditions to register.',
+        {
+          variant: 'error',
+        }
+      )
       return
     }
 
@@ -138,7 +149,7 @@ const RegisterPage = () => {
     <div className='flex justify-center w-full'>
       <div
         data-aos='fade-up'
-        className='shadow-xl mt-10 border w-full max-w-xl p-10 rounded-xl'
+        className='shadow-xl my-10 border w-full max-w-xl p-10 rounded-sm'
       >
         <div className='flex flex-col gap-10'>
           <div className='flex justify-center'>
@@ -278,6 +289,21 @@ const RegisterPage = () => {
                   />
                   <span className='ml-2'>Show Password</span>
                 </label>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    className='form-checkbox'
+                    onChange={() => {
+                      setIsAcceptTC(!isAcceptTC)
+                    }}
+                  />
+                  <span className='ml-2'>
+                    I agree{' '}
+                    <Link to={'/terms-and-conditions'} className='text-primary'>
+                      Terms and Condition
+                    </Link>
+                  </span>
+                </label>
               </div>
               <div className='w-full flex justify-center pt-3'>
                 <SLButton
@@ -288,7 +314,7 @@ const RegisterPage = () => {
                   loadingText={'Please wait...'}
                   iconColor={'white'}
                   onClick={handleSubmit}
-                  title={'Submit'}
+                  title={'Register'}
                   variant={'primary'}
                   disabled={isSubmitDisabled() || isSubmitting}
                 />

@@ -1,27 +1,89 @@
-// import { Link } from "react-router-dom"
-
 import { Link } from 'react-router-dom'
+import logo from '../assets/logo.svg'
 
 const Footer = () => {
-  const year = new Date().getFullYear()
   return (
-    <div>
-      <div className='bg-primary py-5 text-white text-base'>
-        <p className='text-center'>
-          &copy; {year} Solve Litigation. All rights reserved
-        </p>
-        <p className='text-center'>
-          Design and developed by{' '}
-          <Link
-            className='hover:text-gray-300 underline'
-            target='_blank'
-            to={'https://www.trinitycybertech.com'}
-          >
-            Trinity Cyber Tech
-          </Link>
-        </p>
+    <footer className='bg-gray-800 text-white py-10'>
+      <div className='container mx-auto px-5 lg:px-32'>
+        <div className='flex flex-wrap justify-between'>
+          <div className='w-full flex justify-center flex-col max-md:items-center lg:w-1/4 mb-10 lg:mb-0'>
+            <Link to='/'>
+              <img src={logo} alt='Logo' className='w-32 mb-3' />
+            </Link>
+            <p className='text-base'>
+              Dedicated to helping individuals, firms, and companies navigate
+              the complex world of law.
+            </p>
+          </div>
+          <div className='w-full lg:w-1/4 mb-10 lg:mb-0'>
+            <h3 className='text-lg font-semibold mb-3'>Quick Links</h3>
+            <ul className='text-base'>
+              <li className='mb-2'>
+                <Link to='/' className='hover:text-primary'>
+                  Home
+                </Link>
+              </li>
+              <li className='mb-2'>
+                <Link to='/services' className='hover:text-primary'>
+                  Services
+                </Link>
+              </li>
+              <li className='mb-2'>
+                <Link to='/contact-us' className='hover:text-primary'>
+                  Contact
+                </Link>
+              </li>
+              <li className='mb-2'>
+                <Link to='/register' className='hover:text-primary'>
+                  Register
+                </Link>
+              </li>
+              <li className='mb-2'>
+                <Link to='/login' className='hover:text-primary'>
+                  Login
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className='w-full lg:w-1/4 mb-10 lg:mb-0'>
+            <h3 className='text-lg font-semibold mb-3'>Legal Resources</h3>
+            <ul className='text-base'>
+              <li className='mb-2'>
+                <Link to='/citations' className='hover:text-primary'>
+                  Judgements
+                </Link>
+              </li>
+              <li className='mb-2'>
+                <Link to='/legal-advice' className='hover:text-primary'>
+                  Legal Advice
+                </Link>
+              </li>
+              <li className='mb-2'>
+                <Link to='/study-material' className='hover:text-primary'>
+                  Study Material
+                </Link>
+              </li>
+            </ul>
+          </div>
+          <div className='w-full lg:w-1/4'>
+            <h3 className='text-lg font-semibold mb-3'>Contact Us</h3>
+            <p className='mb-2 text-base'>
+              Email: supportteam@solvelitigation.com
+            </p>
+            <p className='mb-2 text-base'>Phone: +916909115355</p>
+            <p className='mb-2 text-base'>
+              Address: Police Bazar, Shillong 793001, Meghalaya
+            </p>
+          </div>
+        </div>
+        <div className='mt-10 border-t pt-5 text-center'>
+          <p>
+            &copy; {new Date().getFullYear()} Solve Litigation. All rights
+            reserved.
+          </p>
+        </div>
       </div>
-    </div>
+    </footer>
   )
 }
 
