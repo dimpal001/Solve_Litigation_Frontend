@@ -29,16 +29,32 @@ const RegisterPage = () => {
   const navigate = useNavigate()
 
   const handleSubmit = async () => {
-    if (formData.password !== formData.confirmPassword) {
-      enqueueSnackbar(
-        'Password mismatched ! Password and Confirm Password should be the same',
-        { variant: 'error' }
-      )
+    if (formData.userType === '') {
+      enqueueSnackbar('Select a valid user type!', { variant: 'error' })
       return
     }
 
-    if (formData.userType === '') {
-      enqueueSnackbar('Select a valid user type!', { variant: 'error' })
+    if (formData.fullName === '') {
+      enqueueSnackbar('Enter a valid name!', {
+        variant: 'error',
+      })
+      return
+    }
+
+    if (formData.email === '') {
+      enqueueSnackbar('Enter a valid email address!', {
+        variant: 'error',
+      })
+      return
+    }
+
+    if (
+      formData.phoneNumber.length < 10 ||
+      !/^\d+$/.test(formData.phoneNumber)
+    ) {
+      enqueueSnackbar('Phone number should have 10 numeric characters!', {
+        variant: 'error',
+      })
       return
     }
 
@@ -54,6 +70,28 @@ const RegisterPage = () => {
       return
     }
 
+    if (formData.password === '') {
+      enqueueSnackbar('Enter a valid password!', {
+        variant: 'error',
+      })
+      return
+    }
+
+    if (formData.password.length < 8) {
+      enqueueSnackbar('The password must be at least 8 characters long!', {
+        variant: 'error',
+      })
+      return
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      enqueueSnackbar(
+        'Password mismatched ! Password and Confirm Password should be the same',
+        { variant: 'error' }
+      )
+      return
+    }
+
     if (!isAcceptTC) {
       enqueueSnackbar(
         'Oops! You have to accept the terms and conditions to register.',
@@ -63,17 +101,6 @@ const RegisterPage = () => {
       )
       return
     }
-
-    if (
-      formData.phoneNumber.length < 10 ||
-      !/^\d+$/.test(formData.phoneNumber)
-    ) {
-      enqueueSnackbar('Phone number should have 10 numeric characters!', {
-        variant: 'error',
-      })
-      return
-    }
-    console.log(formData)
 
     try {
       setIsSubmitting(true)
@@ -251,7 +278,7 @@ const RegisterPage = () => {
                     name='specialist'
                     value={formData.specialist}
                     onChange={handleChange}
-                    className='w-full p-2 bg-transparent border mb-3'
+                    className='w-full p-2 bg-transparent border'
                     id='specialist'
                   >
                     <option value=''>Select Specialization</option>
