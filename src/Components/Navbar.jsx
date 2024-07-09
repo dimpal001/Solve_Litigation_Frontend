@@ -1,30 +1,26 @@
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.svg'
-import { useContext, useRef, useState } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../UserContext'
 import ProfileMenu from './ProfileMenu'
 import ConfirmLogout from './ConfirmLogout'
-import {
-  Drawer,
-  DrawerBody,
-  DrawerCloseButton,
-  DrawerContent,
-  DrawerOverlay,
-  useDisclosure,
-} from '@chakra-ui/react'
 import { CgMenuRight } from 'react-icons/cg'
 import { Colors } from './Colors'
 import { SLButton } from './Customs'
 
 const Navbar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [isNavbarOpen, setIsNavbarOpen] = useState(false)
   const { user } = useContext(UserContext)
-  const btnRef = useRef()
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
   const handleLogout = () => {
     setIsLogoutModalOpen(true)
   }
+
+  const toggleNavbar = () => {
+    setIsNavbarOpen(!isNavbarOpen)
+  }
+
   return (
     <div>
       <div
@@ -33,7 +29,11 @@ const Navbar = () => {
         } px-5 lg:px-32 justify-between w-full flex items-center`}
       >
         <div className=''>
-          <NavLink title='Solve Litigation' to={'/'}>
+          <NavLink
+            title='Solve Litigation'
+            onClick={() => setIsNavbarOpen(false)}
+            to={'/'}
+          >
             <img style={{ width: '60px' }} src={logo} alt='Logo' />
           </NavLink>
         </div>
@@ -47,7 +47,11 @@ const Navbar = () => {
         <div className='md:hidden flex gap-5'>
           {!user ? (
             <Link to={'/login'}>
-              <SLButton variant={'primary'} title={'Login'} />
+              <SLButton
+                variant={'primary'}
+                title={'Login'}
+                onClick={() => setIsNavbarOpen(false)}
+              />
             </Link>
           ) : (
             <SLButton
@@ -59,30 +63,23 @@ const Navbar = () => {
           <CgMenuRight
             size={35}
             color={Colors.primary}
-            ref={btnRef}
-            onClick={onOpen}
+            onClick={toggleNavbar}
           />
-          <Drawer
-            isOpen={isOpen}
-            placement='right'
-            onClose={onClose}
-            finalFocusRef={btnRef}
-          >
-            <DrawerOverlay />
-            <DrawerContent>
-              <DrawerCloseButton />
-
-              <DrawerBody>
-                <div className='py-10'>
-                  <NavItems onClose={onClose} />
-                </div>
-              </DrawerBody>
-            </DrawerContent>
-          </Drawer>
         </div>
 
         <div className='max-md:hidden'>
           <NavItems />
+        </div>
+      </div>
+      <div
+        className={`md:hidden transition-all duration-1000 delay-500 ${
+          isNavbarOpen
+            ? 'h-full overflow-hidden px-5 pt-5 transition-all delay-500 duration-1000'
+            : 'h-0 hidden transition-all duration-1000 delay-500'
+        }`}
+      >
+        <div className='py-3 rounded-sm bg-gray-200'>
+          <NavItems onClose={() => setIsNavbarOpen(false)} />
         </div>
       </div>
     </div>
@@ -148,8 +145,12 @@ const NavItems = ({ onClose }) => {
         <NavItem onClick={onClose} title='Service Page' to={'/services'}>
           Services
         </NavItem>
-        <NavItem onClick={onClose} title='Liquid Text' to={'/liquid-text'}>
-          Liquid Text
+        <NavItem
+          onClick={onClose}
+          title='Prepare Argument'
+          to={'/prepare-argument'}
+        >
+          Prepare Argument
         </NavItem>
         <NavItem onClick={onClose} title='Contact Page' to={'/contact-us'}>
           Contact

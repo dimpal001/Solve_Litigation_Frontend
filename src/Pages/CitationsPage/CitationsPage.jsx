@@ -281,6 +281,14 @@ const CitationsPage = () => {
     setFilteredCitations(filteredCitations)
   }
 
+  const handleFilteTribunal = () => {
+    setSelectedFilter('tr')
+    const filteredCitations = fetchingCitations.filter((citation) =>
+      citation.institutionName.toLowerCase().includes('tribunal')
+    )
+    setFilteredCitations(filteredCitations)
+  }
+
   const handleFilterAll = () => {
     setSelectedFilter('all')
     setFilteredCitations(fetchingCitations)
@@ -586,6 +594,14 @@ const CitationsPage = () => {
                           }
                           onClick={handleFilterSupremeCourt}
                           title={'Supreme Court'}
+                        />
+                        <SLButton
+                          className={'text-sm'}
+                          variant={
+                            selectedFilter === 'tr' ? 'primary' : 'outline'
+                          }
+                          onClick={handleFilteTribunal}
+                          title={'Tribunal'}
                         />
                       </div>
                       {filteredCitations.length !== 0 &&

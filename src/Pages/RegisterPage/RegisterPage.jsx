@@ -36,6 +36,11 @@ const RegisterPage = () => {
       return
     }
 
+    if (formData.userType === '') {
+      enqueueSnackbar('Select a valid user type!', { variant: 'error' })
+      return
+    }
+
     if (formData.state === '') {
       enqueueSnackbar('State name should not be empty!', { variant: 'error' })
       return

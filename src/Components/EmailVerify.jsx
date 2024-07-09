@@ -58,6 +58,7 @@ const EmailVerify = () => {
                 <div>
                   <div className='w-full py-3 flex justify-center'>
                     <SLButton
+                      variant={'primary'}
                       type={'submit'}
                       isLoading={isVerifying}
                       loadingText={'Verifying...'}
@@ -83,6 +84,7 @@ const EmailVerify = () => {
                   <div className='w-full py-3 flex justify-center'>
                     <Link to={'/login'}>
                       <SLButton
+                        variant={'primary'}
                         type={'submit'}
                         width={'100%'}
                         title={'Login'}

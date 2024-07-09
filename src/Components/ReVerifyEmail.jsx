@@ -51,6 +51,7 @@ const ReVerifyEmail = () => {
               <form className='text-center flex-col flex gap-3 p-1 py-4'>
                 <div className='w-full flex justify-center'>
                   <SLButton
+                    variant={'primary'}
                     type={'submit'}
                     isLoading={isSending}
                     loadingText={'Sending...'}

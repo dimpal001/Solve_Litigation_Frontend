@@ -28,7 +28,7 @@ const LegalAdvice = () => {
           ensuring that you make informed decisions and navigate the
           complexities of the legal system with confidence.
         </p>
-        <div className='flex max-sm:flex-col gap-3'>
+        <div>
           <SLButton
             onClick={redirectToChat}
             title={'Chat with Lawyer'}

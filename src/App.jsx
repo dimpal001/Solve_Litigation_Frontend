@@ -45,6 +45,7 @@ import ViewMaterial from './Pages/StudyMaterials/ViewMaterial'
 import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
 import DetailedQuestionPage from './Pages/StudyMaterials/DetailedQuestionPage'
 import LiquidTextMainPage from './Pages/LiquidText/LiquidTextMainPage'
+import LiquidTextHomePage from './Pages/LiquidText/LiquidTextHomePage'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -149,7 +150,16 @@ const App = () => {
               <Route path='/citations' element={<CitationsPage />} />
             )}
             {user && user.isVerified && (
-              <Route path='/liquid-text' element={<LiquidTextMainPage />} />
+              <Route
+                path='/prepare-argument'
+                element={<LiquidTextHomePage />}
+              />
+            )}
+            {user && user.isVerified && (
+              <Route
+                path='/prepare-argument/:id'
+                element={<LiquidTextMainPage />}
+              />
             )}
             <Route path='/detailed-citation/:id' element={<ViewCitation />} />
             {user && !user.isVerified && (
