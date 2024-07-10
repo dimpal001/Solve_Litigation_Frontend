@@ -77,10 +77,36 @@ const LiquidTextMainPage = () => {
       console.log(response.data)
       setFetchedArgumentDetails(response.data.argumentDetails)
       setLiquidTexts(response.data.argumentDetails.liquidText)
-      setFile(response.data.file)
+
+      await fetchArgumentFile(response.data.argumentDetails.file.fileName)
     } catch (error) {
       console.error('Error fetching PDF:', error)
       // Handle error (e.g., show error message)
+    } finally {
+      setIsFileLoading(false)
+    }
+  }
+
+  const fetchArgumentFile = async (fileName) => {
+    try {
+      setFile(null)
+      setIsFileLoading(true)
+      const response = await axios.get(
+        `${api}/api/solve_litigation/liquid-text/download-file/${fileName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          responseType: 'blob', // Set response type to 'blob' to handle binary data
+        }
+      )
+
+      const fileUrl = URL.createObjectURL(
+        new Blob([response.data], { type: response.headers['content-type'] })
+      )
+      setFile(fileUrl)
+    } catch (error) {
+      console.error('Error fetching PDF:', error)
     } finally {
       setIsFileLoading(false)
     }

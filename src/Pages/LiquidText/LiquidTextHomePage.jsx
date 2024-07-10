@@ -1,21 +1,23 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { SLButton, SLSpinner } from '../../Components/Customs'
 import { api } from '../../Components/Apis'
 import { enqueueSnackbar } from 'notistack'
 import { Link } from 'react-router-dom'
 import CreateClientModal from './CreateClientModal'
+import { UserContext } from '../../UserContext'
 
 const LiquidTextHomePage = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [allClients, setAllClients] = useState([])
   const [isCreateClientModalOpen, setIsCreateClientModalOpen] = useState(false)
+  const { user } = useContext(UserContext)
 
   const fetchAllDocuments = async () => {
     try {
       setIsLoading(true)
       const response = await axios(
-        `${api}/api/solve_litigation/liquid-text/all-clients`,
+        `${api}/api/solve_litigation/liquid-text/all-clients/${user._id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
