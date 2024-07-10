@@ -12,7 +12,6 @@ import Error404 from './Components/Error404'
 import ProfileSettingsPage from './Pages/ProfileSettingsPage/ProfileSettingsPage'
 import Layout from './Pages/AdminPanel/Layout'
 import CreateCitationPage from './Pages/CreateCitationPage/CreateCitationPage'
-import EditCitationPage from './Pages/EditCitationPage/EditCitationPage'
 import ReviewCitationPage from './Pages/ReviewCitationPage/ReviewCitationPage'
 import CitationsPage from './Pages/CitationsPage/CitationsPage'
 import ReviewCitation from './Pages/ReviewCitationPage/ReviewCitation'
@@ -31,8 +30,6 @@ import LegalAdviceRequests from './Pages/LegalAdviceAdmin/LegaAdviceRequests'
 import ManageUserPage from './Pages/ManageUser/ManageUserPage'
 import UserList from './Pages/ManageUser/UserList'
 import CreateStaffpage from './Pages/ManageUser/CreateStaffpage'
-import MakeARequest from './Pages/LegalAdvicePage/MakeARequest'
-import PreviousRequests from './Pages/LegalAdvicePage/PreviousRequests'
 import AllNotifications from './Pages/ManageNotification/AllNotifications'
 import Chat from './Pages/ChatPage/Chat'
 import ManageLawyer from './Pages/ManageLawyer/ManageLawyer'
@@ -112,7 +109,6 @@ const App = () => {
                     path='create-citation'
                     element={<CreateCitationPage />}
                   />
-                  <Route path='edit-citation' element={<EditCitationPage />} />
                   <Route path='edit-citation/:id' element={<EditCitation />} />
                   <Route
                     path='detailed-citation/:id'
@@ -167,13 +163,7 @@ const App = () => {
               <Route path='/verify-email' element={<ReVerifyEmail />} />
             )}
             {user && <Route path='/legal-advice' element={<LegalAdvice />} />}
-            {user && (
-              <Route path='/make-a-request' element={<MakeARequest />} />
-            )}
             {user && <Route path='/chat' element={<Chat />} />}
-            {user && (
-              <Route path='/previous-requests' element={<PreviousRequests />} />
-            )}
             <Route path='/verify-email/:token' element={<EmailVerify />} />
             <Route path='/reset-password/:token' element={<ResetLinkPage />} />
             <Route path='/services' element={<ServicesPage />} />

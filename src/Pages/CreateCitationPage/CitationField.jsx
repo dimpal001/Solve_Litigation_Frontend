@@ -1,4 +1,3 @@
-import { Checkbox } from '@chakra-ui/react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useContext, useEffect, useState } from 'react'
@@ -348,25 +347,27 @@ const CitationField = ({ data, setData }) => {
         </label>
         <div className='flex gap-5 flex-wrap capitalize'>
           {filteredApellateList.map((apellate, index) => (
-            <Checkbox
-              key={index}
-              name={`law_${apellate._id}`}
-              isChecked={apellates.includes(apellate.name)}
-              onChange={(e) => {
-                const { checked } = e.target
-                const apellateName = apellate.name
-                setData((prevData) => ({
-                  ...prevData,
-                  apellates: checked
-                    ? [...prevData.apellates, apellateName]
-                    : prevData.apellates.filter(
-                        (name) => name !== apellateName
-                      ),
-                }))
-              }}
-            >
-              {apellate.name}
-            </Checkbox>
+            <label key={index} className='inline-flex items-center'>
+              <input
+                type='checkbox'
+                name={`law_${apellate._id}`}
+                className='form-checkbox'
+                defaultChecked={apellates.includes(apellate.name)}
+                onChange={(e) => {
+                  const { checked } = e.target
+                  const apellateName = apellate.name
+                  setData((prevData) => ({
+                    ...prevData,
+                    apellates: checked
+                      ? [...prevData.apellates, apellateName]
+                      : prevData.apellates.filter(
+                          (name) => name !== apellateName
+                        ),
+                  }))
+                }}
+              />
+              <span className='ml-2'>{apellate.name}</span>
+            </label>
           ))}
         </div>
       </div>
@@ -391,23 +392,25 @@ const CitationField = ({ data, setData }) => {
           {filteredLawList
             .sort((a, b) => a.name.localeCompare(b.name)) // Sort the law list alphabetically
             .map((law, index) => (
-              <Checkbox
-                key={index}
-                name={`law_${law._id}`}
-                isChecked={laws.includes(law.name)}
-                onChange={(e) => {
-                  const { checked } = e.target
-                  const lawName = law.name
-                  setData((prevData) => ({
-                    ...prevData,
-                    laws: checked
-                      ? [...prevData.laws, lawName] // Store the name in the array
-                      : prevData.laws.filter((name) => name !== lawName), // Remove the name from the array
-                  }))
-                }}
-              >
-                {law.name}
-              </Checkbox>
+              <label key={index} className='inline-flex items-center'>
+                <input
+                  type='checkbox'
+                  name={`law_${law._id}`}
+                  className='form-checkbox'
+                  defaultChecked={laws.includes(law.name)}
+                  onChange={(e) => {
+                    const { checked } = e.target
+                    const lawName = law.name
+                    setData((prevData) => ({
+                      ...prevData,
+                      laws: checked
+                        ? [...prevData.laws, lawName] // Store the name in the array
+                        : prevData.laws.filter((name) => name !== lawName), // Remove the name from the array
+                    }))
+                  }}
+                />
+                <span className='ml-2'>{law.name}</span>
+              </label>
             ))}
         </div>
       </div>
@@ -432,23 +435,27 @@ const CitationField = ({ data, setData }) => {
           {filteredPOLList
             .sort((a, b) => a.name.localeCompare(b.name)) // Sort the POL list alphabetically
             .map((pol) => (
-              <Checkbox
-                key={pol._id}
-                name={`pol_${pol._id}`}
-                isChecked={pointOfLaw.includes(pol.name)}
-                onChange={(e) => {
-                  const { checked } = e.target
-                  const polName = pol.name
-                  setData((prevData) => ({
-                    ...prevData,
-                    pointOfLaw: checked
-                      ? [...prevData.pointOfLaw, polName]
-                      : prevData.pointOfLaw.filter((name) => name !== polName),
-                  }))
-                }}
-              >
-                {pol.name}
-              </Checkbox>
+              <label key={index} className='inline-flex items-center'>
+                <input
+                  type='checkbox'
+                  name={`law_${pol._id}`}
+                  className='form-checkbox'
+                  defaultChecked={pointOfLaw.includes(pol.name)}
+                  onChange={(e) => {
+                    const { checked } = e.target
+                    const polName = pol.name
+                    setData((prevData) => ({
+                      ...prevData,
+                      pointOfLaw: checked
+                        ? [...prevData.pointOfLaw, polName]
+                        : prevData.pointOfLaw.filter(
+                            (name) => name !== polName
+                          ),
+                    }))
+                  }}
+                />
+                <span className='ml-2'>{pol.name}</span>
+              </label>
             ))}
         </div>
       </div>
@@ -513,22 +520,28 @@ const CitationField = ({ data, setData }) => {
       </div>
       {/* Checkboxes */}
       <div className='flex items-start gap-2'>
-        <Checkbox
-          className='mt-[6px]'
-          name='reportable'
-          isChecked={reportable}
-          onChange={handleCheckboxChange}
-        />
-        <label>Reportable</label>
+        <label className='inline-flex items-center'>
+          <input
+            type='checkbox'
+            name='reportable'
+            defaultChecked={reportable}
+            className='form-checkbox'
+            onChange={handleCheckboxChange}
+          />
+          <span className='ml-2'>Reportable</span>
+        </label>
       </div>
       <div className='flex items-start gap-2'>
-        <Checkbox
-          className='mt-[6px]'
-          name='overRuled'
-          isChecked={overRuled}
-          onChange={handleCheckboxChange}
-        />
-        <label>Over Ruled</label>
+        <label className='inline-flex items-center'>
+          <input
+            type='checkbox'
+            name='overRuled'
+            defaultChecked={overRuled}
+            className='form-checkbox'
+            onChange={handleCheckboxChange}
+          />
+          <span className='ml-2'>Over Ruled</span>
+        </label>
       </div>
     </div>
   )

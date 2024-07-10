@@ -1,4 +1,3 @@
-import { PrimaryOutlineButton } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useContext, useEffect, useState } from 'react'
@@ -8,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaArrowLeft } from 'react-icons/fa'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
+import { SLButton } from '../../Components/Customs'
 
 const UserList = () => {
   const { setUser } = useContext(UserContext)
@@ -84,34 +84,29 @@ const UserList = () => {
       </Link>
       <p className='text-3xl font-extrabold pb-5 text-center'>Staff List</p>
       <div className='flex justify-center gap-5 pb-5'>
-        <PrimaryOutlineButton
-          bgColor={selectedFilter === 'all' && Colors.primary}
-          color={selectedFilter === 'all' && 'white'}
+        <SLButton
+          variant={selectedFilter === 'all' ? 'primary' : 'outline'}
           onClick={() => handleFilter('all')}
           title={'All'}
         />
-        <PrimaryOutlineButton
-          bgColor={selectedFilter === 'admin' && Colors.primary}
-          color={selectedFilter === 'admin' && 'white'}
+        <SLButton
+          variant={selectedFilter === 'admin' ? 'primary' : 'outline'}
           onClick={() => handleFilter('admin')}
           title={'Admin'}
         />
-        <PrimaryOutlineButton
-          bgColor={selectedFilter === 'staff' && Colors.primary}
-          color={selectedFilter === 'staff' && 'white'}
-          onClick={() => handleFilter('staff')}
+        <SLButton
+          variant={selectedFilter === 'admin' ? 'primary' : 'outline'}
+          onClick={() => handleFilter('admin')}
           title={'Staff'}
         />
-        <PrimaryOutlineButton
-          bgColor={selectedFilter === 'guest' && Colors.primary}
-          color={selectedFilter === 'guest' && 'white'}
-          onClick={() => handleFilter('guest')}
+        <SLButton
+          variant={selectedFilter === 'admin' ? 'primary' : 'outline'}
+          onClick={() => handleFilter('admin')}
           title={'Guest User'}
         />
-        <PrimaryOutlineButton
-          bgColor={selectedFilter === 'lawyer' && Colors.primary}
-          color={selectedFilter === 'lawyer' && 'white'}
-          onClick={() => handleFilter('lawyer')}
+        <SLButton
+          variant={selectedFilter === 'admin' ? 'primary' : 'outline'}
+          onClick={() => handleFilter('admin')}
           title={'Lawyer'}
         />
       </div>

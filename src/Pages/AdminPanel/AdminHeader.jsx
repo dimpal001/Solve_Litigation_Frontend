@@ -1,4 +1,3 @@
-import { Divider } from '@chakra-ui/react'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../UserContext'
 import ProfileMenu from '../../Components/ProfileMenu'
@@ -28,7 +27,7 @@ const AdminHeader = () => {
             />
           </div>
         </div>
-        <Divider />
+        <div className='h-[1px] w-full bg-zinc-400' />
       </div>
     </div>
   )

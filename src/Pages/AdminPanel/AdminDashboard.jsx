@@ -1,5 +1,4 @@
-import { Spinner } from '@chakra-ui/react'
-import { SLButton } from '../../Components/Customs'
+import { SLButton, SLSpinner } from '../../Components/Customs'
 import { IoIosAddCircleOutline } from 'react-icons/io'
 import { useContext, useEffect, useState } from 'react'
 import AddLawModal from './AddLawModal'
@@ -292,7 +291,7 @@ const DetailsCard = ({ color, title, number }) => {
       <div>
         <p className='text-base'>{title}</p>
         <p className='text-4xl font-extrabold'>
-          {number === '' ? <Spinner /> : number}
+          {number === '' ? <SLSpinner /> : number}
         </p>
       </div>
     </div>
@@ -332,7 +331,7 @@ const DetailsCard2 = ({ title, data, onClick }) => {
                 ))}
               </ul>
             ) : (
-              <Spinner />
+              <SLSpinner iconColor={'white'} />
             )}
           </div>
         </div>

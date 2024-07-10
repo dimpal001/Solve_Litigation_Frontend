@@ -1,5 +1,3 @@
-import { Button, Spinner } from '@chakra-ui/react'
-import { Colors } from './Colors'
 import { useEffect, useState } from 'react'
 
 // T CSS
@@ -41,245 +39,18 @@ export const SLButton = ({
   )
 }
 
-// Chakra UI
-export const PrimaryOutlineButton = ({
-  title,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  size,
-  isLoading,
-  value,
-  loadingText,
-  bgColor,
-  onChange,
-  color,
-}) => {
+// T CSS
+export const LinkButton = ({ title, onClick, bgColor }) => {
   return (
     <>
-      <Button
-        value={value}
-        className='capitalize'
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        variant={'outline'}
-        onChange={onChange}
-        bgColor={bgColor}
-        size={size}
-        borderColor={Colors.primary}
-        color={color == null ? Colors.primary : color}
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: Colors.primary,
-          boxShadow: 'lg',
-          color: 'white',
-        }}
-        isDisabled={isDisabled}
+      <button
         onClick={onClick}
+        className={`text-base ${
+          bgColor ? 'bg-primary' : ''
+        } px-3 rounded-sm font-semibold py-[6px] w-full text-start`}
       >
         {title}
-      </Button>
-    </>
-  )
-}
-
-// Chakra UI
-export const PrimaryRedOutlineButton = ({
-  title,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  size,
-  isLoading,
-  loadingText,
-  bgColor,
-  color,
-}) => {
-  return (
-    <>
-      <Button
-        className='capitalize'
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        variant={'outline'}
-        bgColor={bgColor}
-        size={size}
-        borderColor={'red.500'}
-        color={color == null ? 'red.500' : color}
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: 'red.500',
-          boxShadow: 'lg',
-          color: 'white',
-        }}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      >
-        {title}
-      </Button>
-    </>
-  )
-}
-
-// Chakra UI
-export const LinkButton = ({
-  title,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  size,
-  isLoading,
-  loadingText,
-  bgColor,
-}) => {
-  return (
-    <>
-      <Button
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        variant={'outline'}
-        size={size}
-        bgColor={bgColor}
-        borderWidth={0}
-        flex={true}
-        justifyContent={'start'}
-        textAlign={'start'}
-        color={'white'}
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: Colors.primary,
-          boxShadow: 'lg',
-          color: 'white',
-        }}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      >
-        <div>{title}</div>
-      </Button>
-    </>
-  )
-}
-
-// Chakra UI
-export const SecondaryButton = ({
-  title,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  isLoading,
-  loadingText,
-}) => {
-  return (
-    <>
-      <Button
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        bgColor={Colors.secondary}
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: Colors.secondaryHover,
-          boxShadow: 'lg',
-        }}
-        color={'white'}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      >
-        {title}
-      </Button>
-    </>
-  )
-}
-
-// Chakra UI
-export const NormalButton = ({
-  title,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  isLoading,
-  loadingText,
-}) => {
-  return (
-    <>
-      <Button
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        bgColor={''}
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: Colors.primaryHover,
-          boxShadow: 'lg',
-          color: 'white',
-        }}
-        color={Colors.secondary}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      >
-        {title}
-      </Button>
-    </>
-  )
-}
-
-// Chakra UI
-export const RedButton = ({
-  title,
-  rightIcon,
-  leftIcon,
-  width,
-  isDisabled,
-  onClick,
-  isLoading,
-  loadingText,
-  size,
-}) => {
-  return (
-    <>
-      <Button
-        size={size}
-        loadingText={loadingText}
-        isLoading={isLoading}
-        borderRadius={3}
-        bgColor={'red.500'}
-        rightIcon={rightIcon}
-        leftIcon={leftIcon}
-        width={width}
-        _hover={{
-          bgColor: 'red.600',
-          boxShadow: 'lg',
-          color: 'white',
-        }}
-        color={'white'}
-        isDisabled={isDisabled}
-        onClick={onClick}
-      >
-        {title}
-      </Button>
+      </button>
     </>
   )
 }
@@ -311,7 +82,7 @@ export const CustomInput = ({
         size={size}
         className={`${
           bgColor && bgColor
-        } ${className} p-2 w-full focus:outline-none focus:border-primary border`}
+        } ${className} p-2 w-full max-md:text-base focus:outline-none focus:border-primary border`}
         list={list}
       />
     </>
@@ -441,11 +212,6 @@ export const ModalBody = ({ children }) => {
 // T CSS
 export const ModalFooter = ({ children }) => {
   return <div className='flex justify-end gap-2 mt-5'>{children}</div>
-}
-
-// Chakra UI
-export const MySpinner = () => {
-  return <Spinner color={Colors.primary} />
 }
 
 // T CSS
@@ -621,7 +387,7 @@ export const SLPrimarySpinner = ({ className }) => {
 // T CSS
 export const Avatar = () => {
   return (
-    <div className='bg-primary p-1'>
+    <div className='bg-primary p-1 max-md:p-2 max-md:px-[10px] rounded-md max-md:text-sm'>
       <p className='text-white'>SL</p>
     </div>
   )
@@ -685,6 +451,7 @@ export const SendIcon = () => {
   )
 }
 
+// T CSS
 export const UploadButton = () => {
   return (
     <div className='flex border group p-1 rounded-sm px-3 gap-2'>

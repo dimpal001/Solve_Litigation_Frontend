@@ -1,19 +1,16 @@
+import { useContext, useEffect, useState } from 'react'
+import { api } from '../../Components/Apis'
+import axios from 'axios'
 import {
-  IconButton,
   Avatar,
-  Badge,
-  Button,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react'
-import { useContext, useEffect, useState } from 'react'
-import { api } from '../../Components/Apis'
-import axios from 'axios'
-import { SLButton, SLSpinner } from '../../Components/Customs'
+  SLButton,
+  SLSpinner,
+} from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import Loading from '../../Components/Loading'
@@ -193,6 +190,7 @@ const CitationsPage = () => {
 
   const fetchLast10Citations = async (page = 0) => {
     try {
+      setIsLoading(true)
       setFetchingCitations([])
       setFetchingActs([])
       const token = localStorage.getItem('token')
@@ -343,11 +341,11 @@ const CitationsPage = () => {
             title={'Acts'}
           />
         </div>
-        <div className='flex justify-center lg:pb-3'>
-          <div className='flex gap-2 items-center max-md:px-1 lg:w-[50%]'>
+        <div className='flex justify-center max-md:px-1 lg:pb-3'>
+          <div className='flex gap-2 max-md:gap-1 items-center max-md:px-1 lg:w-[50%]'>
             <form
               onSubmit={searchJudgement}
-              className='flex w-full gap-5 rounded-sm border px-3 items-center'
+              className='flex w-full gap-5 max-md:gap-0 rounded-sm border px-3 items-center'
             >
               <FaSearch color={Colors.primary} />
               <input
@@ -355,7 +353,7 @@ const CitationsPage = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder='Search here ...'
-                className='p-2 w-full group focus:outline-none bg-transparent'
+                className='p-2 w-full text-base group focus:outline-none bg-transparent'
               />
               {isLoading ? (
                 <SLSpinner width={'30px'} />
@@ -363,115 +361,88 @@ const CitationsPage = () => {
                 <FaArrowRight
                   className='cursor-pointer'
                   color={Colors.primary}
+                  onClick={searchJudgement}
                 />
               )}
             </form>
             <div className='lg:hidden'>
-              <IconButton
+              <div
+                className='bg-primary p-2 cursor-pointer text-white rounded-sm'
                 onClick={() => setIsFilterModalOpen(true)}
-                rounded={'sm'}
-                bgColor={Colors.primary}
-                color={'white'}
-                icon={<LuSettings2 size={23} />}
-              />
+              >
+                <LuSettings2 size={27} />
+              </div>
             </div>
             <div className='lg:hidden'>
-              <IconButton
+              <div
+                className='bg-primary p-2 cursor-pointer text-white rounded-sm'
                 onClick={handleLatest}
-                rounded={'sm'}
-                _focus={{ bgColor: Colors.primary }}
-                bgColor={Colors.primary}
-                color={'white'}
-                icon={<IoMdRefresh size={23} />}
-              />
+              >
+                {isLoading ? (
+                  <SLSpinner iconColor={'white'} className={'w-[26px]'} />
+                ) : (
+                  <IoMdRefresh size={27} />
+                )}
+              </div>
             </div>
           </div>
         </div>
         <div className='lg:flex w-full py-3'>
-          <Modal
-            size={{ base: 'sm', lg: 'xl' }}
-            isOpen={isFilterModalOpen}
-            onClose={() => setIsFilterModalOpen(false)}
-          >
-            <ModalOverlay />
+          <Modal size={{ base: 'md', lg: 'xl' }} isOpen={isFilterModalOpen}>
             <ModalContent rounded={0}>
-              <ModalHeader>Filter Citations</ModalHeader>
-              <ModalCloseButton />
+              <ModalHeader>Filter Judgements</ModalHeader>
+              <ModalCloseButton onClick={() => setIsFilterModalOpen(false)} />
               <ModalBody>
                 <div className='p-2 max-md:mb-3 rounded-sm'>
                   <p className='text-base font-medium py-1'>
                     Select an apellate type
                   </p>
-                  <div className='flex flex-wrap gap-5'>
+                  <div className='flex flex-wrap gap-2'>
                     {fetchingApellates &&
                       fetchingApellates.map((data, index) => (
-                        <Button
-                          key={index}
-                          _focus={{
-                            bgColor: Colors.primary,
-                            textColor: 'white',
-                          }}
-                          size={'10px'}
-                          px={'8px'}
-                          py={'7px'}
-                          textTransform={'capitalize'}
-                          rounded={'sm'}
-                          fontSize={14}
-                          bgColor={
-                            selectedApellate === data.name && Colors.primary
-                          }
-                          color={selectedApellate === data.name && 'white'}
+                        <div
                           onClick={() => handleChangeApellate(data.name)}
+                          className={`${
+                            selectedApellate === data.name
+                              ? 'bg-primary text-white'
+                              : 'bg-gray-300 text-black'
+                          } text-sm px-2 py-[2px] rounded-sm`}
+                          key={index}
                         >
                           {data.name}
-                        </Button>
+                        </div>
                       ))}
-                    <Button
-                      _focus={{
-                        bgColor: Colors.primary,
-                        textColor: 'white',
-                      }}
-                      size={'10px'}
-                      px={'8px'}
-                      py={'7px'}
-                      textTransform={'capitalize'}
-                      rounded={'sm'}
-                      fontSize={14}
-                      bgColor={selectedApellate === 'act' && Colors.primary}
-                      color={selectedApellate === 'act' && 'white'}
+                    <div
                       onClick={handleFetchActs}
+                      className={`${
+                        selectedApellate === 'act'
+                          ? 'bg-primary text-white'
+                          : 'bg-gray-300 text-black'
+                      } text-sm px-2 py-[2px] rounded-sm`}
                     >
                       Acts
-                    </Button>
+                    </div>
                   </div>
                   <div className='flex flex-col justify-center max-md:py-2 gap-3'>
                     {fetchingLaws.length !== 0 && (
                       <div>
-                        <div className='h-[1px] my-5 bg-slate-200'></div>
+                        <div className='h-[1px] my-2 bg-slate-200'></div>
                         <p className='text-base font-medium py-1'>
                           Select a law
                         </p>
                         <div className='flex flex-wrap gap-2'>
                           {fetchingLaws.map((law, index) => (
-                            <Button
+                            <div
                               key={index}
-                              _focus={{
-                                bgColor: Colors.primary,
-                                textColor: 'white',
-                              }}
-                              size={'10px'}
-                              px={'8px'}
-                              py={'7px'}
-                              textTransform={'capitalize'}
-                              rounded={'sm'}
-                              fontSize={14}
-                              value={law}
-                              bgColor={selectedLaw === law && Colors.primary}
-                              color={selectedLaw === law && 'white'}
-                              onClick={(e) => handleChangeLaw(e.target.value)}
+                              onClick={() => handleChangeLaw(law)}
+                              className={`${
+                                selectedLaw === law
+                                  ? 'bg-primary text-white'
+                                  : 'bg-gray-300 text-black'
+                              } text-sm px-2 py-[2px] rounded-sm`}
                             >
                               {law}
-                            </Button>
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -479,31 +450,19 @@ const CitationsPage = () => {
 
                     {fetchingPOL.length !== 0 && (
                       <div>
-                        <div className='h-[1px] my-5 bg-slate-200'></div>
+                        <div className='h-[1px] my-2 bg-slate-200'></div>
                         <p className='text-base font-medium py-1'>
                           Select a point of law
                         </p>
                         <div className='flex flex-wrap gap-2'>
                           {fetchingPOL.map((POL, index) => (
-                            <Button
+                            <div
                               key={index}
-                              className='hideScrollBar'
-                              overflow={'scroll'}
-                              _focus={{
-                                bgColor: Colors.primary,
-                                textColor: 'white',
-                              }}
-                              size={'10px'}
-                              px={'8px'}
-                              py={'7px'}
-                              textTransform={'capitalize'}
-                              rounded={'sm'}
-                              fontSize={14}
-                              value={POL}
-                              onClick={(e) => handleChangePOL(e.target.value)}
+                              onClick={() => handleChangePOL(POL)}
+                              className={`bg-gray-300 text-black text-sm px-2 py-[2px] rounded-sm`}
                             >
                               {POL}
-                            </Button>
+                            </div>
                           ))}
                         </div>
                       </div>
@@ -570,9 +529,11 @@ const CitationsPage = () => {
                   )}
                   {fetchingCitations.length !== 0 && (
                     <div className='w-full'>
-                      <div className='flex max-md:px-3 gap-3 pb-3'>
+                      <div className='flex max-md:px-3 max-md:gap-2 gap-3 pb-3'>
                         <SLButton
-                          className={'text-sm'}
+                          className={
+                            'text-sm max-md:text-xs max-md:px-[14px] max-md:py-[6px]'
+                          }
                           variant={
                             selectedFilter === 'all' ? 'primary' : 'outline'
                           }
@@ -580,7 +541,9 @@ const CitationsPage = () => {
                           title={'All'}
                         />
                         <SLButton
-                          className={'text-sm'}
+                          className={
+                            'text-sm max-md:text-xs max-md:px-[14px] max-md:py-[6px]'
+                          }
                           variant={
                             selectedFilter === 'hc' ? 'primary' : 'outline'
                           }
@@ -588,7 +551,9 @@ const CitationsPage = () => {
                           title={'High Court'}
                         />
                         <SLButton
-                          className={'text-sm'}
+                          className={
+                            'text-sm max-md:text-xs max-md:px-[14px] max-md:py-[6px]'
+                          }
                           variant={
                             selectedFilter === 'sc' ? 'primary' : 'outline'
                           }
@@ -596,7 +561,9 @@ const CitationsPage = () => {
                           title={'Supreme Court'}
                         />
                         <SLButton
-                          className={'text-sm'}
+                          className={
+                            'text-sm max-md:text-xs max-md:px-[14px] max-md:py-[6px]'
+                          }
                           variant={
                             selectedFilter === 'tr' ? 'primary' : 'outline'
                           }
@@ -608,7 +575,7 @@ const CitationsPage = () => {
                         filteredCitations.map((citation, index) => (
                           <Citation key={index} data={citation} />
                         ))}
-                      {isPagination && (
+                      {isPagination && filteredCitations.length !== 0 && (
                         <div className='flex items-center max-md:px-4 justify-center gap-5 py-3 max-md:justify-between'>
                           {pageNo !== 0 && (
                             <SLButton
@@ -652,10 +619,10 @@ const Citation = ({ data }) => {
   return (
     <div>
       <Link to={`/detailed-citation/${data._id}`} className='w-full'>
-        <div className='p-2 max-sm:px-5 lg:my-3 group w-full hover:bg-slate-50 lg:border-b bg-slate-50'>
+        <div className='p-2 max-sm:px-5 lg:my-3 group w-full mb-2 hover:bg-slate-50 lg:border-b bg-slate-50'>
           <div className='flex items-center'>
             <div>
-              <Avatar bg={Colors.primary} size={'sm'} name={'S L'} />
+              <Avatar />
             </div>
             <div className='px-2'>
               <p className='text-base capitalize'>{data.institutionName}</p>
@@ -674,9 +641,12 @@ const Citation = ({ data }) => {
           </div>
           <div className='flex overflow-x-scroll gap-2 py-1'>
             {data.laws.map((law, index) => (
-              <Badge bgColor={'gray.200'} key={index} fontSize={10} px={2}>
+              <div
+                key={index}
+                className='bg-gray-300 px-2 py-[2px] text-sm rounded-sm text-black'
+              >
                 {law}
-              </Badge>
+              </div>
             ))}
           </div>
         </div>

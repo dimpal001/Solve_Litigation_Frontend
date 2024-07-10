@@ -1,4 +1,3 @@
-import { Center } from '@chakra-ui/react'
 import { SLButton } from './Customs'
 import { useState } from 'react'
 import axios from 'axios'
@@ -40,7 +39,7 @@ const EmailVerify = () => {
 
   return (
     <div>
-      <Center className='justify-center w-full'>
+      <div className='justify-center items-center min-h-[500px] flex w-full'>
         <div className='max-sm:mt-20 lg:w-[500px] p-10 rounded-xl'>
           {result === 'notVerified' && (
             <div className='flex-col gap-10'>
@@ -111,7 +110,7 @@ const EmailVerify = () => {
             </div>
           )}
         </div>
-      </Center>
+      </div>
     </div>
   )
 }

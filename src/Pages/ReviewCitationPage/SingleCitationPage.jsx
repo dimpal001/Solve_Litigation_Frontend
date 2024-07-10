@@ -352,13 +352,15 @@ const SingleCitationPage = ({ data }) => {
             </div>
           )}
           {user && (
-            <div className='flex max-sm:grid grid-cols-2 gap-3'>
+            <div className='flex max-sm:grid grid-cols-3 gap-3'>
               <SLButton
+                className={'max-md:text-sm px-2 py-[5px]'}
                 variant={'primary'}
                 onClick={() => setIsShareModalOpen(true)}
                 title={'Share'}
               />
               <SLButton
+                className={'max-md:text-sm px-2 py-[5px]'}
                 variant={'primary'}
                 isLoading={isDownloading}
                 loadingText={'Downloading...'}
@@ -367,6 +369,7 @@ const SingleCitationPage = ({ data }) => {
                 title={'Download'}
               />
               <SLButton
+                className={'max-md:text-sm px-2 py-[5px]'}
                 variant={'primary'}
                 onClick={printPdf}
                 title={'Print'}

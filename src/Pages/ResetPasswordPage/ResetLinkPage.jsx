@@ -1,4 +1,3 @@
-import { Center } from '@chakra-ui/react'
 import { CustomInput, SLButton } from '../../Components/Customs'
 import { RiLockPasswordLine } from 'react-icons/ri'
 import { Colors } from '../../Components/Colors'
@@ -70,7 +69,7 @@ const ResetLinkPage = () => {
 
   return (
     <div>
-      <Center className='justify-center lg:h-[500px] w-full'>
+      <div className='justify-center flex items-center h-[500px] w-full'>
         <div className='max-sm:mt-20 lg:w-[500px] p-10 rounded-xl'>
           {!error ? (
             <div className='flex-col gap-10'>
@@ -132,7 +131,7 @@ const ResetLinkPage = () => {
             </p>
           )}
         </div>
-      </Center>
+      </div>
     </div>
   )
 }

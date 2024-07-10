@@ -1,27 +1,27 @@
 import {
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
   ModalCloseButton,
-} from '@chakra-ui/react'
-import { RedButton, TextButton } from '../../Components/Customs'
-import { MdDeleteForever } from 'react-icons/md'
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  SLButton,
+} from '../../Components/Customs'
 const ResetAllModal = ({ isOpen, onClose, onClick }) => {
   return (
     <div>
-      <Modal size={'sm'} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+      <Modal size={'md'} isOpen={isOpen} onClose={onClose}>
         <ModalContent borderRadius={0}>
           <ModalHeader>Reset All ?</ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
 
           <ModalFooter>
-            <TextButton title={'Cancel'} onClick={onClose} />
-            <RedButton
-              size={'sm'}
-              leftIcon={<MdDeleteForever size={20} />}
+            <SLButton
+              title={'Cancel'}
+              variant={'secondary'}
+              onClick={onClose}
+            />
+            <SLButton
+              variant={'error'}
               onClick={() => {
                 onClick()
                 onClose()

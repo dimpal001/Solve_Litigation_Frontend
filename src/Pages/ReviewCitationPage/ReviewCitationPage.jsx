@@ -1,21 +1,11 @@
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
-import { Avatar, SLButton } from '../../Components/Customs'
+import { Avatar, CustomInput, SLButton } from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link, useNavigate } from 'react-router-dom'
-import { Colors } from '../../Components/Colors'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
-import {
-  InputGroup,
-  InputLeftElement,
-  Badge,
-  Input,
-  InputRightElement,
-} from '@chakra-ui/react'
-import { FaArrowRight, FaSearch } from 'react-icons/fa'
-import FilterCitationModal from './FilterCitationModal'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
 
@@ -26,7 +16,6 @@ const ReviewCitationPage = () => {
   const [approvedjudgements, setapprovedjudgements] = useState([])
   const [filterjudgements, setfilterjudgements] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false)
   const [judgementType, setjudgementType] = useState('pending')
   const [date, setDate] = useState(new Date())
   const [searching, setSearching] = useState(false)
@@ -201,19 +190,9 @@ const ReviewCitationPage = () => {
                 </div>
               </div>
               <div className='lg:w-1/4'>
-                <InputGroup>
-                  <InputLeftElement pointerEvents='none'>
-                    <FaSearch color={Colors.primary} />
-                  </InputLeftElement>
-                  <Input
-                    rounded={'sm'}
-                    type='text'
-                    placeholder='Search here...'
-                  />
-                  <InputRightElement>
-                    <FaArrowRight color={Colors.primary} />
-                  </InputRightElement>
-                </InputGroup>
+                <div>
+                  <CustomInput type='text' placeholder='Search here...' />
+                </div>
                 <div className='p-5'>
                   <Calendar onChange={onChange} value={date} />
                   <div>
@@ -233,16 +212,6 @@ const ReviewCitationPage = () => {
                 </div>
               </div>
             </div>
-            {isFilterModalOpen && (
-              <FilterCitationModal
-                setjudgementType={setjudgementType}
-                setapprovedjudgements={setapprovedjudgements}
-                setpendingjudgements={setpendingjudgements}
-                setfilterjudgements={setfilterjudgements}
-                isOpen={true}
-                onClose={() => setIsFilterModalOpen(false)}
-              />
-            )}
             {judgementType === 'pending' && pendingjudgements.length === 0 && (
               <p className='text-center text-lg'>No data to show</p>
             )}
@@ -278,16 +247,18 @@ const Citation = ({ data }) => {
             <p className='text-primary py-1'>{data.title}</p>
           </div>
           <div className='flex gap-2 py-1'>
-            <Badge
-              bgColor={data.status === 'pending' ? 'orange.300' : 'green.400'}
-              color={'white'}
-              px={2}
+            <div
+              className={`${
+                data.status === 'pending' ? 'bg-orange-400' : 'bg-green-600'
+              } text-sm capitalize font-bold py-1 px-2 rounded-sm`}
             >
               {data.status}
-            </Badge>
-            <Badge bgColor={Colors.primary} color={'white'} px={2}>
+            </div>
+            <div
+              className={`bg-primary text-sm capitalize font-bold py-1 px-2 rounded-sm`}
+            >
               {data.type}
-            </Badge>
+            </div>
           </div>
         </Link>
       </div>

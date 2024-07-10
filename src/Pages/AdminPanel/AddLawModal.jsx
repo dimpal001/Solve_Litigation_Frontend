@@ -6,14 +6,13 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
-  MySpinner,
+  SLSpinner,
   SLButton,
 } from '../../Components/Customs'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 import { enqueueSnackbar } from 'notistack'
-import { Checkbox } from '@chakra-ui/react'
 
 const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
   const [law, setLaw] = useState('')
@@ -175,19 +174,18 @@ const AddLawModal = ({ isOpen, onClose, RelodeData }) => {
             )}
             <div className='flex flex-col max-h-[350px] overflow-scroll'>
               {!listLaw ? (
-                <MySpinner />
+                <SLSpinner />
               ) : (
                 listLaw.map((item) => (
-                  <Checkbox
-                    key={item._id}
-                    className='capitalize'
-                    isChecked={selectedLawIds.includes(item._id)}
-                    onChange={(e) =>
-                      handleCheckboxChange(e, item._id, item.name)
-                    }
-                  >
-                    {item.name}
-                  </Checkbox>
+                  <label key={item._id} className='inline-flex items-center'>
+                    <input
+                      type='checkbox'
+                      defaultChecked={selectedLawIds.includes(item._id)}
+                      className='form-checkbox'
+                      onChange={(e) => handleCheckboxChange(e, item._id)}
+                    />
+                    <span className='ml-2 capitalize'>{item.name}</span>
+                  </label>
                 ))
               )}
             </div>

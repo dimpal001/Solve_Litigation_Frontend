@@ -1,8 +1,8 @@
-import { FormControl, FormLabel, Select, Input } from '@chakra-ui/react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useEffect, useState } from 'react'
 import Editor from '../CreateCitationPage/Editor'
+import { CustomInput } from '../../Components/Customs'
 
 const ActField = ({ data, setData }) => {
   const [listCourt, setListCourt] = useState([])
@@ -35,15 +35,14 @@ const ActField = ({ data, setData }) => {
 
   return (
     <div className='flex flex-col border border-slate-100 gap-y-7 my-3 p-10 bg-slate-50 rounded-sm'>
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      <div>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>
             Court (Institution) Name *
           </span>
-        </FormLabel>
-        <Select
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <select
+          className='w-full p-2 rounded-sm bg-transparent border'
           value={institutionName}
           onChange={(e) =>
             setData((prevData) => ({
@@ -58,13 +57,13 @@ const ActField = ({ data, setData }) => {
               {capitalizeString(court.name)}
             </option>
           ))}
-        </Select>
-      </FormControl>
+        </select>
+      </div>
 
-      <FormControl>
-        <FormLabel>
+      <div>
+        <label>
           <span className='text-lg font-extrabold'>Index</span>
-        </FormLabel>
+        </label>
         <Editor
           value={index}
           onChange={(newContent) =>
@@ -74,15 +73,13 @@ const ActField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
+      </div>
 
-      <FormControl>
-        <FormLabel className='text-red-500'>
+      <div>
+        <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
-        </FormLabel>
-        <Input
-          rounded={'sm'}
-          bgColor={'white'}
+        </label>
+        <CustomInput
           value={title}
           onChange={(e) =>
             setData((prevData) => ({
@@ -91,11 +88,11 @@ const ActField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className='text-red-500'>
-          <span className='text-lg font-extrabold'>judgements *</span>
-        </FormLabel>
+      </div>
+      <div>
+        <label className='text-red-500'>
+          <span className='text-lg font-extrabold'>Judgements *</span>
+        </label>
         <Editor
           value={judgements}
           onChange={(newContent) =>
@@ -105,11 +102,11 @@ const ActField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
-      <FormControl>
-        <FormLabel className=''>
+      </div>
+      <div>
+        <label className=''>
           <span className='text-lg font-extrabold'>Notification</span>
-        </FormLabel>
+        </label>
         <Editor
           value={notification}
           onChange={(newContent) =>
@@ -119,7 +116,7 @@ const ActField = ({ data, setData }) => {
             }))
           }
         />
-      </FormControl>
+      </div>
     </div>
   )
 }

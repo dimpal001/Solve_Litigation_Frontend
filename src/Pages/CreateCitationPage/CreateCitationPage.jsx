@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react'
 import CitationField from './CitationField'
-import { PrimaryOutlineButton, SLButton } from '../../Components/Customs'
+import { SLButton } from '../../Components/Customs'
 import { Colors } from '../../Components/Colors'
 import ReviewCitationModal from './ReviewCitationModal'
 import ResetAllModal from './ResetAllModal'
 import ActField from '../CreateActPage/ActsField'
 import ReviewActModal from '../CreateActPage/ReviewActModal'
 import { FaArrowLeft } from 'react-icons/fa'
-import { IoCreateOutline } from 'react-icons/io5'
 import { enqueueSnackbar } from 'notistack'
 
 const CreateCitation = () => {
@@ -148,8 +147,8 @@ const CreateCitation = () => {
       </p>
       <div className='flex justify-center gap-x-5'>
         {selectedType === 'citation' && (
-          <PrimaryOutlineButton
-            leftIcon={<IoCreateOutline size={20} />}
+          <SLButton
+            variant={'outline'}
             onClick={() => setSelectedType('act')}
             title={'Create Act'}
           />

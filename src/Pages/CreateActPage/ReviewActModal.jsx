@@ -59,7 +59,7 @@ const ReviewActModal = ({ data, isOpen, onClose }) => {
           <ModalHeader>
             <span className='text-3xl'>Review and upload</span>
           </ModalHeader>
-          <ModalCloseButton />
+          <ModalCloseButton onClick={onClose} />
           <ModalBody>
             <div className='flex flex-col gap-y-5 border border-slate-900 p-7'>
               <div>

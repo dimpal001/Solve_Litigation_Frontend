@@ -1,18 +1,9 @@
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
-import { Avatar, SLButton } from '../../Components/Customs'
+import { Avatar, CustomInput, SLButton } from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link, useNavigate } from 'react-router-dom'
-import { Colors } from '../../Components/Colors'
-import {
-  InputGroup,
-  InputLeftElement,
-  Badge,
-  Input,
-  InputRightElement,
-} from '@chakra-ui/react'
-import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
 
@@ -122,19 +113,9 @@ const ReviewAct = () => {
                 />
               </div>
               <div>
-                <InputGroup>
-                  <InputLeftElement pointerEvents='none'>
-                    <FaSearch color={Colors.primary} />
-                  </InputLeftElement>
-                  <Input
-                    rounded={'sm'}
-                    type='text'
-                    placeholder='Search here...'
-                  />
-                  <InputRightElement>
-                    <FaArrowRight color={Colors.primary} />
-                  </InputRightElement>
-                </InputGroup>
+                <div>
+                  <CustomInput type='text' placeholder='Search here...' />
+                </div>
               </div>
             </div>
             {actType === 'pending' && pendingActs.length === 0 && (
@@ -191,16 +172,18 @@ const Act = ({ data }) => {
             <p className='text-primary py-1'>{data.title}</p>
           </div>
           <div className='flex gap-2 py-1'>
-            <Badge
-              bgColor={data.status === 'pending' ? 'orange.300' : 'green.400'}
-              color={'white'}
-              px={2}
+            <div
+              className={`${
+                data.status === 'pending' ? 'bg-orange-400' : 'bg-green-600'
+              } text-sm capitalize font-bold py-1 px-2 rounded-sm`}
             >
               {data.status}
-            </Badge>
-            <Badge bgColor={Colors.primary} color={'white'} px={2}>
+            </div>
+            <div
+              className={`bg-primary text-sm capitalize font-bold py-1 px-2 rounded-sm`}
+            >
               {data.type}
-            </Badge>
+            </div>
           </div>
         </Link>
       </div>

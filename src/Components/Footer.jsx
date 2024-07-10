@@ -4,16 +4,16 @@ import logo from '../assets/logo.svg'
 const Footer = () => {
   return (
     <footer className='bg-gray-800 text-white py-10'>
-      <div className='container mx-auto px-5 lg:px-32'>
+      <div className='container mx-auto px-5'>
         <div className='flex flex-wrap justify-between'>
           <div className='w-full flex justify-center flex-col max-md:items-center lg:w-1/4 mb-10 lg:mb-0'>
             <Link to='/'>
               <img src={logo} alt='Logo' className='w-32 mb-3' />
             </Link>
-            <p className='text-base'>
+            {/* <p className='text-base'>
               Dedicated to helping individuals, firms, and companies navigate
               the complex world of law.
-            </p>
+            </p> */}
           </div>
           <div className='w-full lg:w-1/4 mb-10 lg:mb-0'>
             <h3 className='text-lg font-semibold mb-3'>Quick Links</h3>
@@ -31,16 +31,6 @@ const Footer = () => {
               <li className='mb-2'>
                 <Link to='/contact-us' className='hover:text-primary'>
                   Contact
-                </Link>
-              </li>
-              <li className='mb-2'>
-                <Link to='/register' className='hover:text-primary'>
-                  Register
-                </Link>
-              </li>
-              <li className='mb-2'>
-                <Link to='/login' className='hover:text-primary'>
-                  Login
                 </Link>
               </li>
             </ul>

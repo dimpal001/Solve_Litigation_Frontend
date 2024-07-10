@@ -5,14 +5,13 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalHeader,
-  MySpinner,
+  SLSpinner,
   SLButton,
 } from '../../Components/Customs'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
 import { enqueueSnackbar } from 'notistack'
-import { Checkbox, FormControl } from '@chakra-ui/react'
 
 const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
   const [pointsOfLaw, setPointsOfLaw] = useState('')
@@ -133,17 +132,18 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
             )}
             <div className='flex flex-col max-h-[350px] overflow-scroll'>
               {!listPOL ? (
-                <MySpinner />
+                <SLSpinner />
               ) : (
                 listPOL.map((item) => (
-                  <Checkbox
-                    key={item._id}
-                    className='capitalize'
-                    isChecked={selectedPOLIds.includes(item._id)}
-                    onChange={(e) => handleCheckboxChange(e, item._id)}
-                  >
-                    {item.name}
-                  </Checkbox>
+                  <label key={item._id} className='inline-flex items-center'>
+                    <input
+                      type='checkbox'
+                      defaultChecked={selectedPOLIds.includes(item._id)}
+                      className='form-checkbox'
+                      onChange={(e) => handleCheckboxChange(e, item._id)}
+                    />
+                    <span className='ml-2 capitalize'>{item.name}</span>
+                  </label>
                 ))
               )}
             </div>
@@ -159,7 +159,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
           </ModalBody>
           {selectedPOLIds.length === 0 && (
             <ModalBody>
-              <FormControl className='flex gap-3'>
+              <div className='flex gap-3'>
                 <CustomInput
                   placeholder='Enter a Point of Law to add'
                   value={pointsOfLaw}
@@ -172,7 +172,7 @@ const AddPointsOfLawModal = ({ isOpen, onClose, RelodeData }) => {
                   onClick={handleAddingPOL}
                   title={'Add'}
                 />
-              </FormControl>
+              </div>
             </ModalBody>
           )}
         </ModalContent>

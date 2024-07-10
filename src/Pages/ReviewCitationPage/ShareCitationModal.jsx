@@ -10,6 +10,7 @@ import {
 } from '../../Components/Customs'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
+import { enqueueSnackbar } from 'notistack'
 
 const ShareCitationModal = ({ isOpen, onClose, citation }) => {
   const [copy, setCopy] = useState('Copy Link')
@@ -30,6 +31,10 @@ const ShareCitationModal = ({ isOpen, onClose, citation }) => {
   }
 
   const handleShare = async () => {
+    if (email === '') {
+      enqueueSnackbar('Enter a valid email.', { variant: 'error' })
+      return
+    }
     try {
       setSharing(true)
       const response = await axios.post(
@@ -47,7 +52,7 @@ const ShareCitationModal = ({ isOpen, onClose, citation }) => {
       console.log(response)
       onClose()
     } catch (error) {
-      console.log(error)
+      enqueueSnackbar(error.response.data.error, { variant: 'error' })
     } finally {
       setSharing(false)
     }
@@ -58,23 +63,23 @@ const ShareCitationModal = ({ isOpen, onClose, citation }) => {
     <div>
       <Modal size={'md'} isOpen={isOpen}>
         <ModalContent>
-          <ModalHeader>Share the citation</ModalHeader>
+          <ModalHeader>Share the Judgement</ModalHeader>
           <ModalCloseButton onClick={onClose} />
           <ModalBody>
-            <p
+            <div
               onClick={handleCopy}
               className={`${
                 copy === 'Copy Link' ? 'text-primary' : 'text-success'
               } cursor-pointer`}
             >
               {copy}
-            </p>
+            </div>
             <input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               type='email'
               placeholder='Enter email address'
-              className='w-full p-2 my-2 rounded-sm bg-transparent border focus:outline-none'
+              className='w-full max-md:text-base p-2 my-2 rounded-sm bg-transparent border focus:outline-none'
             />
           </ModalBody>
           <ModalFooter>
@@ -85,6 +90,7 @@ const ShareCitationModal = ({ isOpen, onClose, citation }) => {
             />
             <SLButton
               isLoading={sharing}
+              iconColor={'white'}
               loadingText={'Sharing...'}
               title={'Share'}
               onClick={handleShare}

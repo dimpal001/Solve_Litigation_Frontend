@@ -1,4 +1,3 @@
-import { Checkbox } from '@chakra-ui/react'
 import { enqueueSnackbar } from 'notistack'
 import axios from 'axios'
 
@@ -104,27 +103,33 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
               <div>Loading...</div>
             ) : (
               <div className='flex flex-col gap-3 py-5 px-10'>
-                <Checkbox
-                  size={'lg'}
-                  onChange={() => handleCheckboxChange('judgements')}
-                  isChecked={selectedServices.includes('judgements')}
-                >
-                  Judgements
-                </Checkbox>
-                <Checkbox
-                  size={'lg'}
-                  onChange={() => handleCheckboxChange('legalAdvice')}
-                  isChecked={selectedServices.includes('legalAdvice')}
-                >
-                  Legal Advice
-                </Checkbox>
-                <Checkbox
-                  size={'lg'}
-                  onChange={() => handleCheckboxChange('studyResources')}
-                  isChecked={selectedServices.includes('studyResources')}
-                >
-                  Study Resources
-                </Checkbox>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    defaultChecked={selectedServices.includes('judgements')}
+                    className='form-checkbox'
+                    onChange={() => handleCheckboxChange('judgements')}
+                  />
+                  <span className='ml-2'>Judgements</span>
+                </label>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    defaultChecked={selectedServices.includes('legalAdvice')}
+                    className='form-checkbox'
+                    onChange={() => handleCheckboxChange('legalAdvice')}
+                  />
+                  <span className='ml-2'>Legal Advice</span>
+                </label>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    defaultChecked={selectedServices.includes('studyResources')}
+                    className='form-checkbox'
+                    onChange={() => handleCheckboxChange('studyResources')}
+                  />
+                  <span className='ml-2'>Study Resources</span>
+                </label>
               </div>
             )}
           </ModalBody>

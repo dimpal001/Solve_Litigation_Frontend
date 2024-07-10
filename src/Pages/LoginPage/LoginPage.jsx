@@ -1,8 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
-import { Center, Checkbox } from '@chakra-ui/react'
 import Logo from '../../assets/logo.svg'
 import { CustomInput, SLButton } from '../../Components/Customs'
-import { Colors } from '../../Components/Colors'
 import { Link, useNavigate } from 'react-router-dom'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
@@ -128,20 +126,20 @@ const LoginPage = () => {
   }, [])
 
   return (
-    <Center className='justify-center w-full'>
+    <div className='justify-center flex w-full'>
       <div
         data-aos='fade-up'
         className='shadow-xl max-sm:mt-20 border lg:w-[500px] p-10 rounded-sm'
       >
         <div className='flex-col gap-10'>
-          <Center>
+          <div className='flex justify-center'>
             <img
               className='max-sm:hidden'
               style={{ width: '100px' }}
               src={Logo}
               alt=''
             />
-          </Center>
+          </div>
 
           <div>
             <p className='text-center font-extrabold pt-5'>Login here</p>
@@ -160,16 +158,16 @@ const LoginPage = () => {
                   onChange={handleChange}
                   placeholder={'Password'}
                 />
-                <Checkbox
-                  style={{
-                    bgColor: Colors.secondary,
-                  }}
-                  onChange={() => {
-                    setIsShowPassword(!isShowPassword)
-                  }}
-                >
-                  Show Password
-                </Checkbox>
+                <label className='inline-flex items-center'>
+                  <input
+                    type='checkbox'
+                    className='form-checkbox'
+                    onChange={() => {
+                      setIsShowPassword(!isShowPassword)
+                    }}
+                  />
+                  <span className='ml-2'>Show Password</span>
+                </label>
                 <div>
                   <div className='flex items-center justify-center gap-5'>
                     <p>{captcha}</p>
@@ -220,7 +218,7 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
-    </Center>
+    </div>
   )
 }
 

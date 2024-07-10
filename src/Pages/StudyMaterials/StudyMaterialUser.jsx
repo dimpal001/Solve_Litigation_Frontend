@@ -5,7 +5,7 @@ import { useSnackbar } from 'notistack'
 import { Link } from 'react-router-dom'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import { Colors } from '../../Components/Colors'
-import { SLButton, SLSpinner } from '../../Components/Customs'
+import { Avatar, SLButton, SLSpinner } from '../../Components/Customs'
 
 const StudyMaterialUser = () => {
   const [topics, setTopics] = useState([])
@@ -60,6 +60,11 @@ const StudyMaterialUser = () => {
   useEffect(() => {
     fetchTopics()
     fetchQuestions()
+
+    scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
   }, [])
 
   const handleTopicClick = (topicId) => {
@@ -159,7 +164,6 @@ const StudyMaterialUser = () => {
         )}
       </div>
       <div className='flex gap-2 justify-center'>
-        {/* <div className='flex w-[40%] gap-5 rounded-sm border px-3 items-center'> */}
         <form
           onSubmit={searchQuestions}
           className='flex lg:w-[40%] w-[95%] max-md:mb-2 gap-5 rounded-sm border px-3 items-center'
@@ -170,13 +174,14 @@ const StudyMaterialUser = () => {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder='Search here ...'
-            className='p-2 w-full group focus:outline-none bg-transparent'
+            className='p-2 w-full text-base group focus:outline-none bg-transparent'
           />
           {isLoading ? (
             <SLSpinner width={'30px'} />
           ) : (
             <FaArrowRight
               type='submit'
+              onClick={searchQuestions}
               className='cursor-pointer'
               color={Colors.primary}
             />
@@ -229,11 +234,7 @@ const Material = ({ data }) => {
       <Link to={`/detailed-question/${data.topicId}/${data._id}`}>
         <div className='p-2 max-sm:px-5 lg:my-3 group max-md:mb-1 group hover:bg-slate-100 lg:border-b bg-slate-50'>
           <div className='flex items-center'>
-            <div>
-              <div className='text-sm p-1 px-[6px] bg-primary text-white rounded-full'>
-                SL
-              </div>
-            </div>
+            <Avatar />
             <div className='px-2'>
               <p className='text-base group-hover:underline group-hover:text-primary font-semibold capitalize'>
                 {data.question}

@@ -1,4 +1,3 @@
-import { Checkbox, FormControl, FormLabel } from '@chakra-ui/react'
 import { CustomInput, SLButton } from '../../Components/Customs'
 import { useState } from 'react'
 import axios from 'axios'
@@ -82,44 +81,44 @@ const CreateStaffpage = () => {
         <form>
           <div className='border border-slate-100 bg-slate-50 rounded-sm p-7 mx-44'>
             <div className='grid grid-cols-2 gap-x-8 gap-y-4'>
-              <FormControl>
-                <FormLabel>Full name</FormLabel>
+              <div>
+                <label>Full name</label>
                 <CustomInput
                   bgColor={'white'}
                   placeholder={'Enter full name'}
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                 />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Address</FormLabel>
+              </div>
+              <div>
+                <label>Address</label>
                 <CustomInput
                   bgColor={'white'}
                   placeholder={'Enter full address'}
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                 />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Email address</FormLabel>
+              </div>
+              <div>
+                <label>Email address</label>
                 <CustomInput
                   bgColor={'white'}
                   placeholder={'Enter email address'}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Phone number</FormLabel>
+              </div>
+              <div>
+                <label>Phone number</label>
                 <CustomInput
                   bgColor={'white'}
                   placeholder={'Enter phone number'}
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Password</FormLabel>
+              </div>
+              <div>
+                <label>Password</label>
                 <CustomInput
                   bgColor={'white'}
                   type={showPassword ? 'text' : 'password'}
@@ -127,9 +126,9 @@ const CreateStaffpage = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Confirm Password</FormLabel>
+              </div>
+              <div>
+                <label>Confirm Password</label>
                 <CustomInput
                   bgColor={'white'}
                   type={showPassword ? 'text' : 'password'}
@@ -137,10 +136,15 @@ const CreateStaffpage = () => {
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                 />
-              </FormControl>
-              <Checkbox onChange={() => setShowPassword(!showPassword)}>
-                Show password
-              </Checkbox>
+              </div>
+              <label className='inline-flex items-center'>
+                <input
+                  type='checkbox'
+                  className='form-checkbox'
+                  onChange={() => setShowPassword(!showPassword)}
+                />
+                <span className='ml-2'>Show Password</span>
+              </label>
             </div>
             <div className='flex justify-center pt-8'>
               <SLButton

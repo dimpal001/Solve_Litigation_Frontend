@@ -25,6 +25,18 @@ const ChangeEmailPhone = ({
   const [isLoading, setIsLoading] = useState(false)
 
   const handleChangeDetails = async () => {
+    if (data === '') {
+      enqueueSnackbar('Enter a valid mobile number', { variant: 'error' })
+      return
+    }
+
+    if (data.length < 10 || !/^\d+$/.test(data)) {
+      enqueueSnackbar('Phone number should have 10 numeric characters!', {
+        variant: 'error',
+      })
+      return
+    }
+
     try {
       setIsLoading(true)
       const token = localStorage.getItem('token')

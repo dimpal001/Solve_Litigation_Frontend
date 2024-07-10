@@ -1,7 +1,6 @@
 import { VscDebugBreakpointLog } from 'react-icons/vsc'
 import axios from 'axios'
 import { enqueueSnackbar } from 'notistack'
-
 import {
   Modal,
   ModalBody,
@@ -13,7 +12,6 @@ import { useContext } from 'react'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
 import { useNavigate } from 'react-router-dom'
-import { Checkbox } from '@chakra-ui/react'
 
 const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   const { user } = useContext(UserContext)
@@ -224,18 +222,22 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                   </p>
                 </div>
               )}
-              <div className='flex gap-3'>
-                <p className='text-sm font-extrabold text-primary'>
-                  Reportable
-                </p>
-                <Checkbox isChecked={data.reportable === true ? true : false} />
-              </div>
-              <div className='flex gap-3'>
-                <p className='text-sm font-extrabold text-primary'>
-                  Over Ruled
-                </p>
-                <Checkbox isChecked={data.overRuled === true ? true : false} />
-              </div>
+              <label className='inline-flex items-center'>
+                <input
+                  type='checkbox'
+                  defaultChecked={data.reportable}
+                  className='form-checkbox'
+                />
+                <span className='ml-2'>Reportable</span>
+              </label>
+              <label className='inline-flex items-center'>
+                <input
+                  type='checkbox'
+                  defaultChecked={data.overRuled}
+                  className='form-checkbox'
+                />
+                <span className='ml-2'>Over Ruled</span>
+              </label>
               <div className='flex gap-5 justify-end'>
                 <SLButton variant={'error'} onClick={onClose} title={'Edit'} />
                 <SLButton

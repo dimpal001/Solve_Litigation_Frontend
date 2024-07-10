@@ -34,7 +34,7 @@ const Navbar = () => {
             onClick={() => setIsNavbarOpen(false)}
             to={'/'}
           >
-            <img style={{ width: '60px' }} src={logo} alt='Logo' />
+            <img style={{ width: '80px' }} src={logo} alt='Logo' />
           </NavLink>
         </div>
 
@@ -48,6 +48,7 @@ const Navbar = () => {
           {!user ? (
             <Link to={'/login'}>
               <SLButton
+                className={'text-base py-[5px]'}
                 variant={'primary'}
                 title={'Login'}
                 onClick={() => setIsNavbarOpen(false)}
@@ -55,6 +56,7 @@ const Navbar = () => {
             </Link>
           ) : (
             <SLButton
+              className={'text-base py-[5px]'}
               variant={'error'}
               onClick={handleLogout}
               title={'Logout'}

@@ -330,7 +330,7 @@ const LiquidTextMainPage = () => {
                           <div key={index} className='flex w-full'>
                             <div
                               onClick={() => findTextOnPageAndScroll(data)}
-                              className='w-full px-2 py-1 hover:bg-primaryHover cursor-pointer bg-primary text-white'
+                              className='w-full text-base px-2 py-1 hover:bg-primaryHover cursor-pointer bg-primary text-white'
                             >
                               {data}
                             </div>

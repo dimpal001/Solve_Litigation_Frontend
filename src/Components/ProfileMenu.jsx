@@ -1,8 +1,8 @@
-import { Avatar, Menu, MenuButton, MenuList } from '@chakra-ui/react'
-import { Colors } from './Colors'
 import { MdPlace } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import { SLButton } from './Customs'
+import { useRef, useEffect } from 'react'
+import { Colors } from './Colors'
 
 const ProfileMenu = ({
   user,
@@ -11,24 +11,40 @@ const ProfileMenu = ({
   isMenuOpen,
   setIsMenuOpen,
 }) => {
+  const menuRef = useRef()
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [setIsMenuOpen])
+
   return (
-    <div>
-      <Menu
-        size={'lg'}
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
+    <div className='relative' ref={menuRef}>
+      <button
+        className='flex items-center'
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
-        <MenuButton onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          <Avatar bgColor={Colors.primary} size={'sm'} name={user.fullName} />
-        </MenuButton>
-        <MenuList>
+        <div className='w-10 text-white flex justify-center items-center rounded-full font-bold h-10 bg-primary'>
+          {user.fullName.charAt(0)}
+        </div>
+      </button>
+      {isMenuOpen && (
+        <div className='absolute right-0 mt-4 w-64 p-3 border-primary border rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
           <div className='flex flex-col gap-3 p-4'>
-            <div className='flex gap-3'>
-              <Avatar name={user.fullName} size={'lg'} />
+            <div className='flex items-center gap-3'>
+              <div className='w-10 text-white flex justify-center items-center rounded-full font-bold h-10 bg-primary'>
+                {user.fullName.charAt(0)}
+              </div>
               <div className='flex flex-col justify-center'>
                 <p className='text-lg font-extrabold'>{user.fullName}</p>
                 <p className='text-sm flex'>
-                  {' '}
                   <span>
                     <MdPlace color={Colors.primary} className='mt-[3px]' />
                   </span>
@@ -73,8 +89,8 @@ const ProfileMenu = ({
               </div>
             )}
           </div>
-        </MenuList>
-      </Menu>
+        </div>
+      )}
     </div>
   )
 }

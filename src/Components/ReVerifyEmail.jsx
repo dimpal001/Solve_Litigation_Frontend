@@ -1,4 +1,3 @@
-import { Center } from '@chakra-ui/react'
 import { useContext, useState } from 'react'
 import axios from 'axios'
 import { MdErrorOutline } from 'react-icons/md'
@@ -33,7 +32,7 @@ const ReVerifyEmail = () => {
   }
 
   return (
-    <Center className='justify-center lg:h-[500px] w-full'>
+    <div className='justify-center flex items-center h-[500px] w-full'>
       <div
         // data-aos='fade-up'
         className='max-sm:mt-20 lg:w-[500px] p-10 rounded-xl'
@@ -64,7 +63,7 @@ const ReVerifyEmail = () => {
           </div>
         </div>
       </div>
-    </Center>
+    </div>
   )
 }
 

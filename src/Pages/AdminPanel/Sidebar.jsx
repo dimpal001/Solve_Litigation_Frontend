@@ -1,6 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
 import { LinkButton, SLButton } from '../../Components/Customs'
-import { Divider } from '@chakra-ui/react'
 import { Colors } from '../../Components/Colors'
 import ConfirmLogout from '../../Components/ConfirmLogout'
 import { useContext, useState } from 'react'
@@ -29,7 +28,7 @@ const Sidebar = () => {
             {user.userType} Panel
           </p>
         </div>
-        <Divider />
+        <div className='h-[1px] w-full bg-zinc-400' />
         <div className='flex-1 pt-5 gap-y-4 flex flex-col'>
           <Link to={'/admin-dashboard/'}>
             <LinkButton
