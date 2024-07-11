@@ -97,7 +97,7 @@ const LiquidTextMainPage = () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
-          responseType: 'blob', // Set response type to 'blob' to handle binary data
+          responseType: 'blob',
         }
       )
 
