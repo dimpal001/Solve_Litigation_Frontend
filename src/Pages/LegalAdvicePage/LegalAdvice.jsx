@@ -1,16 +1,25 @@
+import { useNavigate } from 'react-router-dom'
 import { SLButton } from '../../Components/Customs'
 
 const LegalAdvice = () => {
   const user = JSON.parse(localStorage.getItem('user'))
-  console.log(user)
   const token = localStorage.getItem('token')
   const userString = encodeURIComponent(JSON.stringify(user))
+  const navigate = useNavigate()
 
   const redirectToChat = () => {
-    // const url = `http://localhost:5174/?token=${token}&user=${userString}`
-    // const url = `http://192.168.1.24:5174/?token=${token}&user=${userString}`
-    const url = `https://chat.solvelitigation.com/?token=${token}&user=${userString}`
-    window.open(url, '_blank')
+    if (
+      user &&
+      user.userType === 'guest' &&
+      user.selectedService.includes('legalAdvice')
+    ) {
+      // const url = `http://localhost:5174/?token=${token}&user=${userString}`
+      // const url = `http://192.168.1.24:5174/?token=${token}&user=${userString}`
+      const url = `https://chat.solvelitigation.com/?token=${token}&user=${userString}`
+      window.open(url, '_blank')
+    } else {
+      navigate('/login')
+    }
   }
 
   return (

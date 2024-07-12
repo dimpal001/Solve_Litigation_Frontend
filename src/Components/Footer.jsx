@@ -10,10 +10,6 @@ const Footer = () => {
             <Link to='/'>
               <img src={logo} alt='Logo' className='w-32 mb-3' />
             </Link>
-            {/* <p className='text-base'>
-              Dedicated to helping individuals, firms, and companies navigate
-              the complex world of law.
-            </p> */}
           </div>
           <div className='w-full lg:w-1/4 mb-10 lg:mb-0'>
             <h3 className='text-lg font-semibold mb-3'>Quick Links</h3>
@@ -66,10 +62,10 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div className='mt-10 border-t pt-5 text-center'>
+        <div className='mt-10 max-md:text-sm border-t pt-5 text-center'>
           <p>
-            &copy; {new Date().getFullYear()} Solve Litigation. All rights
-            reserved.
+            &copy; {new Date().getFullYear()} Solve Litigation.{' '}
+            <br className='lg:hidden' /> All rights reserved.
           </p>
         </div>
       </div>

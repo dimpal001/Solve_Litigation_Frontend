@@ -93,7 +93,7 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
 
   return (
     <div>
-      <Modal size={'xl'} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Modal size={'md'} isOpen={isOpen} onClose={() => setIsOpen(false)}>
         {/* <ModalOverlay /> */}
         <ModalContent>
           <ModalHeader>Please select the service(s) you need</ModalHeader>
@@ -142,6 +142,7 @@ const SelectServiceModal = ({ isOpen, setIsOpen }) => {
             />
             <SLButton
               variant={'primary'}
+              iconColor={'white'}
               isLoading={isSubmitting}
               loadingText={'Updating...'}
               title={'Update'}

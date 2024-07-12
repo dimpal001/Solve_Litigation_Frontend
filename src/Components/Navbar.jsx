@@ -130,13 +130,16 @@ const NavItems = ({ onClose }) => {
               Judgements
             </NavItem>
           )}
-        {user &&
+        {/* {user &&
           user.userType === 'guest' &&
           user.selectedService.includes('legalAdvice') && (
-            <NavItem onClick={onClose} title='Home Page' to={'/legal-advice'}>
+            <NavItem onClick={onClose} title='Legal Advice' to={'/legal-advice'}>
               Legal Advice
             </NavItem>
-          )}
+          )} */}
+        <NavItem onClick={onClose} title='Legal Advice' to={'/legal-advice'}>
+          Legal Advice
+        </NavItem>
         {user &&
           user.userType === 'guest' &&
           user.selectedService.includes('studyResources') && (

@@ -15,6 +15,12 @@
   animation-play-state: paused;
 }
 
+.sdfad {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 /* Keyframe animation for the marquee */
 @keyframes marquee {
   0% {

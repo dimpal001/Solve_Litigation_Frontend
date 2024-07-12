@@ -20,130 +20,67 @@ const SingleCitationPage = ({ data }) => {
   const navigate = useNavigate()
   const [isDownloading, setIsDownloading] = useState(false)
 
-  const stripHtml = (html) => {
-    const div = document.createElement('div')
-    div.innerHTML = html
-    return div.textContent || div.innerText || ''
-  }
-
   const pdfHeader = `
   <div style="display: flex; flex-direction: column; align-items: center">
-  <div style="display: flex; justify-content: space-between; width: 100%">
-    <div style="color: #0052cc">
-      <p style="margin: 2px 0; font-size: 12px">User : ${
-        user && user.fullName
-      }</p>
-      <p style="margin: 2px 0; font-size: 12px">Email : ${
-        user && user.email
-      }</p>
-      <p style="margin: 2px 0; font-size: 12px">
-        Downloaded : ${new Date().toLocaleString()}
-      </p>
-      <a href="https://www.solvelitigation.com"
-        >https://solvelitigation.com</a
-      >
-    </div>
+    <div style="display: flex; gap: 7px; width: 100%">
     <div>
-      <a href="https://www.solvelitigation.com"
-        ><img
-          src="data:image/svg+xml,%3csvg%20width='100'%20height='100'%20xmlns='http://www.w3.org/2000/svg'%20data-name='Layer%201'%3e%3cg%3e%3ctitle%3eLayer%201%3c/title%3e%3cpolygon%20id='svg_1'%20fill='%230052cc'%20points='95.45%2087.04%2090.12%2096.31%2047.33%2096.31%2052.68%2087.04%2058.02%2077.79%2063.37%2068.52%2068.72%2059.27%2074.07%2050%2079.4%2040.73%2079.42%2040.73%2084.77%2050%2079.42%2059.27%2074.07%2068.52%2068.72%2077.79%2063.38%2087.04%2084.77%2087.04%2090.1%2077.79%2090.12%2077.79%2095.45%2087.04'%20class='cls-1'/%3e%3cpolygon%20id='svg_2'%20fill='%230052cc'%20points='74.07%2031.48%2068.73%2040.73%2068.72%2040.73%2068.72%2040.75%2063.38%2050%2063.37%2050%2058.03%2040.73%2063.37%2031.48%2058.02%2022.21%2052.68%2031.48%2047.33%2040.73%2041.98%2050%2047.32%2059.27%2047.33%2059.27%2052.67%2068.52%2052.68%2068.54%2047.33%2077.79%2042%2087.04%2041.97%2087.04%2041.98%2087.06%2036.63%2096.31%204.55%2096.31%209.9%2087.04%2015.25%2077.79%2020.6%2068.52%2031.28%2068.52%2025.93%2077.79%2020.6%2087.04%2031.28%2087.04%2036.63%2077.79%2041.98%2068.52%2036.63%2059.27%2031.28%2050%2036.63%2040.75%2036.63%2040.73%2041.98%2031.48%2041.98%2031.46%2047.33%2022.21%2052.67%2012.96%2058.02%203.69%2063.37%2012.96%2068.72%2022.21%2074.07%2031.48'%20class='cls-1'/%3e%3c/g%3e%3c/svg%3e"
-          alt="Logo"
-          style="width: 85px; height: 85px; margin-bottom: 20px"
-      /></a>
+        <a href="https://www.solvelitigation.com">
+          <img
+            src="data:image/svg+xml,%3csvg%20width='100'%20height='100'%20xmlns='http://www.w3.org/2000/svg'%20data-name='Layer%201'%3e%3cg%3e%3ctitle%3eLayer%201%3c/title%3e%3cpolygon%20id='svg_1'%20fill='%230052cc'%20points='95.45%2087.04%2090.12%2096.31%2047.33%2096.31%2052.68%2087.04%2058.02%2077.79%2063.37%2068.52%2068.72%2059.27%2074.07%2050%2079.4%2040.73%2079.42%2040.73%2084.77%2050%2079.42%2059.27%2074.07%2068.52%2068.72%2077.79%2063.38%2087.04%2084.77%2087.04%2090.1%2077.79%2090.12%2077.79%2095.45%2087.04'%20class='cls-1'/%3e%3cpolygon%20id='svg_2'%20fill='%230052cc'%20points='74.07%2031.48%2068.73%2040.73%2068.72%2040.73%2068.72%2040.75%2063.38%2050%2063.37%2050%2058.03%2040.73%2063.37%2031.48%2058.02%2022.21%2052.68%2031.48%2047.33%2040.73%2041.98%2050%2047.32%2059.27%2047.33%2059.27%2052.67%2068.52%2052.68%2068.54%2047.33%2077.79%2042%2087.04%2041.97%2087.04%2041.98%2087.06%2036.63%2096.31%204.55%2096.31%209.9%2087.04%2015.25%2077.79%2020.6%2068.52%2031.28%2068.52%2025.93%2077.79%2020.6%2087.04%2031.28%2087.04%2036.63%2077.79%2041.98%2068.52%2036.63%2059.27%2031.28%2050%2036.63%2040.75%2036.63%2040.73%2041.98%2031.48%2041.98%2031.46%2047.33%2022.21%2052.67%2012.96%2058.02%203.69%2063.37%2012.96%2068.72%2022.21%2074.07%2031.48'%20class='cls-1'/%3e%3c/g%3e%3c/svg%3e"
+            alt="Logo"
+            style="width: 80px; height: 80px; margin-bottom: 20px"
+          />
+        </a>
+      </div>  
+    <div style="color: #0052cc">
+        <p style="margin: 2px 0; padding-top: 5px; font-size: 12px">User: ${
+          user && user.fullName
+        }</p>
+        <p style="margin: 2px 0; font-size: 12px">Email: ${
+          user && user.email
+        }</p>
+        <p style="margin: 2px 0; font-size: 12px">Downloaded: ${new Date().toLocaleString()}</p>
+        <a href="https://www.solvelitigation.com">https://solvelitigation.com</a>
+      </div>
+    </div>
+    <div style="width: 100%; height: 1px; background: black; margin-bottom: 20px"></div>
+    <div style="width: 100%">
+      <p style="margin: 10px 0; text-align: center; font-size: 20px; font-weight: bold;">${
+        data.citationNo
+      }</p>
+      ${
+        data.institutionName &&
+        `<p style="margin: 10px 0; text-transform: capitalize; text-align: center; font-size: 19px; font-weight: 500;">${data.institutionName}</p>`
+      }
+      <p style="margin: 10px 0; text-align: center; font-size: 16px;">Bench: ${
+        data.judgeName
+      }</p>
+      ${
+        data.caseNo &&
+        `<p style="margin: 10px 0; text-transform: capitalize; text-align: center; font-size: 19px; font-weight: 500;">${data.caseNo}</p>`
+      }
+      ${
+        data.partyNameAppealant &&
+        `<div style="text-align: center; padding-top: 1rem; text-transform: uppercase; width: 100%">
+          <div style="display: flex; position: relative; align-items: center; justify-content: center; width: 100%;">
+            <div>${data.partyNameAppealant}</div>
+            <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Appellate</div>
+          </div>
+        </div>`
+      }
+      <p style="margin: 10px 0; text-align: center; font-size: 16px; font-weight: bold;">Versus</p>
+      ${
+        data.partyNameRespondent &&
+        `<div style="text-align: center; padding-top: 1rem; text-transform: uppercase;">
+          <div style="display: flex; position: relative; align-items: center; justify-content: center; width: 100%;">
+            <div>${data.partyNameRespondent}</div>
+            <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Respondent</div>
+          </div>
+        </div>`
+      }
     </div>
   </div>
-  <div
-    style="width: 100%; height: 1px; background: black; margin-bottom: 20px"
-  ></div>
-  <div>
-    <p
-      style="
-        margin: 10px 0;
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-      "
-    >
-      ${data.citationNo}
-    </p>
-    <p
-      style="
-        margin: 10px 0;
-        text-align: center;
-        font-size: 18px;
-        color: #0052cc;
-      "
-    >
-      ${data.title}
-    </p>
-    ${
-      data.institutionName &&
-      `
-    <p style="margin: 10px 0; text-align: center; font-size: 16px">
-      ${data.institutionName}
-    </p>
-    `
-    }
-    <p
-      style="
-        margin: 10px 0;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-      "
-    >
-      Bench: ${data.judgeName}
-    </p>
-    ${
-      data.partyNameAppealant &&
-      `
-    <p
-      style="
-        margin: 10px 0;
-        text-align: center;
-        font-size: 16px;
-        font-style: italic;
-      "
-    >
-      ${stripHtml(data.partyNameAppealant)}
-    </p>
-    `
-    }
-    <p
-      style="
-        margin: 10px 0;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-      "
-    >
-      Versus
-    </p>
-    ${
-      data.partyNameRespondent &&
-      `
-    <p
-      style="
-        margin: 10px 0;
-        text-align: center;
-        font-size: 16px;
-        font-style: italic;
-      "
-    >
-      ${stripHtml(data.partyNameRespondent)}
-    </p>
-    `
-    } ${
-    data.dateOfOrder &&
-    `
-    <p style="margin: 10px 0; text-align: center; font-size: 16px">
-      Date of Order : ${new Date(data.dateOfOrder).toLocaleDateString()}
-    </p>
-    `
-  }
-  </div>
-</div>
-  `
+`
 
   const handleApprove = async () => {
     try {
@@ -415,7 +352,6 @@ const SingleCitationPage = ({ data }) => {
             </p>
           )} */}
 
-          {/* <p className='text-center text-3xl py-2'>{data.title}</p> */}
           <p className='text-center text-2xl py-2 capitalize'>
             {data.institutionName}
           </p>
@@ -464,7 +400,7 @@ const SingleCitationPage = ({ data }) => {
           {data.partyNameAppealant && (
             <p className='text-center text-lg'>Versus</p>
           )}
-          {data.partyNameAppealant && (
+          {data.partyNameRespondent && (
             <div id='opponentName' className='text-center uppercase'>
               <div className='flex relative items-center justify-center w-full'>
                 <div
@@ -522,8 +458,8 @@ const SingleCitationPage = ({ data }) => {
 
           <div id='citation-pdf'>
             {data.headNote && (
-              <div>
-                <strong className='text-lg underline'>Headnote :</strong>
+              <div className='pt-14'>
+                {/* <strong className='text-lg underline'>Headnote :</strong> */}
                 <div
                   dangerouslySetInnerHTML={{
                     __html: data.headNote,
@@ -533,7 +469,10 @@ const SingleCitationPage = ({ data }) => {
             )}
 
             {data.dateOfOrder && (
-              <p className='text-center font-extrabold underline text-xl pt-10 py-5'>
+              <p
+                style={{ textAlign: 'center', textDecoration: 'underline' }}
+                className='text-center font-extrabold underline text-xl pt-10 py-5'
+              >
                 Date : {new Date(data.dateOfOrder).toLocaleDateString('en-GB')}
               </p>
             )}
@@ -592,7 +531,15 @@ const SingleCitationPage = ({ data }) => {
               </div>
             )}
 
-            <p className='text-red-600 pt-10 text-justify text-sm'>
+            <p
+              style={{
+                color: 'red',
+                paddingTop: '20px',
+                textAlign: 'justify',
+                fontSize: '14px',
+              }}
+              className='text-red-600 pt-10 text-justify text-sm'
+            >
               <strong className='underline'>Disclaimer :</strong> This text of
               the judgment/order is provided for informational purposes to our
               subscribers until it is officially reported in Supreme Court Cases

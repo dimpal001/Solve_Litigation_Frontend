@@ -26,7 +26,6 @@ import ResetLinkPage from './Pages/ResetPasswordPage/ResetLinkPage'
 import LegalAdvice from './Pages/LegalAdvicePage/LegalAdvice'
 import AllContactForms from './Pages/ContactUsPage/AllContactForms'
 import ReviewAct from './Pages/ReviewActs/ReviewAct'
-import LegalAdviceRequests from './Pages/LegalAdviceAdmin/LegaAdviceRequests'
 import ManageUserPage from './Pages/ManageUser/ManageUserPage'
 import UserList from './Pages/ManageUser/UserList'
 import CreateStaffpage from './Pages/ManageUser/CreateStaffpage'
@@ -100,10 +99,6 @@ const App = () => {
                     path='all-notifications'
                     element={<AllNotifications />}
                   />
-                  <Route
-                    path='legal-advice-requests'
-                    element={<LegalAdviceRequests />}
-                  />
                   <Route path='contact-forms' element={<AllContactForms />} />
                   <Route
                     path='create-citation'
@@ -162,7 +157,7 @@ const App = () => {
             {user && !user.isVerified && (
               <Route path='/verify-email' element={<ReVerifyEmail />} />
             )}
-            {user && <Route path='/legal-advice' element={<LegalAdvice />} />}
+            <Route path='/legal-advice' element={<LegalAdvice />} />
             {user && <Route path='/chat' element={<Chat />} />}
             <Route path='/verify-email/:token' element={<EmailVerify />} />
             <Route path='/reset-password/:token' element={<ResetLinkPage />} />
@@ -193,8 +188,6 @@ const App = () => {
         >
           <Footer />
         </div>
-
-        {/* Footer Section  */}
       </BrowserRouter>
     </div>
   )

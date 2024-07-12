@@ -6,7 +6,6 @@ import Loading from '../../Components/Loading'
 import { api } from '../../Components/Apis'
 import SelectServiceModal from '../../Components/SelectServiceModal'
 import ReVerifyEmail from '../../Components/ReVerifyEmail'
-import UpdateBioModal from './UpdateBioModal'
 import ProfileImg from '../../assets/profile.svg'
 import { SLButton } from '../../Components/Customs'
 import { enqueueSnackbar } from 'notistack'
@@ -16,8 +15,8 @@ const ProfileSettingsPage = () => {
   const [userDetails, setUserDetails] = useState(null)
   const [isServiceModalOpen, setIsServiceModalOpen] = useState(false)
   const [isChangePassModalOpen, setIsChangePassModalOpen] = useState(false)
-  const [isBioModalOpen, setIsBioModalOpen] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
+  const [isSaving, setIsSaving] = useState(false)
   const [updatedDetails, setUpdatedDetails] = useState({})
 
   const fetchUserDetails = async () => {
@@ -44,10 +43,6 @@ const ProfileSettingsPage = () => {
     fetchUserDetails()
   }, [])
 
-  const reloadData = () => {
-    fetchUserDetails()
-  }
-
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setUpdatedDetails({
@@ -57,10 +52,10 @@ const ProfileSettingsPage = () => {
   }
 
   const handleSubmit = async () => {
-    console.log(updatedDetails)
     const token = localStorage.getItem('token')
 
     try {
+      setIsSaving(true)
       const response = await axios.put(
         `${api}/api/solve_litigation/auth/update-details/${user._id}`,
         updatedDetails,
@@ -76,11 +71,13 @@ const ProfileSettingsPage = () => {
       enqueueSnackbar(response.data.message, { variant: 'success' })
     } catch (error) {
       enqueueSnackbar(error.response.data.error, { variant: 'error' })
+    } finally {
+      setIsSaving(false)
     }
   }
 
   return (
-    <div className='flex justify-center lg:pt-10 items-start min-h-screen bg-gray-100'>
+    <div className='flex justify-center lg:pt-10 lg:bg-gray-100 items-start min-h-screen '>
       {!userDetails ? (
         <Loading title={'Loading'} />
       ) : (
@@ -108,78 +105,96 @@ const ProfileSettingsPage = () => {
                       variant={!isEdit ? 'outline' : 'primary'}
                     />
                   </div>
-                  <div className='p-5 text-base'>
+                  <div className='p-3 text-base bg-gray-100 mt-5'>
                     {userDetails.fullName && (
-                      <div className='flex items-center bg-gray-100 px-5 py-2 rounded-sm justify-between'>
+                      <div className='flex items-center  px-5 py-2 rounded-sm justify-between'>
                         <p>Full Name</p>
-                        <p>{userDetails.fullName}</p>
+                        <p className='text-primary font-semibold'>
+                          {userDetails.fullName}
+                        </p>
                       </div>
                     )}
                     {userDetails.email && (
                       <div className='flex items-center px-5 py-2 rounded-sm justify-between'>
                         <p>Email Address</p>
-                        <p>{userDetails.email}</p>
+                        <p className='text-primary font-semibold'>
+                          {userDetails.email}
+                        </p>
                       </div>
                     )}
                     {userDetails.phoneNumber && (
-                      <div className='flex items-center bg-gray-100 px-5 py-2 rounded-sm justify-between'>
+                      <div className='flex items-center  px-5 py-2 rounded-sm justify-between'>
                         <p>Phone Number</p>
                         {isEdit ? (
                           <CustomInput
                             value={updatedDetails.phoneNumber}
                             name='phoneNumber'
+                            placeholder={'Enter phone number'}
                             onChange={handleInputChange}
                           />
                         ) : (
-                          <p>{userDetails.phoneNumber}</p>
+                          <p className='text-primary font-semibold'>
+                            {userDetails.phoneNumber}
+                          </p>
                         )}
                       </div>
                     )}
-                    {userDetails.bio ||
-                      (isEdit && user.userType !== 'guest' && (
-                        <div className='flex items-center px-5 py-2 rounded-sm justify-between'>
-                          <p>Bio</p>
-                          {isEdit ? (
-                            <CustomInput
-                              value={updatedDetails.bio}
-                              name='bio'
-                              onChange={handleInputChange}
-                            />
-                          ) : (
-                            <p>{userDetails.bio}</p>
-                          )}
-                        </div>
-                      ))}
-                    {userDetails.specialist && (
-                      <div className='flex items-center bg-gray-100 px-5 py-2 rounded-sm justify-between'>
-                        <p>Speciality</p>
-                        <p>{userDetails.specialist}</p>
-                      </div>
-                    )}
-                    {userDetails.state && (
+                    {user.userType !== 'guest' && (
                       <div className='flex items-center px-5 py-2 rounded-sm justify-between'>
-                        <p>State</p>
-                        <p>{userDetails.state}</p>
+                        <p>Bio</p>
+                        {isEdit ? (
+                          <CustomInput
+                            value={updatedDetails.bio}
+                            name='bio'
+                            placeholder={'Enter bio'}
+                            onChange={handleInputChange}
+                          />
+                        ) : (
+                          <p className='text-primary font-semibold'>
+                            {userDetails.bio}
+                          </p>
+                        )}
                       </div>
                     )}
-                    {userDetails.district && (
-                      <div className='flex items-center bg-gray-100 px-5 py-2 rounded-sm justify-between'>
-                        <p>District</p>
-                        <p>{userDetails.district}</p>
-                      </div>
-                    )}
-                    {userDetails && (
-                      <div className='flex items-center px-5 py-2 rounded-sm justify-between'>
+                    {user.userType !== 'admin' && (
+                      <div className='flex items-center  px-5 py-2 rounded-sm justify-between'>
                         <p>Address</p>
                         {isEdit ? (
                           <CustomInput
                             value={updatedDetails.address}
                             name='address'
+                            placeholder={'Enter address'}
                             onChange={handleInputChange}
                           />
                         ) : (
-                          <p>{userDetails.address}</p>
+                          <p className='text-primary font-semibold'>
+                            {userDetails.address}
+                          </p>
                         )}
+                      </div>
+                    )}
+                    {userDetails.specialist && (
+                      <div className='flex items-center  px-5 py-2 rounded-sm justify-between'>
+                        <p>Speciality</p>
+                        <p className='text-primary font-semibold'>
+                          {userDetails.specialist}
+                        </p>
+                      </div>
+                    )}
+                    {userDetails.state && (
+                      <div className='flex items-center px-5 py-2 rounded-sm justify-between'>
+                        <p>State</p>
+                        <p className='text-primary font-semibold'>
+                          {userDetails.state}
+                        </p>
+                      </div>
+                    )}
+                    {userDetails.district && (
+                      <div className='flex items-center  px-5 py-2 rounded-sm justify-between'>
+                        <p>District</p>
+                        <p className='text-primary font-semibold'>
+                          {userDetails.district}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -187,6 +202,9 @@ const ProfileSettingsPage = () => {
                     {isEdit ? (
                       <SLButton
                         className={'text-base'}
+                        isLoading={isSaving}
+                        loadingText={'Saving...'}
+                        iconColor={'white'}
                         title={'Save Changes'}
                         onClick={handleSubmit}
                         variant={'primary'}
@@ -210,13 +228,6 @@ const ProfileSettingsPage = () => {
                   </div>
                 </div>
               </div>
-              {isBioModalOpen && (
-                <UpdateBioModal
-                  reload={reloadData}
-                  isOpen={true}
-                  onClose={() => setIsBioModalOpen(false)}
-                />
-              )}
               {isServiceModalOpen && (
                 <SelectServiceModal
                   isOpen={true}

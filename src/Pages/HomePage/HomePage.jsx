@@ -37,9 +37,9 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    if (user && user.userType === 'lawyer') {
-      setIsBioModalOpen(true)
-    }
+    // if (user && user.userType === 'lawyer') {
+    //   setIsBioModalOpen(true)
+    // }
     fetchNotification()
     const userData = JSON.parse(localStorage.getItem('user'))
     if (
