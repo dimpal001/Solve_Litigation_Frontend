@@ -10,10 +10,8 @@ const ProfileMenu = ({
   handleLogout,
   isMenuOpen,
   setIsMenuOpen,
-  onClick,
 }) => {
   const menuRef = useRef()
-  onClick
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -27,19 +25,38 @@ const ProfileMenu = ({
     }
   }, [setIsMenuOpen])
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768 && isMenuOpen) {
+        handleProfileSettingsClick()
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    handleResize()
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [isMenuOpen, handleProfileSettingsClick])
+
   return (
     <div className='relative' ref={menuRef}>
-      <Link to={'/profile-settings'} className='md:hidden'>
-        <button
-          className='flex items-center'
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          <div className='w-10 text-white flex justify-center items-center rounded-full font-bold h-10 bg-primary'>
-            {user.fullName.charAt(0)}
-          </div>
-        </button>
-      </Link>
-      {isMenuOpen && (
+      <button
+        className='flex items-center'
+        onClick={() => {
+          if (window.innerWidth <= 768) {
+            handleProfileSettingsClick()
+          } else {
+            setIsMenuOpen(!isMenuOpen)
+          }
+        }}
+      >
+        <div className='w-10 text-white flex justify-center items-center rounded-full font-bold h-10 bg-primary'>
+          {user.fullName.charAt(0)}
+        </div>
+      </button>
+      {isMenuOpen && window.innerWidth > 768 && (
         <div className='absolute right-0 mt-4 w-64 p-3 border-primary border rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
           <div className='flex flex-col gap-3 p-4'>
             <div className='flex items-center gap-3'>
