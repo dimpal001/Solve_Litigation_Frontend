@@ -2,13 +2,14 @@ import { Outlet, useNavigate } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import AdminHeader from './AdminHeader'
 import { SLButton } from '../../Components/Customs'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
 
 const Layout = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
+  const [showSidebar, setShowSidebar] = useState(false)
 
   useEffect(() => {
     window.document.title = 'Admin Panel - Solve Litigation'
@@ -24,10 +25,13 @@ const Layout = () => {
   return (
     <div>
       <div className='flex max-md:hidden flex-row h-screen'>
-        <Sidebar />
-        <div className='p-4 lg:pl-60 w-full'>
+        {showSidebar && <Sidebar />}
+        <div className={`p-4 ${showSidebar && 'lg:pl-60'} w-full`}>
           <div className='w-full'>
-            <AdminHeader />
+            <AdminHeader
+              showSidebar={showSidebar}
+              setShowSidebar={setShowSidebar}
+            />
           </div>
           <div className='pt-5 px-6'>{<Outlet />}</div>
         </div>

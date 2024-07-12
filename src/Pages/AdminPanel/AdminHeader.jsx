@@ -1,9 +1,11 @@
 import { useContext, useState } from 'react'
 import { UserContext } from '../../UserContext'
 import ProfileMenu from '../../Components/ProfileMenu'
-import { FaUser } from 'react-icons/fa'
+import LeftArrow from '../../assets/leftArrow.svg'
+import RightArrow from '../../assets/rightArrow.svg'
+import UserImg from '../../assets/profile.svg'
 
-const AdminHeader = () => {
+const AdminHeader = ({ showSidebar, setShowSidebar }) => {
   const { user } = useContext(UserContext)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -14,9 +16,16 @@ const AdminHeader = () => {
     <div className='w-full'>
       <div>
         <div className='flex p-3 pb-5 justify-between'>
-          <div className='flex items-baseline gap-3'>
-            <FaUser />
-            <p className='text-2xl'>{user.fullName}</p>
+          <div className='flex items-center gap-3'>
+            <img
+              title={showSidebar ? 'Close Sidebar' : 'Open Sidebar'}
+              src={showSidebar ? LeftArrow : RightArrow}
+              onClick={() => setShowSidebar(!showSidebar)}
+              className='w-7 cursor-pointer'
+              alt=''
+            />
+            <img src={UserImg} className='w-10' alt='' />
+            <p className='text-2xl font-semibold'>{user.fullName}</p>
           </div>
           <div>
             <ProfileMenu
