@@ -19,7 +19,8 @@ export const SLButton = ({
       type={type}
       onClick={onClick}
       className={`px-4 ${
-        isDisabled && 'bg-blue-400 cursor-not-allowed hover:bg-blue-400'
+        isDisabled &&
+        'bg-blue-400 opacity-70 cursor-not-allowed hover:bg-blue-400'
       } ${width && `w-full`} py-2 ${className}
       ${
         variant === 'outline' &&
@@ -113,7 +114,7 @@ export const Modal = ({ isOpen, children, size }) => {
     <>
       {showModal ? (
         <div
-          className={`fixed inset-0 z-50 w-screen h-screen flex items-center justify-center`}
+          className={`fixed inset-0 top-0 bottom-0 z-50 w-screen h-screen flex items-center justify-center`}
         >
           <div className='fixed inset-0 z-40 bg-black opacity-50'></div>
           <div
@@ -203,7 +204,7 @@ export const ModalCloseButton = ({ onClick }) => {
 // T CSS
 export const ModalBody = ({ children }) => {
   return (
-    <div className='text-gray-700 max-h-[600px] md:max-h-[500px] overflow-scroll'>
+    <div className='text-gray-700 max-h-[450px] md:max-h-[500px] overflow-scroll'>
       {children}
     </div>
   )

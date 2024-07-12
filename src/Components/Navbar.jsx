@@ -176,6 +176,7 @@ const NavItems = ({ onClose }) => {
             handleLogout={handleLogout}
             isMenuOpen={isMenuOpen}
             setIsMenuOpen={setIsMenuOpen}
+            onClick={() => onClose()}
           />
         )}
       </div>

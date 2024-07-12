@@ -10,8 +10,10 @@ const ProfileMenu = ({
   handleLogout,
   isMenuOpen,
   setIsMenuOpen,
+  onClick,
 }) => {
   const menuRef = useRef()
+  onClick
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -27,14 +29,16 @@ const ProfileMenu = ({
 
   return (
     <div className='relative' ref={menuRef}>
-      <button
-        className='flex items-center'
-        onClick={() => setIsMenuOpen(!isMenuOpen)}
-      >
-        <div className='w-10 text-white flex justify-center items-center rounded-full font-bold h-10 bg-primary'>
-          {user.fullName.charAt(0)}
-        </div>
-      </button>
+      <Link to={'/profile-settings'} className='md:hidden'>
+        <button
+          className='flex items-center'
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+        >
+          <div className='w-10 text-white flex justify-center items-center rounded-full font-bold h-10 bg-primary'>
+            {user.fullName.charAt(0)}
+          </div>
+        </button>
+      </Link>
       {isMenuOpen && (
         <div className='absolute right-0 mt-4 w-64 p-3 border-primary border rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5'>
           <div className='flex flex-col gap-3 p-4'>

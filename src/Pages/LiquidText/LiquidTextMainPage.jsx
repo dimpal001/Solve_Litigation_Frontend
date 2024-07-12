@@ -9,6 +9,7 @@ import axios from 'axios'
 import CreateArgumentModal from './CreateArgumentModal'
 import CreateLTModal from './CraeteLTModal'
 import ConfirmDeleteModal from './ConfirmDeleteModal'
+import ShareUserModal from './ShareUserModal'
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -44,6 +45,7 @@ const LiquidTextMainPage = () => {
   const [isCreateArgumentModalOpen, setIsCreateArgumentModalOpen] =
     useState(false)
   const [isCreateLTModalOpen, setIsCreateLTModalOpen] = useState(false)
+  const [isShareModalOpen, setIsShareodalOpen] = useState(false)
 
   useEffect(() => {
     fetchClientDetails(id)
@@ -257,6 +259,12 @@ const LiquidTextMainPage = () => {
           onLiquidTextAdded={handleLiquidTextAdded}
         />
       )}
+      {isShareModalOpen && (
+        <ShareUserModal
+          isOpen={true}
+          onClose={() => setIsShareodalOpen(false)}
+        />
+      )}
       {isDeleteModalOpen && (
         <ConfirmDeleteModal
           isOpen={true}
@@ -322,9 +330,13 @@ const LiquidTextMainPage = () => {
                     variant={'primary'}
                     onClick={() => setIsCreateLTModalOpen(true)}
                   />
-                  <span title='Share this argument' className=''>
+                  <span
+                    title='Share this argument'
+                    onClick={() => setIsShareodalOpen(true)}
+                    className='cursor-pointer'
+                  >
                     <svg
-                      className='w-7 cursor-not-allowed'
+                      className='w-7'
                       fill='#26a269'
                       viewBox='0 0 32 32'
                       version='1.1'
