@@ -11,10 +11,12 @@ import CreateLTModal from './CraeteLTModal'
 import ConfirmDeleteModal from './ConfirmDeleteModal'
 import ShareUserModal from './ShareUserModal'
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString()
+// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+//   'pdfjs-dist/build/pdf.worker.min.mjs',
+//   import.meta.url
+// ).toString()
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
 const options = {
   cMapUrl: '/cmaps/',
