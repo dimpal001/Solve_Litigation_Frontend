@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   Modal,
   ModalBody,
@@ -17,15 +17,18 @@ import SelectServiceModal from '../../Components/SelectServiceModal'
 import Marquee from 'react-fast-marquee'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
+import { enqueueSnackbar } from 'notistack'
 
 const HomePage = () => {
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [isSelectServiceModalOpen, setIsSelectServiceModalOpen] =
     useState(false)
   const [notifications, setNotifications] = useState([])
   const [isBioOpenModal, setIsBioModalOpen] = useState(false)
+  const navigate = useNavigate()
 
   const fetchNotification = async () => {
+    handleCheckAuth()
     try {
       const response = await axios.get(
         `${api}/api/solve_litigation/notification`
@@ -33,6 +36,32 @@ const HomePage = () => {
       setNotifications(response.data)
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const handleLogout = () => {
+    if (user) {
+      setUser(null)
+      localStorage.removeItem('jwtToken')
+      localStorage.removeItem('user')
+      navigate('/')
+      enqueueSnackbar('Session Expired! Please Login again', {
+        variant: 'error',
+      })
+    }
+  }
+
+  const handleCheckAuth = async () => {
+    try {
+      await axios.get(`${api}/api/solve_litigation/check-auth`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+    } catch (error) {
+      if (error.response.status === 401) {
+        handleLogout()
+      }
     }
   }
 

@@ -1,11 +1,47 @@
 import { useNavigate } from 'react-router-dom'
 import { SLButton } from '../../Components/Customs'
+import { enqueueSnackbar } from 'notistack'
+import { useContext, useEffect } from 'react'
+import { UserContext } from '../../UserContext'
+import axios from 'axios'
+import { api } from '../../Components/Apis'
 
 const LegalAdvice = () => {
   const user = JSON.parse(localStorage.getItem('user'))
   const token = localStorage.getItem('token')
   const userString = encodeURIComponent(JSON.stringify(user))
   const navigate = useNavigate()
+  const { setUser } = useContext(UserContext)
+
+  const handleLogout = () => {
+    if (user) {
+      setUser(null)
+      localStorage.removeItem('jwtToken')
+      localStorage.removeItem('user')
+      navigate('/')
+      enqueueSnackbar('Session Expired! Please Login again', {
+        variant: 'error',
+      })
+    }
+  }
+
+  useEffect(() => {
+    handleCheckAuth()
+  }, [])
+
+  const handleCheckAuth = async () => {
+    try {
+      await axios.get(`${api}/api/solve_litigation/check-auth`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+    } catch (error) {
+      if (error.response.status === 401) {
+        handleLogout()
+      }
+    }
+  }
 
   const redirectToChat = () => {
     if (

@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import axios from 'axios'
 import { api } from '../../Components/Apis'
 import { useSnackbar } from 'notistack'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaArrowRight, FaSearch } from 'react-icons/fa'
 import { Colors } from '../../Components/Colors'
 import { Avatar, SLButton, SLSpinner } from '../../Components/Customs'
+import { UserContext } from '../../UserContext'
 
 const StudyMaterialUser = () => {
+  const { user, setUser } = useContext(UserContext)
   const [topics, setTopics] = useState([])
   const [questions, setQuestions] = useState([])
   const [selectedTopic, setSelectedTopic] = useState('all')
@@ -17,9 +19,37 @@ const StudyMaterialUser = () => {
   const [pageNo, setPageNo] = useState(0)
   const [totalPage, setTotalPage] = useState()
   const { enqueueSnackbar } = useSnackbar()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    if (user) {
+      setUser(null)
+      localStorage.removeItem('jwtToken')
+      localStorage.removeItem('user')
+      navigate('/')
+      enqueueSnackbar('Session Expired! Please Login again', {
+        variant: 'error',
+      })
+    }
+  }
+
+  const handleCheckAuth = async () => {
+    try {
+      await axios.get(`${api}/api/solve_litigation/check-auth`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+    } catch (error) {
+      if (error.response.status === 401) {
+        handleLogout()
+      }
+    }
+  }
 
   const fetchTopics = async () => {
     try {
+      handleCheckAuth()
       const response = await axios.get(
         `${api}/api/solve_litigation/study-material/topics`,
         {
@@ -31,7 +61,6 @@ const StudyMaterialUser = () => {
       setTopics(response.data)
     } catch (error) {
       console.error(error)
-      enqueueSnackbar('Failed to fetch topics', { variant: 'error' })
     }
   }
   const [query, setQuery] = useState('')
