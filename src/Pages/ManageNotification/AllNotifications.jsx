@@ -36,9 +36,9 @@ const AllNotifications = () => {
   return (
     <div>
       <div>
-        <p className='text-center text-4xl p-3 font-bold'>
+        {/* <p className='text-center text-4xl p-3 font-bold'>
           Manage Notifications
-        </p>
+        </p> */}
         <table className='table-auto w-full border-collapse border border-primary'>
           <thead className='bg-primary'>
             <tr className='bg-gray-200 capitalize'>

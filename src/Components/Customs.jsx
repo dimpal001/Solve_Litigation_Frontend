@@ -388,7 +388,7 @@ export const SLPrimarySpinner = ({ className }) => {
 // T CSS
 export const Avatar = () => {
   return (
-    <div className='bg-primary p-1 max-md:p-2 max-md:px-[10px] rounded-md max-md:text-sm'>
+    <div className='bg-primary w-8 h-8 flex justify-center items-center rounded-sm text-base max-md:text-sm'>
       <p className='text-white'>SL</p>
     </div>
   )

@@ -99,8 +99,8 @@ const ManageTopic = () => {
 
   return (
     <div>
-      <p className='text-3xl font-extrabold pb-5 text-center'>Manage Topic</p>
-      <div className='flex justify-center gap-5'>
+      {/* <p className='text-3xl font-extrabold pb-5 text-center'>Manage Topic</p> */}
+      <div className='flex gap-5'>
         <SLButton
           title={'Add Topic'}
           onClick={() => {

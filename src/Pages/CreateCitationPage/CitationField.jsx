@@ -165,7 +165,7 @@ const CitationField = ({ data, setData }) => {
             }))
           }
         >
-          <option value=''>select Court</option>
+          <option value=''>Select Court</option>
           {listCourt.map((court, index) => (
             <option key={index} value={court.name}>
               {capitalizeString(court.name)}

@@ -82,7 +82,7 @@ const UserList = () => {
           color={Colors.primary}
         />
       </Link>
-      <p className='text-3xl font-extrabold pb-5 text-center'>Staff List</p>
+      {/* <p className='text-3xl font-extrabold pb-5 text-center'>User List</p> */}
       <div className='flex justify-center gap-5 pb-5'>
         <SLButton
           variant={selectedFilter === 'all' ? 'primary' : 'outline'}
@@ -95,18 +95,18 @@ const UserList = () => {
           title={'Admin'}
         />
         <SLButton
-          variant={selectedFilter === 'admin' ? 'primary' : 'outline'}
-          onClick={() => handleFilter('admin')}
+          variant={selectedFilter === 'staff' ? 'primary' : 'outline'}
+          onClick={() => handleFilter('staff')}
           title={'Staff'}
         />
         <SLButton
-          variant={selectedFilter === 'admin' ? 'primary' : 'outline'}
-          onClick={() => handleFilter('admin')}
+          variant={selectedFilter === 'guest' ? 'primary' : 'outline'}
+          onClick={() => handleFilter('guest')}
           title={'Guest User'}
         />
         <SLButton
-          variant={selectedFilter === 'admin' ? 'primary' : 'outline'}
-          onClick={() => handleFilter('admin')}
+          variant={selectedFilter === 'lawyer' ? 'primary' : 'outline'}
+          onClick={() => handleFilter('lawyer')}
           title={'Lawyer'}
         />
       </div>

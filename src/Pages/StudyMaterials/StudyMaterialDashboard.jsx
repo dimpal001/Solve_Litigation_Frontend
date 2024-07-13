@@ -5,10 +5,10 @@ const StudyMaterialDashboard = () => {
   return (
     <div>
       <div className='px-7'>
-        <p className='text-3xl font-extrabold pb-5 text-center'>
+        {/* <p className='text-3xl font-extrabold pb-5 text-center'>
           Study Materials
-        </p>
-        <div className='flex justify-center gap-5'>
+        </p> */}
+        <div className='flex gap-5'>
           <Link to={'/admin-dashboard/manage-topic'}>
             <SLButton title={'Manage Topic'} variant={'primary'} />
           </Link>

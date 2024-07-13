@@ -94,6 +94,7 @@ const NavItems = ({ onClose }) => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false)
 
   const handleLogout = () => {
+    console.log('Logout call')
     setIsLogoutModalOpen(true)
   }
 

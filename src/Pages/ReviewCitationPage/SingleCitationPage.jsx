@@ -259,18 +259,26 @@ const SingleCitationPage = ({ data }) => {
           </div>
         )}
         <div className='flex items-center justify-center gap-3 pb-3'>
-          {user && user.userType === 'admin' && (
+          {user && (
             <div className='flex gap-3'>
               <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
-                <SLButton variant={'primary'} title={'Edit'} />
-              </Link>
-              <SLButton
-                variant={'error'}
-                onClick={() => setIsDeleteModalOpen(true)}
-                title={'Delete'}
-              />
-              {data.status === 'pending' && (
                 <SLButton
+                  className={'max-md:text-sm px-2 py-[5px]'}
+                  variant={'primary'}
+                  title={'Edit'}
+                />
+              </Link>
+              {user.userType === 'admin' && (
+                <SLButton
+                  className={'max-md:text-sm px-2 py-[5px]'}
+                  variant={'error'}
+                  onClick={() => setIsDeleteModalOpen(true)}
+                  title={'Delete'}
+                />
+              )}
+              {data.status === 'pending' && user.userType === 'admin' && (
+                <SLButton
+                  className={'max-md:text-sm px-2 py-[5px]'}
                   variant={'success'}
                   onClick={handleApprove}
                   isLoading={isApproving}
@@ -279,8 +287,9 @@ const SingleCitationPage = ({ data }) => {
                 />
               )}
 
-              {data.status === 'approved' && (
+              {data.status === 'approved' && user.userType === 'admin' && (
                 <SLButton
+                  className={'max-md:text-sm px-2 py-[5px]'}
                   variant={'primary'}
                   onClick={() => setIsNotificationModalOpen(true)}
                   title={'Add to Notification'}
@@ -290,12 +299,14 @@ const SingleCitationPage = ({ data }) => {
           )}
           {user && (
             <div className='flex max-sm:grid grid-cols-3 gap-3'>
-              <SLButton
-                className={'max-md:text-sm px-2 py-[5px]'}
-                variant={'primary'}
-                onClick={() => setIsShareModalOpen(true)}
-                title={'Share'}
-              />
+              {user.userType !== 'staff' && (
+                <SLButton
+                  className={'max-md:text-sm px-2 py-[5px]'}
+                  variant={'primary'}
+                  onClick={() => setIsShareModalOpen(true)}
+                  title={'Share'}
+                />
+              )}
               <SLButton
                 className={'max-md:text-sm px-2 py-[5px]'}
                 variant={'primary'}

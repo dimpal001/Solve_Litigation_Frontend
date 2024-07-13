@@ -331,6 +331,23 @@ const RegisterPage = () => {
                     </Link>
                   </span>
                 </label>
+                <p className='text-justify text-xs pt-5 text-red-600'>
+                  <strong>Solve Litigation</strong> is not intended to solicit
+                  clients or provide legal advice. Any content or communication
+                  through the <strong>Solve Litigation</strong> is purely for
+                  informational purposes. <strong>Solve Litigation</strong> does
+                  not guarantee the outcomes of any legal issues discussed or
+                  the accuracy of the legal information provided.
+                </p>
+                <p className='text-justify text-xs pt-4 text-red-600'>
+                  By using <strong>Solve Litigation</strong>, you hereby
+                  acknowledge and affirm that your interest in{' '}
+                  <strong>Solve Litigation</strong> is voluntary. All consent of
+                  this Website are the intellectual property of{' '}
+                  <strong>Solve Litigation</strong> and agree to its terms. If
+                  you do not agree with this disclaimer or any part of it, you
+                  must not use the Solve Litigation.
+                </p>
               </div>
               <div className='w-full flex justify-center pt-3'>
                 <SLButton

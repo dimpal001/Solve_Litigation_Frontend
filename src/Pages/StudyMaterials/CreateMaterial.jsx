@@ -92,9 +92,9 @@ const CreateMaterial = () => {
 
   return (
     <div>
-      <p className='text-3xl font-extrabold pb-5 text-center'>
+      {/* <p className='text-3xl font-extrabold pb-5 text-center'>
         Create Study Material
-      </p>
+      </p> */}
       <div className='px-[200px]'>
         <div className='pb-4'>
           <label className='block text-lg font-medium'>Topic</label>

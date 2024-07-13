@@ -54,7 +54,7 @@ const ViewMaterial = () => {
 
   return (
     <div>
-      <p className='text-3xl font-extrabold pb-5 text-center'>View Material</p>
+      {/* <p className='text-3xl font-extrabold pb-5 text-center'>View Material</p> */}
       <div className='px-[50px]'>
         {topics.length === 0 ? (
           <div className='w-full h-[500px] flex justify-center items-center'>

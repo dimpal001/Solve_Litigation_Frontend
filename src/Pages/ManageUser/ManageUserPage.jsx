@@ -4,8 +4,8 @@ import { SLButton } from '../../Components/Customs'
 const ManageUserPage = () => {
   return (
     <div data-aos='fade-up' className='px-7'>
-      <p className='text-3xl font-extrabold pb-5 text-center'>Manage User</p>
-      <div className='flex justify-center gap-5'>
+      {/* <p className='text-3xl font-extrabold pb-5 text-center'>Manage User</p> */}
+      <div className='flex gap-5'>
         <Link to={'/admin-dashboard/manage-users/users-list'}>
           <SLButton variant={'outline'} title={'User List'} />
         </Link>

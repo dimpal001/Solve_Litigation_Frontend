@@ -52,11 +52,16 @@ const CreateStaffpage = () => {
           email,
           phoneNumber,
           password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         }
       )
       console.log(response.data)
       enqueueSnackbar(response.data.message, { variant: 'success' })
-      navigate('/admin-dashboard/manage-staff/staff-list')
+      navigate('/admin-dashboard/manage-users/users-list')
     } catch (error) {
       console.error(error)
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
@@ -75,7 +80,7 @@ const CreateStaffpage = () => {
             color={Colors.primary}
           />
         </Link>
-        <p className='text-3xl font-extrabold pb-5 text-center'>Create Staff</p>
+        {/* <p className='text-3xl font-extrabold pb-5 text-center'>Create Staff</p> */}
       </div>
       <div>
         <form>

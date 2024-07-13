@@ -10,7 +10,7 @@ import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
 
 const ReviewCitationPage = () => {
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const navigate = useNavigate()
   const [pendingjudgements, setpendingjudgements] = useState([])
   const [approvedjudgements, setapprovedjudgements] = useState([])
@@ -122,7 +122,7 @@ const ReviewCitationPage = () => {
   return (
     <div>
       <div>
-        <p className='text-3xl text-center font-extrabold'>Review Judgements</p>
+        {/* <p className='text-3xl text-center font-extrabold'>Review Judgements</p> */}
         {isLoading ? (
           <Loading />
         ) : (
@@ -146,22 +146,24 @@ const ReviewCitationPage = () => {
                       </span>
                     )}
                   </div>
-                  <div className='relative'>
-                    <SLButton
-                      className={`${
-                        judgementType === 'approved'
-                          ? 'bg-primary text-white border border-primary'
-                          : 'bg-white text-primary border border-primary'
-                      }`}
-                      title={'Approved Judgements'}
-                      onClick={() => handleChangejudgementType('approved')}
-                    />
-                    {approvedjudgements && approvedjudgements.length > 0 && (
-                      <span className='absolute -top-3 -right-2 text-sm bg-green-700 text-white font-extrabold w-8 h-8 flex justify-center items-center border rounded-full'>
-                        {approvedjudgements && approvedjudgements.length}
-                      </span>
-                    )}
-                  </div>
+                  {user && user.userType === 'admin' && (
+                    <div className='relative'>
+                      <SLButton
+                        className={`${
+                          judgementType === 'approved'
+                            ? 'bg-primary text-white border border-primary'
+                            : 'bg-white text-primary border border-primary'
+                        }`}
+                        title={'Approved Judgements'}
+                        onClick={() => handleChangejudgementType('approved')}
+                      />
+                      {approvedjudgements && approvedjudgements.length > 0 && (
+                        <span className='absolute -top-3 -right-2 text-sm bg-green-700 text-white font-extrabold w-8 h-8 flex justify-center items-center border rounded-full'>
+                          {approvedjudgements && approvedjudgements.length}
+                        </span>
+                      )}
+                    </div>
+                  )}
                   {/* <SLButton
                   onClick={() => setIsFilterModalOpen(true)}
                   variant={'success'}
@@ -249,13 +251,13 @@ const Citation = ({ data }) => {
           <div className='flex gap-2 py-1'>
             <div
               className={`${
-                data.status === 'pending' ? 'bg-orange-400' : 'bg-green-600'
-              } text-sm capitalize font-bold py-1 px-2 rounded-sm`}
+                data.status === 'pending' ? 'bg-orange-500' : 'bg-green-600'
+              } text-sm capitalize font-bold py-1 px-2 rounded-sm text-white`}
             >
               {data.status}
             </div>
             <div
-              className={`bg-primary text-sm capitalize font-bold py-1 px-2 rounded-sm`}
+              className={`bg-primary text-sm capitalize font-bold py-1 text-white px-2 rounded-sm`}
             >
               {data.type}
             </div>

@@ -8,7 +8,7 @@ import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
 
 const ReviewAct = () => {
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const navigate = useNavigate()
   const [pendingActs, setpendingActs] = useState([])
   const [approvedActs, setapprovedActs] = useState([])
@@ -86,31 +86,48 @@ const ReviewAct = () => {
   return (
     <div>
       <div>
-        <p className='text-3xl text-center font-extrabold'>Review Acts</p>
+        {/* <p className='text-3xl text-center font-extrabold'>Review Acts</p> */}
         {isLoading ? (
           <Loading />
         ) : (
           <div className='py-3 flex flex-col gap-y-3'>
             <div className='flex justify-between'>
               <div className='flex gap-3'>
-                <SLButton
-                  className={`${
-                    actType === 'pending'
-                      ? 'bg-primary text-white border border-primary'
-                      : 'bg-white text-primary border border-primary'
-                  }`}
-                  title={'Pending Judgements'}
-                  onClick={() => handleChangeActType('pending')}
-                />
-                <SLButton
-                  className={`${
-                    actType === 'approved'
-                      ? 'bg-primary text-white border border-primary'
-                      : 'bg-white text-primary border border-primary'
-                  }`}
-                  title={'Approved Judgements'}
-                  onClick={() => handleChangeActType('approved')}
-                />
+                <div className='relative'>
+                  <SLButton
+                    className={`${
+                      actType === 'pending'
+                        ? 'bg-primary text-white border border-primary'
+                        : 'bg-white text-primary border border-primary'
+                    }`}
+                    title={'Pending Acts'}
+                    onClick={() => handleChangeActType('pending')}
+                  />
+                  {pendingActs && pendingActs.length > 0 && (
+                    <span className='absolute -top-3 -right-2 text-sm bg-orange-700 text-white font-extrabold w-8 h-8 flex justify-center items-center border rounded-full'>
+                      {pendingActs && pendingActs.length}
+                    </span>
+                  )}
+                </div>
+
+                {user && user.userType === 'admin' && (
+                  <div className='relative'>
+                    <SLButton
+                      className={`${
+                        actType === 'approved'
+                          ? 'bg-primary text-white border border-primary'
+                          : 'bg-white text-primary border border-primary'
+                      }`}
+                      title={'Approved Acts'}
+                      onClick={() => handleChangeActType('approved')}
+                    />
+                    {approvedActs && approvedActs.length > 0 && (
+                      <span className='absolute -top-3 -right-2 text-sm bg-green-700 text-white font-extrabold w-8 h-8 flex justify-center items-center border rounded-full'>
+                        {approvedActs && approvedActs.length}
+                      </span>
+                    )}
+                  </div>
+                )}
               </div>
               <div>
                 <div>
@@ -174,13 +191,13 @@ const Act = ({ data }) => {
           <div className='flex gap-2 py-1'>
             <div
               className={`${
-                data.status === 'pending' ? 'bg-orange-400' : 'bg-green-600'
-              } text-sm capitalize font-bold py-1 px-2 rounded-sm`}
+                data.status === 'pending' ? 'bg-orange-500' : 'bg-green-600'
+              } text-sm capitalize font-bold py-1 px-2 text-white rounded-sm`}
             >
               {data.status}
             </div>
             <div
-              className={`bg-primary text-sm capitalize font-bold py-1 px-2 rounded-sm`}
+              className={`bg-primary text-sm capitalize text-white font-bold py-1 px-2 rounded-sm`}
             >
               {data.type}
             </div>
