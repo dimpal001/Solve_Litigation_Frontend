@@ -11,6 +11,27 @@ import { MdRefresh } from 'react-icons/md'
 import { enqueueSnackbar } from 'notistack'
 
 const LoginPage = () => {
+  const [captcha, setCaptcha] = useState(null)
+  const [captchaToken, setCaptchaToken] = useState(null)
+
+  useEffect(() => {
+    fetchCaptcha()
+  }, [])
+
+  const fetchCaptcha = async () => {
+    try {
+      const response = await axios.get(
+        `${api}/api/solve_litigation/verification/generate-captcha`
+      )
+      setCaptcha(response.data.captcha)
+      setCaptchaToken(response.data.token)
+    } catch (error) {
+      enqueueSnackbar(error.response.data.error, {
+        variant: 'error',
+      })
+    }
+  }
+
   const [isShowPassword, setIsShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -20,13 +41,6 @@ const LoginPage = () => {
   })
   const navigate = useNavigate()
   const { setUser } = useContext(UserContext)
-
-  const randomString = Math.random().toString(36).slice(8)
-  const [captcha, setCaptcha] = useState(randomString)
-
-  const refreshString = () => {
-    setCaptcha(Math.random().toString(36).slice(8))
-  }
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -42,7 +56,7 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault()
-    refreshString()
+    // refreshString()
 
     if (formData.emailOrPhoneNumber === '') {
       enqueueSnackbar('Enter a valid email or phone number!', {
@@ -59,15 +73,15 @@ const LoginPage = () => {
     }
 
     try {
-      const enteredCaptcha = formData.captcha
-      if (enteredCaptcha !== captcha) {
-        enqueueSnackbar('Incorrect captcha entered!', { variant: 'error' })
-        return
-      }
+      // const enteredCaptcha = formData.captcha
+      // if (enteredCaptcha !== captcha) {
+      //   enqueueSnackbar('Incorrect captcha entered!', { variant: 'error' })
+      //   return
+      // }
       setIsLoading(true)
       const response = await axios.post(
         `${api}/api/solve_litigation/auth/login`,
-        formData
+        { ...formData, captchaInput: formData.captcha, captchaToken }
       )
       const { token, message, user } = response.data
       localStorage.setItem('token', token)
@@ -103,6 +117,7 @@ const LoginPage = () => {
           variant: 'error',
         })
       }
+      fetchCaptcha()
     } finally {
       setIsLoading(false)
     }
@@ -170,9 +185,9 @@ const LoginPage = () => {
                 </label>
                 <div>
                   <div className='flex items-center justify-center gap-5'>
-                    <p>{captcha}</p>
+                    <div dangerouslySetInnerHTML={{ __html: captcha }} />
                     <MdRefresh
-                      onClick={refreshString}
+                      onClick={() => fetchCaptcha()}
                       color='red'
                       className='cursor-pointer'
                     />

@@ -261,13 +261,16 @@ const SingleCitationPage = ({ data }) => {
         <div className='flex items-center justify-center gap-3 pb-3'>
           {user && (
             <div className='flex gap-3'>
-              <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
-                <SLButton
-                  className={'max-md:text-sm px-2 py-[5px]'}
-                  variant={'primary'}
-                  title={'Edit'}
-                />
-              </Link>
+              {user.userType === 'staff' ||
+                (user.userType === 'admin' && (
+                  <Link to={`/admin-dashboard/edit-citation/${data._id}`}>
+                    <SLButton
+                      className={'max-md:text-sm px-2 py-[5px]'}
+                      variant={'primary'}
+                      title={'Edit'}
+                    />
+                  </Link>
+                ))}
               {user.userType === 'admin' && (
                 <SLButton
                   className={'max-md:text-sm px-2 py-[5px]'}
