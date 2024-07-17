@@ -44,7 +44,7 @@ const LiquidTextHomePage = () => {
 
   return (
     <div className='w-full min-h-screen p-5'>
-      <p className='text-4xl font-bold text-center'>Prepare your argument</p>
+      <p className='text-4xl font-bold text-center'>Prepare your Argument</p>
       <div className='flex flex-col container mx-auto py-10'>
         <div>
           <SLButton

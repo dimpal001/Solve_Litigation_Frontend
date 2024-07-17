@@ -135,6 +135,7 @@ const SingleCitationPage = ({ data }) => {
         {
           responseType: 'blob',
           headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
           },
         }

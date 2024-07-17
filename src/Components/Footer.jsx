@@ -21,7 +21,7 @@ const Footer = () => {
               </li>
               <li className='mb-2'>
                 <Link to='/services' className='hover:text-primary'>
-                  Services
+                  Facilities
                 </Link>
               </li>
               <li className='mb-2'>
@@ -39,11 +39,11 @@ const Footer = () => {
                   Judgements
                 </Link>
               </li>
-              <li className='mb-2'>
+              {/* <li className='mb-2'>
                 <Link to='/legal-advice' className='hover:text-primary'>
                   Legal Advice
                 </Link>
-              </li>
+              </li> */}
               <li className='mb-2'>
                 <Link to='/study-material' className='hover:text-primary'>
                   Study Material

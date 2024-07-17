@@ -138,9 +138,9 @@ const NavItems = ({ onClose }) => {
               Legal Advice
             </NavItem>
           )} */}
-        <NavItem onClick={onClose} title='Legal Advice' to={'/legal-advice'}>
+        {/* <NavItem onClick={onClose} title='Legal Advice' to={'/legal-advice'}>
           Legal Advice
-        </NavItem>
+        </NavItem> */}
         {user &&
           user.userType === 'guest' &&
           user.selectedService.includes('studyResources') && (
@@ -154,7 +154,7 @@ const NavItems = ({ onClose }) => {
             title='Prepare Argument'
             to={'/prepare-argument'}
           >
-            Prepare Argument
+            Store in Feature
           </NavItem>
         )}
         <NavItem onClick={onClose} title='Service Page' to={'/services'}>

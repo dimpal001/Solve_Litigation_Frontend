@@ -61,17 +61,12 @@ const LegalAdvice = () => {
   return (
     <div className='container mx-auto min-h-[calc(100vh-150px)] flex items-center lg:px-[250px] px-4 py-8'>
       <div>
-        <h1 className='text-4xl text-primary font-bold mb-4'>
-          Get Legal Advice
-        </h1>
+        <h1 className='text-4xl text-primary font-bold mb-4'>Features</h1>
         <p className='text-lg mb-6 text-justify'>
-          Access expert legal advice from the best lawyers working with Solve
-          Litigation. Whether you&apos;re facing a legal issue, need
-          clarification on a legal matter, or seeking guidance on legal
-          procedures, our experienced legal professionals are here to assist
-          you. Receive personalized advice tailored to your specific situation,
-          ensuring that you make informed decisions and navigate the
-          complexities of the legal system with confidence.
+          Self tailored to your specific situation and navigate the complexities
+          of the legal system with confidence to merged with system of paperies
+          system of judiciary. Now available to your doorstep, spend less time
+          to focus on craft your arguments.
         </p>
         <div>
           <SLButton
