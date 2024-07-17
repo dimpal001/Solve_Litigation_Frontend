@@ -36,7 +36,7 @@ const Footer = () => {
             <ul className='text-base'>
               <li className='mb-2'>
                 <Link to='/citations' className='hover:text-primary'>
-                  Judgements
+                  Judgments
                 </Link>
               </li>
               {/* <li className='mb-2'>

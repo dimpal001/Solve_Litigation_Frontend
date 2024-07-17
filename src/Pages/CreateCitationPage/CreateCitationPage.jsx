@@ -143,7 +143,7 @@ const CreateCitation = () => {
         </div>
       )}
       <p className='text-3xl font-extrabold pb-5 text-center'>
-        Create {selectedType === 'citation' ? 'Judgement' : 'Act'}
+        Create {selectedType === 'citation' ? 'Judgment' : 'Act'}
       </p>
       <div className='flex justify-center gap-x-5'>
         {selectedType === 'citation' && (

@@ -137,7 +137,7 @@ const ReviewCitationPage = () => {
                           ? 'bg-primary text-white border border-primary'
                           : 'bg-white text-primary border border-primary'
                       }`}
-                      title={'Pending Judgements'}
+                      title={'Pending Judgments'}
                       onClick={() => handleChangejudgementType('pending')}
                     />
                     {pendingjudgements && pendingjudgements.length > 0 && (
@@ -154,7 +154,7 @@ const ReviewCitationPage = () => {
                             ? 'bg-primary text-white border border-primary'
                             : 'bg-white text-primary border border-primary'
                         }`}
-                        title={'Approved Judgements'}
+                        title={'Approved Judgments'}
                         onClick={() => handleChangejudgementType('approved')}
                       />
                       {approvedjudgements && approvedjudgements.length > 0 && (

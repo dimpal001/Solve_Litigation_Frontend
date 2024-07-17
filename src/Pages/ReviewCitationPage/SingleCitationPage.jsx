@@ -64,7 +64,7 @@ const SingleCitationPage = ({ data }) => {
         `<div style="text-align: center; padding-top: 1rem; text-transform: uppercase; width: 100%">
           <div style="display: flex; position: relative; align-items: center; justify-content: center; width: 100%;">
             <div>${data.partyNameAppealant}</div>
-            <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Appellate</div>
+            <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Appellant</div>
           </div>
         </div>`
       }
@@ -373,7 +373,7 @@ const SingleCitationPage = ({ data }) => {
 
           {data.apellateType && (
             <p className='text-center text-lg capitalize'>
-              {data.apellateType} Appellate Jurisdiction
+              {data.apellateType} Appellant Jurisdiction
             </p>
           )}
 
@@ -407,7 +407,7 @@ const SingleCitationPage = ({ data }) => {
                 <div className='capitalize absolute right-0'>
                   {' '}
                   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                  &nbsp;......Appellate
+                  &nbsp;......Appellant
                 </div>
               </div>
             </div>
@@ -508,7 +508,7 @@ const SingleCitationPage = ({ data }) => {
               <div>
                 {data.type === 'judgement' && (
                   <p className='text-lg font-bold py-5 underline'>
-                    Judgement :{' '}
+                    Judgment :{' '}
                   </p>
                 )}
                 <div
