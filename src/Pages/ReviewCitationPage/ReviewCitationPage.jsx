@@ -14,7 +14,8 @@ const ReviewCitationPage = () => {
   const navigate = useNavigate()
   const [pendingjudgements, setpendingjudgements] = useState([])
   const [approvedjudgements, setapprovedjudgements] = useState([])
-  const [filterjudgements, setfilterjudgements] = useState([])
+  const [filterJudgements, setFilterJudgements] = useState([])
+  const [filterType, setFilterType] = useState('all')
   const [isLoading, setIsLoading] = useState(true)
   const [judgementType, setjudgementType] = useState('pending')
   const [date, setDate] = useState(new Date())
@@ -36,7 +37,8 @@ const ReviewCitationPage = () => {
 
   const fetchPendingjudgements = async () => {
     try {
-      setfilterjudgements([])
+      setFilterJudgements([])
+      setFilterType('all')
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/pending-citations`,
@@ -48,6 +50,7 @@ const ReviewCitationPage = () => {
       )
       setpendingjudgements(response.data.pendingCitations)
       setIsLoading(false)
+      setFilterJudgements(response.data.pendingCitations)
     } catch (error) {
       if (error.response.status === 401) {
         handleLogout()
@@ -58,7 +61,8 @@ const ReviewCitationPage = () => {
 
   const fetchApprovedjudgements = async () => {
     try {
-      setfilterjudgements([])
+      setFilterJudgements([])
+      setFilterType('all')
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/approved-citations`,
@@ -70,6 +74,7 @@ const ReviewCitationPage = () => {
       )
       setapprovedjudgements(response.data.approvedCitations)
       setIsLoading(false)
+      setFilterJudgements(response.data.approvedCitations)
     } catch (error) {
       console.log(error)
     }
@@ -78,7 +83,7 @@ const ReviewCitationPage = () => {
   const searchByDate = async () => {
     try {
       setSearching(true)
-      setfilterjudgements([])
+      setFilterJudgements([])
       setapprovedjudgements([])
       setpendingjudgements([])
       const token = localStorage.getItem('token')
@@ -94,7 +99,7 @@ const ReviewCitationPage = () => {
         }
       )
       setjudgementType('')
-      setfilterjudgements(response.data)
+      setFilterJudgements(response.data)
       setIsLoading(false)
     } catch (error) {
       console.log(error)
@@ -109,20 +114,34 @@ const ReviewCitationPage = () => {
     if (type === 'pending') {
       fetchPendingjudgements()
       setapprovedjudgements([])
+      setFilterJudgements([])
     } else {
       fetchApprovedjudgements()
       setpendingjudgements([])
+      setFilterJudgements([])
     }
   }
 
   useEffect(() => {
+    setFilterJudgements([])
     fetchPendingjudgements()
   }, [])
+
+  const handleCourtFilter = (type) => {
+    setFilterType(type)
+    setFilterJudgements([])
+    let judgements =
+      judgementType === 'pending' ? pendingjudgements : approvedjudgements
+    judgements = judgements.filter((item) =>
+      item.citationNo.toLowerCase().includes(type.toLowerCase())
+    )
+    setFilterJudgements(judgements)
+    console.log(judgements)
+  }
 
   return (
     <div>
       <div>
-        {/* <p className='text-3xl text-center font-extrabold'>Review Judgements</p> */}
         {isLoading ? (
           <Loading />
         ) : (
@@ -164,27 +183,36 @@ const ReviewCitationPage = () => {
                       )}
                     </div>
                   )}
-                  {/* <SLButton
-                  onClick={() => setIsFilterModalOpen(true)}
-                  variant={'success'}
-                  title={'Filter Judgements'}
-                /> */}
+                </div>
+                <div className='flex gap-3 pt-2'>
+                  <SLButton
+                    title={'All'}
+                    onClick={() => handleCourtFilter('')}
+                    className={
+                      'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
+                    }
+                    variant={filterType === 'all' ? 'primary' : 'outline'}
+                  />
+                  <SLButton
+                    title={'Supreme Court'}
+                    onClick={() => handleCourtFilter('sc')}
+                    className={
+                      'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
+                    }
+                    variant={filterType === 'sc' ? 'primary' : 'outline'}
+                  />
+                  <SLButton
+                    title={'High Court'}
+                    onClick={() => handleCourtFilter('hc')}
+                    className={
+                      'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
+                    }
+                    variant={filterType === 'hc' ? 'primary' : 'outline'}
+                  />
                 </div>
                 <div className='grid grid-cols-2 pt-5 gap-5'>
-                  {filterjudgements &&
-                    filterjudgements.map((data, index) => (
-                      <div key={index}>
-                        <Citation data={data} />
-                      </div>
-                    ))}
-                  {pendingjudgements &&
-                    pendingjudgements.map((data, index) => (
-                      <div key={index}>
-                        <Citation data={data} />
-                      </div>
-                    ))}
-                  {approvedjudgements &&
-                    approvedjudgements.map((data, index) => (
+                  {filterJudgements &&
+                    filterJudgements.map((data, index) => (
                       <div key={index}>
                         <Citation data={data} />
                       </div>

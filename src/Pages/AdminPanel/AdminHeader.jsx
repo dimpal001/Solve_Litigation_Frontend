@@ -21,7 +21,7 @@ const AdminHeader = ({ showSidebar, setShowSidebar }) => {
       setPageName('Dashboard')
     }
     if (location.pathname === '/admin-dashboard/review-citation') {
-      setPageName('Review Judgements')
+      setPageName('Review Judgments')
     }
     if (location.pathname.includes('/admin-dashboard/detailed-citation')) {
       setPageName('Detailed Citation')
