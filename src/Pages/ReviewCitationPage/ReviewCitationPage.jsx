@@ -15,6 +15,7 @@ const ReviewCitationPage = () => {
   const [pendingjudgements, setpendingjudgements] = useState([])
   const [approvedjudgements, setapprovedjudgements] = useState([])
   const [filterJudgements, setFilterJudgements] = useState([])
+  const [courtList, setCourtList] = useState([])
   const [filterType, setFilterType] = useState('all')
   const [isLoading, setIsLoading] = useState(true)
   const [judgementType, setjudgementType] = useState('pending')
@@ -86,6 +87,23 @@ const ReviewCitationPage = () => {
     }
   }
 
+  const fetchCourts = async () => {
+    const token = localStorage.getItem('token')
+    try {
+      const response = await axios.get(
+        `${api}/api/solve_litigation/contents/court-list`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      setCourtList(response.data)
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+    }
+  }
+
   const searchByDate = async () => {
     try {
       setSearching(true)
@@ -130,6 +148,7 @@ const ReviewCitationPage = () => {
 
   useEffect(() => {
     fetchPendingjudgements()
+    fetchCourts()
   }, [])
 
   const handleCourtFilter = (type) => {
@@ -147,7 +166,17 @@ const ReviewCitationPage = () => {
       )
     }
     setFilterJudgements(judgements)
-    console.log(type)
+  }
+
+  const handleFilerCourtName = (name) => {
+    setFilterType('')
+    let judgements = null
+    judgements =
+      judgementType === 'pending' ? pendingjudgements : approvedjudgements
+    judgements = judgements.filter(
+      (item) => item.institutionName.toLowerCase() === name.toLowerCase()
+    )
+    setFilterJudgements(judgements)
   }
 
   return (
@@ -206,7 +235,7 @@ const ReviewCitationPage = () => {
                       variant={filterType === 'all' ? 'primary' : 'outline'}
                     />
                     <span
-                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-extrabold text-white ${
                         filterType === 'all' ? 'flex' : 'hidden'
                       } justify-center items-center rounded-full text-xs`}
                     >
@@ -223,7 +252,7 @@ const ReviewCitationPage = () => {
                       variant={filterType === 'tr' ? 'primary' : 'outline'}
                     />
                     <span
-                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-extrabold text-white ${
                         filterType === 'tr' ? 'flex' : 'hidden'
                       } justify-center items-center rounded-full text-xs`}
                     >
@@ -240,7 +269,7 @@ const ReviewCitationPage = () => {
                       variant={filterType === 'sc' ? 'primary' : 'outline'}
                     />
                     <span
-                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                      className={`w-3 h-3 text-white absolute -top-2 -right-2 bg-blue-900 p-3 font-extrabold ${
                         filterType === 'sc' ? 'flex' : 'hidden'
                       } justify-center items-center rounded-full text-xs`}
                     >
@@ -257,13 +286,33 @@ const ReviewCitationPage = () => {
                       variant={filterType === 'hc' ? 'primary' : 'outline'}
                     />
                     <span
-                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                      className={`w-3 h-3 text-white absolute -top-2 -right-2 bg-blue-900 p-3 font-extrabold ${
                         filterType === 'hc' ? 'flex' : 'hidden'
                       } justify-center items-center rounded-full text-xs`}
                     >
                       {filterJudgements.length}
                     </span>
                   </div>
+                  {courtList && courtList.length > 0 && (
+                    <div>
+                      <select
+                        name=''
+                        id=''
+                        className='py-[7px] focus:bg-primary focus:text-white capitalize px-5 text-sm font-semibold rounded-sm'
+                      >
+                        <option value=''>Select a Court</option>
+                        {courtList.map((item, index) => (
+                          <option
+                            onClick={() => handleFilerCourtName(item.name)}
+                            key={index}
+                            value={item.name}
+                          >
+                            {item.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
                 </div>
                 <div className='grid grid-cols-2 pt-5 gap-5'>
                   {filterJudgements &&
