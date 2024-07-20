@@ -37,6 +37,7 @@ const ReviewCitationPage = () => {
 
   const fetchPendingjudgements = async () => {
     try {
+      setIsLoading(true)
       setFilterJudgements([])
       setFilterType('all')
       const token = localStorage.getItem('token')
@@ -56,11 +57,14 @@ const ReviewCitationPage = () => {
         handleLogout()
       }
       console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const fetchApprovedjudgements = async () => {
     try {
+      setIsLoading(true)
       setFilterJudgements([])
       setFilterType('all')
       const token = localStorage.getItem('token')
@@ -77,6 +81,8 @@ const ReviewCitationPage = () => {
       setFilterJudgements(response.data.approvedCitations)
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(true)
     }
   }
 
@@ -123,20 +129,25 @@ const ReviewCitationPage = () => {
   }
 
   useEffect(() => {
-    setFilterJudgements([])
     fetchPendingjudgements()
   }, [])
 
   const handleCourtFilter = (type) => {
     setFilterType(type)
+    let judgements = null
     setFilterJudgements([])
-    let judgements =
-      judgementType === 'pending' ? pendingjudgements : approvedjudgements
-    judgements = judgements.filter((item) =>
-      item.citationNo.toLowerCase().includes(type.toLowerCase())
-    )
+    if (type === 'all') {
+      judgements =
+        judgementType === 'pending' ? pendingjudgements : approvedjudgements
+    } else {
+      judgements =
+        judgementType === 'pending' ? pendingjudgements : approvedjudgements
+      judgements = judgements.filter((item) =>
+        item.citationNo.toLowerCase().includes(type.toLowerCase())
+      )
+    }
     setFilterJudgements(judgements)
-    console.log(judgements)
+    console.log(type)
   }
 
   return (
@@ -185,30 +196,74 @@ const ReviewCitationPage = () => {
                   )}
                 </div>
                 <div className='flex gap-3 pt-2'>
-                  <SLButton
-                    title={'All'}
-                    onClick={() => handleCourtFilter('')}
-                    className={
-                      'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
-                    }
-                    variant={filterType === 'all' ? 'primary' : 'outline'}
-                  />
-                  <SLButton
-                    title={'Supreme Court'}
-                    onClick={() => handleCourtFilter('sc')}
-                    className={
-                      'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
-                    }
-                    variant={filterType === 'sc' ? 'primary' : 'outline'}
-                  />
-                  <SLButton
-                    title={'High Court'}
-                    onClick={() => handleCourtFilter('hc')}
-                    className={
-                      'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
-                    }
-                    variant={filterType === 'hc' ? 'primary' : 'outline'}
-                  />
+                  <div className='relative'>
+                    <SLButton
+                      title={'All'}
+                      onClick={() => handleCourtFilter('all')}
+                      className={
+                        'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
+                      }
+                      variant={filterType === 'all' ? 'primary' : 'outline'}
+                    />
+                    <span
+                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                        filterType === 'all' ? 'flex' : 'hidden'
+                      } justify-center items-center rounded-full text-xs`}
+                    >
+                      {filterJudgements.length}
+                    </span>
+                  </div>
+                  <div className='relative'>
+                    <SLButton
+                      title={'Tribunal'}
+                      onClick={() => handleCourtFilter('tr')}
+                      className={
+                        'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
+                      }
+                      variant={filterType === 'tr' ? 'primary' : 'outline'}
+                    />
+                    <span
+                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                        filterType === 'tr' ? 'flex' : 'hidden'
+                      } justify-center items-center rounded-full text-xs`}
+                    >
+                      {filterJudgements.length}
+                    </span>
+                  </div>
+                  <div className='relative'>
+                    <SLButton
+                      title={'Supreme Court'}
+                      onClick={() => handleCourtFilter('sc')}
+                      className={
+                        'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
+                      }
+                      variant={filterType === 'sc' ? 'primary' : 'outline'}
+                    />
+                    <span
+                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                        filterType === 'sc' ? 'flex' : 'hidden'
+                      } justify-center items-center rounded-full text-xs`}
+                    >
+                      {filterJudgements.length}
+                    </span>
+                  </div>
+                  <div className='relative'>
+                    <SLButton
+                      title={'High Court'}
+                      onClick={() => handleCourtFilter('hc')}
+                      className={
+                        'text-sm px-2 py-[5px] focus:bg-primary focus:text-white'
+                      }
+                      variant={filterType === 'hc' ? 'primary' : 'outline'}
+                    />
+                    <span
+                      className={`w-3 h-3 absolute -top-2 -right-2 bg-blue-900 p-3 font-bold ${
+                        filterType === 'hc' ? 'flex' : 'hidden'
+                      } justify-center items-center rounded-full text-xs`}
+                    >
+                      {filterJudgements.length}
+                    </span>
+                  </div>
                 </div>
                 <div className='grid grid-cols-2 pt-5 gap-5'>
                   {filterJudgements &&
