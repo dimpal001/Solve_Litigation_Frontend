@@ -303,6 +303,7 @@ const ReviewCitationPage = () => {
                         <option value=''>Select a Court</option>
                         {courtList.map((item, index) => (
                           <option
+                            style={{ textTransform: 'capitalize' }}
                             onClick={() => handleFilerCourtName(item.name)}
                             key={index}
                             value={item.name}
@@ -370,7 +371,7 @@ const Citation = ({ data }) => {
               <Avatar />
             </div>
             <div className='px-2'>
-              <p className='text-base capitalize'>{data.citationNo}</p>
+              <p className='text-base uppercase'>{data.citationNo}</p>
               <p className='text-xs'>
                 Last modified :{' '}
                 {new Date(data.lastModifiedDate).toLocaleDateString()}
