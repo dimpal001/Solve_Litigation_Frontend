@@ -326,7 +326,7 @@ const ReviewCitationPage = () => {
               </div>
               <div className='lg:w-1/4'>
                 <div>
-                  <CustomInput type='text' placeholder='Search here...' />
+                  {/* <CustomInput type='text' placeholder='Search here...' /> */}
                 </div>
                 <div className='p-5'>
                   <Calendar onChange={onChange} value={date} />

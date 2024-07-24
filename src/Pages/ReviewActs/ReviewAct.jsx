@@ -131,7 +131,7 @@ const ReviewAct = () => {
               </div>
               <div>
                 <div>
-                  <CustomInput type='text' placeholder='Search here...' />
+                  {/* <CustomInput type='text' placeholder='Search here...' /> */}
                 </div>
               </div>
             </div>

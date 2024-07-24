@@ -291,7 +291,7 @@ const DetailsCard = ({ color, title, number }) => {
       <div>
         <p className='text-base'>{title}</p>
         <p className='text-4xl font-extrabold'>
-          {number === '' ? <SLSpinner /> : number}
+          {number === '' ? <SLSpinner iconColor={'white'} /> : number}
         </p>
       </div>
     </div>
