@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { api } from '../../Components/Apis'
-import { Avatar, CustomInput, SLButton } from '../../Components/Customs'
+import { Avatar, SLButton } from '../../Components/Customs'
 import axios from 'axios'
 import Loading from '../../Components/Loading'
 import { Link, useNavigate } from 'react-router-dom'
@@ -340,7 +340,7 @@ const ReviewCitationPage = () => {
                     iconColor={'white'}
                     loadingText={'Searching...'}
                     onClick={searchByDate}
-                    title={`Search by Date of Order`}
+                    title={`Search by Date`}
                     variant={'primary'}
                     width={5}
                   />

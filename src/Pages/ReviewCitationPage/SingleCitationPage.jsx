@@ -45,33 +45,31 @@ const SingleCitationPage = ({ data }) => {
     </div>
     <div style="width: 100%; height: 1px; background: black; margin-bottom: 20px"></div>
     <div style="width: 100%">
-      <p style="margin: 10px 0; text-align: center; font-size: 20px; font-weight: bold;">${
+      <p style="margin: 10px 0; text-transform: uppercase; text-align: center; font-size: 20px; font-weight: bold;">${
         data.citationNo
       }</p>
       ${
         data.institutionName &&
         `<p style="margin: 10px 0; text-transform: capitalize; text-align: center; font-size: 19px; font-weight: 500;">${data.institutionName}</p>`
       }
-      <p style="margin: 10px 0; text-align: center; font-size: 16px;">Bench: ${
-        data.judgeName
-      }</p>
+
       ${
         data.caseNo &&
         `<p style="margin: 10px 0; text-transform: capitalize; text-align: center; font-size: 19px; font-weight: 500;">${data.caseNo}</p>`
       }
       ${
         data.partyNameAppealant &&
-        `<div style="text-align: center; padding-top: 1rem; text-transform: uppercase; width: 100%">
+        `<div style="text-align: center; padding-top: 5px; text-transform: uppercase; width: 100%">
           <div style="display: flex; position: relative; align-items: center; justify-content: center; width: 100%;">
             <div>${data.partyNameAppealant}</div>
             <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Appellant</div>
           </div>
         </div>`
       }
-      <p style="margin: 10px 0; text-align: center; font-size: 16px; font-weight: bold;">Versus</p>
+      <p style="margin: 5px 0; text-align: center; font-size: 16px; font-weight: bold;">Versus</p>
       ${
         data.partyNameRespondent &&
-        `<div style="text-align: center; padding-top: 1rem; text-transform: uppercase;">
+        `<div style="text-align: center; padding-top: 5px; text-transform: uppercase;">
           <div style="display: flex; position: relative; align-items: center; justify-content: center; width: 100%;">
             <div>${data.partyNameRespondent}</div>
             <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Respondent</div>
@@ -351,11 +349,12 @@ const SingleCitationPage = ({ data }) => {
         )}
         <div style={{ padding: '10px', fontSize: 16 }}>
           <p
-            className='text-center font-extrabold'
+            className='text-center uppercase font-extrabold'
             style={{
               textAlign: 'center',
               fontWeight: '700',
               fontSize: '1.5rem',
+              textTransform: 'uppercase',
             }}
           >
             {data.citationNo}
@@ -377,17 +376,18 @@ const SingleCitationPage = ({ data }) => {
             </p>
           )}
 
-          {data.judgeName && (
+          {/* {data.judgeName && (
             <p className='text-center text-lg capitalize'>
               {' '}
               <strong>Bench : </strong>
               <span className='uppercase'>{data.judgeName}</span>
             </p>
-          )}
+          )} */}
 
           {data.caseNo && (
             <div>
               <div
+                style={{ textAlign: 'center' }}
                 className='pb-5 text-black text-center pt-5 text-2xl'
                 dangerouslySetInnerHTML={{
                   __html: data.caseNo,
@@ -483,15 +483,6 @@ const SingleCitationPage = ({ data }) => {
               </div>
             )}
 
-            {data.dateOfOrder && (
-              <p
-                style={{ textAlign: 'center', textDecoration: 'underline' }}
-                className='text-center font-extrabold underline text-xl pt-10 py-5'
-              >
-                Date : {new Date(data.dateOfOrder).toLocaleDateString('en-GB')}
-              </p>
-            )}
-
             {data.index && (
               <div>
                 <p className='text-lg underline font-semibold'>Index :</p>
@@ -518,6 +509,25 @@ const SingleCitationPage = ({ data }) => {
                 />
               </div>
             )}
+
+            {data.dateOfOrder && (
+              <p
+                style={{ paddingTop: '30px' }}
+                className='font-extrabold text-xl pt-10 py-5'
+              >
+                <strong>Date of Judgment</strong> :{' '}
+                {new Date(data.dateOfOrder).toLocaleDateString('en-GB')}
+              </p>
+            )}
+
+            {data.judgeName && (
+              <p className='text-lg capitalize'>
+                {' '}
+                <strong>Judge Name : </strong>
+                <span className='uppercase'>{data.judgeName}</span>
+              </p>
+            )}
+
             {data.notification && (
               <div>
                 <strong className='text-lg underline'>Notification : </strong>
@@ -573,3 +583,9 @@ const SingleCitationPage = ({ data }) => {
 }
 
 export default SingleCitationPage
+
+{
+  /* <p style="margin: 10px 0; text-align: center; font-size: 16px;">Bench: ${
+        data.judgeName
+      }</p> */
+}
