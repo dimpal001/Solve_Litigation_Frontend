@@ -113,7 +113,7 @@ const ReviewCitationPage = () => {
       const token = localStorage.getItem('token')
       const year = date.getFullYear()
       const month = date.getMonth() + 1
-      const day = date.getDate() + 1
+      const day = date.getDate()
       const response = await axios.get(
         `${api}/api/solve_litigation/citation/search-by-date/${year}/${month}/${day}`,
         {
