@@ -69,7 +69,13 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
             )}
             <div>
               <p className='text-sm font-extrabold text-primary'>Case No</p>
-              <p className='capitalize text-lg'>{data.caseNo}</p>
+              <p className='text-lg text-justify'>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: data.caseNo,
+                  }}
+                />
+              </p>
             </div>
             <div>
               <p className='text-sm font-extrabold text-primary'>
@@ -100,7 +106,7 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
               <p className='capitalize text-lg'>{data.title}</p>
             </div>
             <div>
-              <p className='text-sm font-extrabold text-primary'>judgements</p>
+              <p className='text-sm font-extrabold text-primary'>Judgments</p>
               <p className='text-lg text-justify'>
                 <div
                   dangerouslySetInnerHTML={{
@@ -109,6 +115,12 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                 />
               </p>
             </div>
+            {data.diaryNo && (
+              <div>
+                <p className='text-sm font-extrabold text-primary'>Diary No</p>
+                <p className='capitalize text-lg'>{data.diaryNo}</p>
+              </div>
+            )}
             <div>
               <p className='text-sm font-extrabold text-primary'>
                 Date of Order
@@ -117,6 +129,16 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
                 {new Date(data.dateOfOrder).toLocaleDateString()}
               </p>
             </div>
+            {data.dateOfHearing && (
+              <div>
+                <p className='text-sm font-extrabold text-primary'>
+                  Date of Hearing
+                </p>
+                <p className='capitalize text-lg'>
+                  {new Date(data.dateOfHearing).toLocaleDateString()}
+                </p>
+              </div>
+            )}
             <div>
               <p className='text-sm font-extrabold text-primary'>Judge Name</p>
               <p className='capitalize text-lg'>{data.judgeName}</p>

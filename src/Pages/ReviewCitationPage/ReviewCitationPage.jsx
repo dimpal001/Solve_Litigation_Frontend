@@ -370,12 +370,8 @@ const Citation = ({ data }) => {
             <div>
               <Avatar />
             </div>
-            <div className='px-2'>
+            <div className='px-2 w-full'>
               <p className='text-base uppercase'>{data.citationNo}</p>
-              <p className='text-xs'>
-                Last modified :{' '}
-                {new Date(data.lastModifiedDate).toLocaleDateString()}
-              </p>
             </div>
           </div>
           <div>
@@ -394,6 +390,15 @@ const Citation = ({ data }) => {
             >
               {data.type}
             </div>
+          </div>
+          <div className='flex mt-3 w-full gap-6'>
+            <p className='text-xs'>
+              Created : {new Date(data.createdAt).toLocaleDateString()}
+            </p>
+            <p className='text-xs'>
+              Last modified :{' '}
+              {new Date(data.lastModifiedDate).toLocaleDateString()}
+            </p>
           </div>
         </Link>
       </div>

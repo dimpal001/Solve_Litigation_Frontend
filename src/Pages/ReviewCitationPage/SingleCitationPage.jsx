@@ -510,11 +510,18 @@ const SingleCitationPage = ({ data }) => {
               </div>
             )}
 
-            {data.dateOfOrder && (
+            {data.dateOfHearing && (
               <p
                 style={{ paddingTop: '30px' }}
-                className='font-extrabold text-xl pt-10 py-5'
+                className='font-extrabold text-xl py-3'
               >
+                <strong>Date of Hearing</strong> :{' '}
+                {new Date(data.dateOfHearing).toLocaleDateString('en-GB')}
+              </p>
+            )}
+
+            {data.dateOfOrder && (
+              <p className='font-extrabold text-xl pb-3'>
                 <strong>Date of Judgment</strong> :{' '}
                 {new Date(data.dateOfOrder).toLocaleDateString('en-GB')}
               </p>
@@ -544,6 +551,14 @@ const SingleCitationPage = ({ data }) => {
                   Refered Judgements :{' '}
                 </strong>
                 <p className='text-center'>{data.referedJudgements}</p>
+              </div>
+            )}
+
+            {data.diaryNo && (
+              <div>
+                <p className=' font-bold text-lg pt-3'>
+                  Diary No : <span className='font-normal'>{data.diaryNo}</span>
+                </p>
               </div>
             )}
 
