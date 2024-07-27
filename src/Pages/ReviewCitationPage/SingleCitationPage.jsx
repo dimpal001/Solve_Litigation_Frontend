@@ -53,6 +53,10 @@ const SingleCitationPage = ({ data }) => {
         `<p style="margin: 10px 0; text-transform: capitalize; text-align: center; font-size: 19px; font-weight: 500;">${data.institutionName}</p>`
       }
 
+      <p style="margin: 10px 0; text-align: center; font-size: 16px;">Bench: ${
+        data.judgeName
+      }</p>
+
       ${
         data.caseNo &&
         `<p style="margin: 10px 0; text-transform: capitalize; text-align: center; font-size: 19px; font-weight: 500;">${data.caseNo}</p>`
@@ -60,7 +64,7 @@ const SingleCitationPage = ({ data }) => {
       ${
         data.partyNameAppealant &&
         `<div style="text-align: center; padding-top: 5px; text-transform: uppercase; width: 100%">
-          <div style="display: flex; position: relative; align-items: center; justify-content: center; width: 100%;">
+          <div style="display: flex; position: relative; align-items: center; width: 100%;">
             <div>${data.partyNameAppealant}</div>
             <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Appellant</div>
           </div>
@@ -70,12 +74,13 @@ const SingleCitationPage = ({ data }) => {
       ${
         data.partyNameRespondent &&
         `<div style="text-align: center; padding-top: 5px; text-transform: uppercase;">
-          <div style="display: flex; position: relative; align-items: center; justify-content: center; width: 100%;">
+          <div style="display: flex; position: relative; align-items: center; width: 100%;">
             <div>${data.partyNameRespondent}</div>
             <div style="text-transform: capitalize; position: absolute; right: 0;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;......Respondent</div>
           </div>
         </div>`
       }
+      
     </div>
   </div>
 `
@@ -166,9 +171,12 @@ const SingleCitationPage = ({ data }) => {
         <title>${data.citationNo}</title>
         <style>
         @page {
-          margin-top: 1.1in;
-          margin-bottom: 1.1in;
-          margin: 1in;
+          margin-top: 1.5in;
+          margin-bottom: 1.5in;
+          margin-left: 1.75in;
+          margin-right: 1in;
+          font-family: 'Times New Roman', Times, serif;
+          font-size: 14px;
         }
         body {
           margin: 0;
@@ -376,13 +384,13 @@ const SingleCitationPage = ({ data }) => {
             </p>
           )}
 
-          {/* {data.judgeName && (
+          {data.judgeName && (
             <p className='text-center text-lg capitalize'>
               {' '}
               <strong>Bench : </strong>
               <span className='uppercase'>{data.judgeName}</span>
             </p>
-          )} */}
+          )}
 
           {data.caseNo && (
             <div>
@@ -397,8 +405,8 @@ const SingleCitationPage = ({ data }) => {
           )}
 
           {data.partyNameAppealant && (
-            <div id='partyName' className='text-center pt-3 uppercase'>
-              <div className='flex relative items-center justify-center w-full'>
+            <div id='partyName' className=' pt-3 uppercase'>
+              <div className='flex relative items-center  w-full'>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: data.partyNameAppealant,
@@ -412,12 +420,10 @@ const SingleCitationPage = ({ data }) => {
               </div>
             </div>
           )}
-          {data.partyNameAppealant && (
-            <p className='text-center text-lg'>Versus</p>
-          )}
+          {data.partyNameAppealant && <p className=' text-lg'>Versus</p>}
           {data.partyNameRespondent && (
-            <div id='opponentName' className='text-center uppercase'>
-              <div className='flex relative items-center justify-center w-full'>
+            <div id='opponentName' className='pb-7 uppercase'>
+              <div className='flex relative items-center w-full'>
                 <div
                   dangerouslySetInnerHTML={{
                     __html: data.partyNameRespondent,
@@ -447,7 +453,7 @@ const SingleCitationPage = ({ data }) => {
           )}
 
           {data.advocateRespondent && (
-            <div className='pb-7'>
+            <div className='py-5'>
               <strong className='text-lg underline'>
                 Advocate for Respondent :{' '}
               </strong>
@@ -473,38 +479,11 @@ const SingleCitationPage = ({ data }) => {
 
           <div id='citation-pdf'>
             {data.headNote && (
-              <div className='pt-14'>
+              <div className='py-9'>
                 {/* <strong className='text-lg underline'>Headnote :</strong> */}
                 <div
                   dangerouslySetInnerHTML={{
                     __html: data.headNote,
-                  }}
-                />
-              </div>
-            )}
-
-            {data.index && (
-              <div>
-                <p className='text-lg underline font-semibold'>Index :</p>
-                <div
-                  className='pb-5 text-black'
-                  dangerouslySetInnerHTML={{
-                    __html: data.index,
-                  }}
-                />
-              </div>
-            )}
-
-            {data.judgements && (
-              <div>
-                {data.type === 'judgement' && (
-                  <p className='text-lg font-bold py-5 underline'>
-                    Judgment :{' '}
-                  </p>
-                )}
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: data.judgements,
                   }}
                 />
               </div>
@@ -535,6 +514,41 @@ const SingleCitationPage = ({ data }) => {
               </p>
             )}
 
+            {data.index && (
+              <div>
+                <p className='text-lg underline font-semibold'>Index :</p>
+                <div
+                  className='pb-5 text-black'
+                  dangerouslySetInnerHTML={{
+                    __html: data.index,
+                  }}
+                />
+              </div>
+            )}
+
+            {data.judgements && (
+              <div>
+                {data.type === 'judgement' && (
+                  <p className='text-lg font-bold py-5 underline'>
+                    Judgment :{' '}
+                  </p>
+                )}
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: data.judgements,
+                  }}
+                />
+              </div>
+            )}
+
+            {data.diaryNo && (
+              <div>
+                <p className=' font-bold text-lg pt-3'>
+                  Diary No : <span className='font-normal'>{data.diaryNo}</span>
+                </p>
+              </div>
+            )}
+
             {data.notification && (
               <div>
                 <strong className='text-lg underline'>Notification : </strong>
@@ -551,14 +565,6 @@ const SingleCitationPage = ({ data }) => {
                   Refered Judgements :{' '}
                 </strong>
                 <p className='text-center'>{data.referedJudgements}</p>
-              </div>
-            )}
-
-            {data.diaryNo && (
-              <div>
-                <p className=' font-bold text-lg pt-3'>
-                  Diary No : <span className='font-normal'>{data.diaryNo}</span>
-                </p>
               </div>
             )}
 
@@ -598,9 +604,3 @@ const SingleCitationPage = ({ data }) => {
 }
 
 export default SingleCitationPage
-
-{
-  /* <p style="margin: 10px 0; text-align: center; font-size: 16px;">Bench: ${
-        data.judgeName
-      }</p> */
-}
