@@ -16,6 +16,8 @@ const CitationField = ({ data, setData }) => {
   const [listApellate, setListApellate] = useState([])
   const [apellateinputValue, setApellateinputValue] = useState('')
   const [lawinputValue, setLawinputValue] = useState('')
+  const [title1, setTitle1] = useState('')
+  const [title2, setTitle2] = useState('')
   const [POLinputValue, setPOLinputValue] = useState('')
   const {
     institutionName,
@@ -41,6 +43,13 @@ const CitationField = ({ data, setData }) => {
     reportable,
     overRuled,
   } = data
+
+  useEffect(() => {
+    setData((prevData) => ({
+      ...prevData,
+      title: `${title1} versus ${title2}`,
+    }))
+  }, [title1, title2, setData])
 
   const handleLogout = () => {
     setUser(null)
@@ -239,7 +248,26 @@ const CitationField = ({ data, setData }) => {
         <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
         </label>
-        <input
+        <div className='flex items-center gap-3'>
+          <input
+            type='text'
+            className='p-2 rounded-sm border'
+            value={title1}
+            placeholder='Title 1'
+            name={title1}
+            onChange={(e) => setTitle1(e.target.value)}
+          />
+          <p>Versus</p>
+          <input
+            type='text'
+            className='p-2 rounded-sm border'
+            value={title2}
+            placeholder='Title 2'
+            name={title2}
+            onChange={(e) => setTitle2(e.target.value)}
+          />
+        </div>
+        {/* <input
           className='p-2 rounded-sm border'
           value={title}
           onChange={(e) =>
@@ -248,7 +276,7 @@ const CitationField = ({ data, setData }) => {
               title: e.target.value,
             }))
           }
-        />
+        /> */}
       </div>
       <div className='form-control'>
         <label className='text-red-500'>
