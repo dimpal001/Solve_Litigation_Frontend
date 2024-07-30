@@ -10,7 +10,7 @@ const StudyMaterialDashboard = () => {
         </p> */}
         <div className='flex gap-5'>
           <Link to={'/admin-dashboard/manage-topic'}>
-            <SLButton title={'Manage Topic'} variant={'primary'} />
+            <SLButton title={'Manage Topic & Chapter'} variant={'primary'} />
           </Link>
           <Link to={'/admin-dashboard/create-material'}>
             <SLButton title={'Create Material'} variant={'primary'} />

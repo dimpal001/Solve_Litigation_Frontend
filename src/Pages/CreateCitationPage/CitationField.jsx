@@ -160,6 +160,7 @@ const CitationField = ({ data, setData }) => {
 
   return (
     <div className='flex flex-col gap-y-7 my-3 p-10 border border-slate-100 rounded-sm bg-slate-50'>
+      {/* 1... Court  */}
       <div className='form-control flex flex-col'>
         <label className='text-red-500'>
           <span className='text-lg font-extrabold'>
@@ -184,22 +185,7 @@ const CitationField = ({ data, setData }) => {
           ))}
         </select>
       </div>
-
-      <div className='form-control'>
-        <label>
-          <span className='text-lg font-extrabold'>Index</span>
-        </label>
-        <Editor
-          value={index}
-          onChange={(newContent) =>
-            setData((prevData) => ({
-              ...prevData,
-              index: newContent,
-            }))
-          }
-        />
-      </div>
-
+      {/* 2... Case No  */}
       <div className='form-control flex flex-col'>
         <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Case No *</span>
@@ -214,9 +200,10 @@ const CitationField = ({ data, setData }) => {
           }
         />
       </div>
+      {/* 3... Party name appelant  */}
       <div className='form-control'>
         <label className='text-red-500'>
-          <span className='text-lg font-extrabold'>Party Name Appealant *</span>
+          <span className='text-lg font-extrabold'>Party Name Appelant *</span>
         </label>
         <Editor
           value={partyNameAppealant}
@@ -228,6 +215,7 @@ const CitationField = ({ data, setData }) => {
           }
         />
       </div>
+      {/* 4... Party name responded */}
       <div className='form-control'>
         <label className='text-red-500'>
           <span className='text-lg font-extrabold'>
@@ -244,6 +232,7 @@ const CitationField = ({ data, setData }) => {
           }
         />
       </div>
+      {/* 5... Title  */}
       <div className='form-control flex flex-col'>
         <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Title *</span>
@@ -278,62 +267,84 @@ const CitationField = ({ data, setData }) => {
           }
         /> */}
       </div>
-      <div className='form-control'>
-        <label className='text-red-500'>
-          <span className='text-lg font-extrabold'>Judgments *</span>
+      {/* 6... Advocate Petitioner */}
+      <div className='form-control flex flex-col'>
+        <label className=''>
+          <span className='text-lg font-extrabold'>Advocate Petitioner</span>
         </label>
         <Editor
-          value={judgements}
+          value={advocatePetitioner}
           onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              judgements: newContent,
+              advocatePetitioner: newContent,
             }))
           }
         />
       </div>
-
+      {/* 7... Advocate Respondent */}
       <div className='form-control flex flex-col'>
         <label className=''>
-          <span className='text-lg font-extrabold'>Diary No : </span>
+          <span className='text-lg font-extrabold'>Advocate Respondent</span>
         </label>
-        <input
-          className='p-2 rounded-sm border'
-          type='text'
-          placeholder={'Enter diary no....'}
-          value={diaryNo}
-          onChange={(e) =>
+        <Editor
+          value={advocateRespondent}
+          onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              diaryNo: e.target.value,
+              advocateRespondent: newContent,
             }))
           }
         />
       </div>
-
+      {/* 8... Whether Reported or Not */}
       <div className='form-control flex flex-col'>
-        <label className='text-red-500'>
+        <label className=''>
           <span className='text-lg font-extrabold'>
-            Date of Order * :{' '}
-            <span className='text-primary'>
-              {dateOfOrder && new Date(dateOfOrder).toLocaleDateString()}
-            </span>
+            Whether Reported or Not
           </span>
         </label>
-        <input
-          className='p-2 rounded-sm border'
-          type='date'
-          placeholder={new Date(dateOfOrder)}
-          value={dateOfOrder}
-          onChange={(e) =>
+        <Editor
+          value={whetherReported}
+          onChange={(newContent) =>
             setData((prevData) => ({
               ...prevData,
-              dateOfOrder: e.target.value,
+              whetherReported: newContent,
             }))
           }
         />
       </div>
-
+      {/* 9... Headnote  */}
+      <div className='form-control'>
+        <label className=''>
+          <span className='text-lg font-extrabold'>Headnote</span>
+        </label>
+        <Editor
+          value={headNote}
+          onChange={(newContent) =>
+            setData((prevData) => ({
+              ...prevData,
+              headNote: newContent,
+            }))
+          }
+        />
+      </div>
+      {/* 10... Index  */}
+      <div className='form-control'>
+        <label>
+          <span className='text-lg font-extrabold'>Index</span>
+        </label>
+        <Editor
+          value={index}
+          onChange={(newContent) =>
+            setData((prevData) => ({
+              ...prevData,
+              index: newContent,
+            }))
+          }
+        />
+      </div>
+      {/* 11... Date of hearing  */}
       <div className='form-control flex flex-col'>
         <label className=''>
           <span className='text-lg font-extrabold'>
@@ -356,7 +367,45 @@ const CitationField = ({ data, setData }) => {
           }
         />
       </div>
-
+      {/* 12... Date of judgment  */}
+      <div className='form-control flex flex-col'>
+        <label className='text-red-500'>
+          <span className='text-lg font-extrabold'>
+            Date of Judgment * :{' '}
+            <span className='text-primary'>
+              {dateOfOrder && new Date(dateOfOrder).toLocaleDateString()}
+            </span>
+          </span>
+        </label>
+        <input
+          className='p-2 rounded-sm border'
+          type='date'
+          placeholder={new Date(dateOfOrder)}
+          value={dateOfOrder}
+          onChange={(e) =>
+            setData((prevData) => ({
+              ...prevData,
+              dateOfOrder: e.target.value,
+            }))
+          }
+        />
+      </div>
+      {/* 13... Judgment  */}
+      <div className='form-control'>
+        <label className='text-red-500'>
+          <span className='text-lg font-extrabold'>Judgments *</span>
+        </label>
+        <Editor
+          value={judgements}
+          onChange={(newContent) =>
+            setData((prevData) => ({
+              ...prevData,
+              judgements: newContent,
+            }))
+          }
+        />
+      </div>
+      {/* ... Judge name  */}
       <div className='form-control flex flex-col'>
         <label className='text-red-500'>
           <span className='text-lg font-extrabold'>Judge Name *</span>
@@ -372,35 +421,7 @@ const CitationField = ({ data, setData }) => {
           }
         />
       </div>
-      <div className='form-control'>
-        <label className=''>
-          <span className='text-lg font-extrabold'>Headnote</span>
-        </label>
-        <Editor
-          value={headNote}
-          onChange={(newContent) =>
-            setData((prevData) => ({
-              ...prevData,
-              headNote: newContent,
-            }))
-          }
-        />
-      </div>
-      <div className='form-control flex flex-col'>
-        <label className=''>
-          <span className='text-lg font-extrabold'>Refered Judgments</span>
-        </label>
-        <textarea
-          className='p-2 rounded-sm border'
-          value={referedJudgements}
-          onChange={(e) =>
-            setData((prevData) => ({
-              ...prevData,
-              referedJudgements: e.target.value,
-            }))
-          }
-        />
-      </div>
+      {/* 14... Apellate type  */}
       <div className='form-control'>
         <label className='text-red-500'>
           <div className='flex items-center gap-5'>
@@ -444,6 +465,7 @@ const CitationField = ({ data, setData }) => {
           ))}
         </div>
       </div>
+      {/* 15... Law  */}
       <div className='form-control'>
         <label className='text-red-500'>
           <div className='flex items-center gap-5'>
@@ -487,6 +509,7 @@ const CitationField = ({ data, setData }) => {
             ))}
         </div>
       </div>
+      {/* 16... Point of law  */}
       <div className='form-control'>
         <label className='text-red-500'>
           <div className='flex items-center gap-5'>
@@ -532,6 +555,23 @@ const CitationField = ({ data, setData }) => {
             ))}
         </div>
       </div>
+      {/* 17... Refered judgment  */}
+      <div className='form-control flex flex-col'>
+        <label className=''>
+          <span className='text-lg font-extrabold'>Refered Judgments</span>
+        </label>
+        <textarea
+          className='p-2 rounded-sm border'
+          value={referedJudgements}
+          onChange={(e) =>
+            setData((prevData) => ({
+              ...prevData,
+              referedJudgements: e.target.value,
+            }))
+          }
+        />
+      </div>
+      {/* 18... Equivalent citaions  */}
       <div className='form-control flex flex-col'>
         <label className=''>
           <span className='text-lg font-extrabold'>Equivalent Citations</span>
@@ -547,51 +587,25 @@ const CitationField = ({ data, setData }) => {
           }
         />
       </div>
+      {/* 19... Diary No - */}
       <div className='form-control flex flex-col'>
         <label className=''>
-          <span className='text-lg font-extrabold'>Advocate Petitioner</span>
+          <span className='text-lg font-extrabold'>Diary No : </span>
         </label>
-        <Editor
-          value={advocatePetitioner}
-          onChange={(newContent) =>
+        <input
+          className='p-2 rounded-sm border'
+          type='text'
+          placeholder={'Enter diary no....'}
+          value={diaryNo}
+          onChange={(e) =>
             setData((prevData) => ({
               ...prevData,
-              advocatePetitioner: newContent,
+              diaryNo: e.target.value,
             }))
           }
         />
       </div>
-      <div className='form-control flex flex-col'>
-        <label className=''>
-          <span className='text-lg font-extrabold'>Advocate Respondent</span>
-        </label>
-        <Editor
-          value={advocateRespondent}
-          onChange={(newContent) =>
-            setData((prevData) => ({
-              ...prevData,
-              advocateRespondent: newContent,
-            }))
-          }
-        />
-      </div>
-      <div className='form-control flex flex-col'>
-        <label className=''>
-          <span className='text-lg font-extrabold'>
-            Whether Reported or Not
-          </span>
-        </label>
-        <Editor
-          value={whetherReported}
-          onChange={(newContent) =>
-            setData((prevData) => ({
-              ...prevData,
-              whetherReported: newContent,
-            }))
-          }
-        />
-      </div>
-      {/* Checkboxes */}
+      {/* 20... Reportable */}
       <div className='flex items-start gap-2'>
         <label className='inline-flex items-center'>
           <input
@@ -604,6 +618,7 @@ const CitationField = ({ data, setData }) => {
           <span className='ml-2'>Reportable</span>
         </label>
       </div>
+      {/* 21... Over Ruled */}
       <div className='flex items-start gap-2'>
         <label className='inline-flex items-center'>
           <input
