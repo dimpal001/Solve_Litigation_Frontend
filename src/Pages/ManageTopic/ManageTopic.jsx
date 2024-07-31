@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import {
+  CustomInput,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -47,6 +48,7 @@ const ManageTopicAndChapter = () => {
 
   const fetchChapters = async (topicId) => {
     try {
+      setChapters([])
       setIsLoading(true)
       const response = await axios.get(
         `${api}/api/solve_litigation/study-material/chapters`,
@@ -103,46 +105,12 @@ const ManageTopicAndChapter = () => {
         )
         setTopics([...topics, response.data])
       }
-      setIsAddModalOpen(false)
-      setName('')
-      setIsEditMode(false)
-      setId(null)
+      resetAddModalState()
     } catch (error) {
       console.log(error)
     } finally {
       setIsSubmitting(false)
     }
-  }
-
-  const handleDelete = async (id) => {
-    try {
-      await axios.delete(
-        `${api}/api/solve_litigation/study-material/topics/${id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      )
-      setTopics(topics.filter((t) => t._id !== id))
-      reload()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    fetchTopics()
-  }, [])
-
-  const reload = () => {
-    fetchTopics()
-  }
-
-  const handleManageChapters = (topic) => {
-    setSelectedItem(topic)
-    setIsManageTopicModalOpen(true)
-    fetchChapters(topic._id)
   }
 
   const handleAddOrUpdateChapter = async (chapterName, chapterId = null) => {
@@ -154,9 +122,9 @@ const ManageTopicAndChapter = () => {
       setIsSubmitting(true)
       if (chapterId) {
         // Update existing chapter
-        const response = await axios.put(
+        const response = await axios.patch(
           `${api}/api/solve_litigation/study-material/chapters/${chapterId}`,
-          { name: chapterName, topic: selectedItem._id },
+          { name: chapterName },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -172,7 +140,7 @@ const ManageTopicAndChapter = () => {
         // Add new chapter
         const response = await axios.post(
           `${api}/api/solve_litigation/study-material/chapters`,
-          { name: chapterName, topic: selectedItem._id },
+          { name: chapterName, topicId: selectedItem._id },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -181,6 +149,7 @@ const ManageTopicAndChapter = () => {
         )
         setChapters([...chapters, response.data])
       }
+      resetChapterModalState()
     } catch (error) {
       console.log(error)
     } finally {
@@ -188,20 +157,72 @@ const ManageTopicAndChapter = () => {
     }
   }
 
-  const handleDeleteChapter = async (chapterId) => {
-    try {
-      await axios.delete(
-        `${api}/api/solve_litigation/study-material/chapters/${chapterId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      )
-      setChapters(chapters.filter((c) => c._id !== chapterId))
-    } catch (error) {
-      console.log(error)
+  const handleDelete = async (id) => {
+    const isDelete = confirm('Are you sure, you want to delete this?')
+    if (isDelete) {
+      try {
+        await axios.delete(
+          `${api}/api/solve_litigation/study-material/topics/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        )
+        setTopics(topics.filter((t) => t._id !== id))
+        reload()
+      } catch (error) {
+        console.log(error)
+      }
     }
+  }
+
+  const handleDeleteChapter = async (chapterId) => {
+    const isDelete = confirm('Are you sure, you want to delete this?')
+    if (isDelete) {
+      try {
+        await axios.delete(
+          `${api}/api/solve_litigation/study-material/chapters/${chapterId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+          }
+        )
+        setChapters(chapters.filter((c) => c._id !== chapterId))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    fetchTopics()
+  }, [])
+
+  const reload = () => {
+    fetchTopics()
+  }
+
+  const resetAddModalState = () => {
+    setIsAddModalOpen(false)
+    setIsEditMode(false)
+    setName('')
+    setId(null)
+  }
+
+  const resetChapterModalState = () => {
+    // setIsManageTopicModalOpen(false)
+    setName('')
+    setId(null)
+    setIsEditMode(false)
+  }
+
+  const handleManageChapters = (topic) => {
+    setSelectedItem(topic)
+    resetChapterModalState() // Ensure state is reset when switching topics
+    setIsManageTopicModalOpen(true)
+    fetchChapters(topic._id)
   }
 
   return (
@@ -240,71 +261,119 @@ const ManageTopicAndChapter = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className='border border-primary'>
-                {topics.map((item, index) => (
-                  <tr key={index} fontSize={16}>
-                    <td
-                      className='border px-4 py-2 cursor-pointer hover:underline'
-                      onClick={() => handleManageChapters(item)}
-                    >
-                      {item.name}
-                    </td>
-                    <td className='border px-4 py-2'>
-                      {item.numberOfChapters || 0}
-                    </td>
-                    <td className='border px-4 py-2 flex justify-around'>
-                      <p
-                        onClick={() => {
-                          setIsAddModalOpen(true)
-                          setIsEditMode(true)
-                          setName(item.name)
-                          setId(item._id)
-                        }}
-                        className='text-primary font-extrabold text-center hover:underline cursor-pointer'
-                      >
-                        Edit
-                      </p>
-                      <p
-                        onClick={() => handleDelete(item._id)}
-                        className='text-red-600 font-extrabold text-center hover:underline cursor-pointer'
-                      >
-                        Delete
-                      </p>
+              <tbody className=''>
+                {topics.length === 0 ? (
+                  <tr className='text-center'>
+                    <td colSpan='6' className='py-5'>
+                      No Topics Available
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  topics.map((topic, index) => (
+                    <tr
+                      key={index}
+                      className='border-b cursor-pointer hover:bg-gray-100'
+                      onClick={() => handleManageChapters(topic)}
+                    >
+                      <td className='px-4 py-2 border-r'>{topic.name}</td>
+                      <td className='px-4 py-2 border-r'>
+                        {topic.chapters.length}
+                      </td>
+                      <td className='px-4 py-2 border-r'>
+                        <div className='flex gap-3 justify-center items-center'>
+                          <p
+                            className='text-primary hover:text-primaryHover cursor-pointer'
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              setName(topic.name)
+                              setId(topic._id)
+                              setIsEditMode(true)
+                              setIsAddModalOpen(true)
+                            }}
+                          >
+                            Edit
+                          </p>
+                          <p
+                            className='text-red-500 hover:text-red-600 cursor-pointer'
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              handleDelete(topic._id)
+                            }}
+                          >
+                            Delete
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
         </div>
       )}
-      {isManageTopicModalOpen && (
-        <Modal size={'xl'} isOpen={true}>
-          <ModalContent>
-            <ModalCloseButton
-              onClick={() => setIsManageTopicModalOpen(false)}
+
+      {/* Add/Edit Topic Modal */}
+      <Modal size={'md'} isOpen={isAddModalOpen} onClose={resetAddModalState}>
+        <ModalContent>
+          <ModalHeader>{isEditMode ? 'Edit Topic' : 'Add Topic'}</ModalHeader>
+          <ModalCloseButton onClick={resetAddModalState} />
+          <ModalBody>
+            <CustomInput
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder='Enter topic name'
+              label='Topic Name'
             />
-            <ModalHeader>Manage Chapters for {selectedItem?.name}</ModalHeader>
-            <ModalBody>
-              <div className='mb-4'>
-                <input
-                  type='text'
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder={`Enter chapter name`}
-                  className='w-full p-2 border border-gray-300 rounded-sm'
-                />
-                <SLButton
-                  isLoading={isSubmitting}
-                  iconColor={'white'}
-                  loadingText={'Submitting...'}
-                  title={'Add Chapter'}
-                  onClick={() => handleAddOrUpdateChapter(name)}
-                  variant={'primary'}
-                  className='mt-2'
-                />
-              </div>
-              <table className='table-auto my-5 w-full mb-10 border-collapse border border-primary'>
+          </ModalBody>
+          <ModalFooter>
+            <SLButton
+              title='Cancel'
+              onClick={resetAddModalState}
+              variant={'secondary'}
+            />
+            <SLButton
+              title={isEditMode ? 'Update' : 'Add'}
+              onClick={handleAddOrUpdate}
+              isLoading={isSubmitting}
+              variant={'primary'}
+            />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Manage Chapters Modal */}
+      <Modal
+        size={'2xl'}
+        isOpen={isManageTopicModalOpen}
+        onClose={resetChapterModalState}
+      >
+        <ModalContent>
+          <ModalHeader>Manage Chapters for {selectedItem?.name}</ModalHeader>
+          <ModalCloseButton onClick={() => setIsManageTopicModalOpen(false)} />
+          <ModalBody>
+            <div className='flex gap-2'>
+              <CustomInput
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder='Enter chapter name'
+                label='Chapter Name'
+              />
+              {isEditMode && (
+                <div className='relative'>
+                  <ModalCloseButton onClick={resetChapterModalState} />
+                </div>
+              )}
+              <SLButton
+                title={isEditMode ? 'Update' : 'Add'}
+                onClick={() => handleAddOrUpdateChapter(name, id)}
+                isLoading={isSubmitting}
+                variant={'primary'}
+              />
+            </div>
+            <div>
+              <h3 className='text-xl font-bold my-4'>Chapters</h3>
+              <table className='table-auto text-sm my-5 w-full mb-10 border-collapse border border-primary'>
                 <thead className='bg-primary'>
                   <tr className='bg-gray-200 capitalize'>
                     <th className='px-4 bg-primary text-white py-2 border-r'>
@@ -315,67 +384,48 @@ const ManageTopicAndChapter = () => {
                     </th>
                   </tr>
                 </thead>
-                <tbody className='border border-primary'>
-                  {chapters.map((item, index) => (
-                    <tr key={index} fontSize={16}>
-                      <td className='border px-4 py-2'>{item.name}</td>
-                      <td className='border px-4 py-2 flex justify-around'>
-                        <p
-                          onClick={() => {
-                            setName(item.name)
-                            handleAddOrUpdateChapter(item.name, item._id)
-                          }}
-                          className='text-primary font-extrabold text-center hover:underline cursor-pointer'
-                        >
-                          Edit
-                        </p>
-                        <p
-                          onClick={() => handleDeleteChapter(item._id)}
-                          className='text-red-600 font-extrabold text-center hover:underline cursor-pointer'
-                        >
-                          Delete
-                        </p>
+                <tbody className=''>
+                  {chapters.length === 0 ? (
+                    <tr className='text-center'>
+                      <td colSpan='6' className='py-5'>
+                        No Chapters Available
                       </td>
                     </tr>
-                  ))}
+                  ) : (
+                    chapters.map((chapter, index) => (
+                      <tr
+                        key={index}
+                        className='border-b cursor-pointer hover:bg-gray-100'
+                      >
+                        <td className='px-4 py-2 border-r'>{chapter.name}</td>
+                        <td className='px-4 py-2 border-r'>
+                          <div className='flex gap-3 justify-center items-center'>
+                            <p
+                              className='text-primary hover:text-primaryHover cursor-pointer'
+                              onClick={() => {
+                                setName(chapter.name)
+                                setId(chapter._id)
+                                setIsEditMode(true)
+                                setIsManageTopicModalOpen(true)
+                              }}
+                            >
+                              Edit
+                            </p>
+                            <p
+                              className='text-red-500 hover:text-red-600 cursor-pointer'
+                              onClick={() => handleDeleteChapter(chapter._id)}
+                            >
+                              Delete
+                            </p>
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  )}
                 </tbody>
               </table>
-            </ModalBody>
-            <ModalFooter>
-              <SLButton
-                title={'Close'}
-                onClick={() => setIsManageTopicModalOpen(false)}
-                variant={'secondary'}
-              />
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      )}
-      <Modal size={'xl'} isOpen={isAddModalOpen}>
-        <ModalContent>
-          <ModalCloseButton onClick={() => setIsAddModalOpen(false)} />
-          <ModalHeader>
-            {isEditMode ? 'Edit Topic' : 'Add New Topic'}
-          </ModalHeader>
-          <ModalBody>
-            <input
-              type='text'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder='Enter topic name'
-              className='w-full p-2 border border-gray-300 rounded-sm'
-            />
+            </div>
           </ModalBody>
-          <ModalFooter>
-            <SLButton
-              isLoading={isSubmitting}
-              iconColor={'white'}
-              loadingText={'Submitting...'}
-              title={isEditMode ? 'Update' : 'Submit'}
-              onClick={handleAddOrUpdate}
-              variant={'primary'}
-            />
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>

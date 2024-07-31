@@ -35,7 +35,6 @@ import ManageLawyer from './Pages/ManageLawyer/ManageLawyer'
 import LawyerList from './Pages/ManageLawyer/LawyerList'
 import CreateLawyer from './Pages/ManageLawyer/CreateLawyer'
 import LawyerProfile from './Pages/ManageLawyer/LawyerProfile'
-import CreateMaterial from './Pages/StudyMaterials/CreateMaterial'
 import ManageTopic from './Pages/ManageTopic/ManageTopic'
 import ViewMaterial from './Pages/StudyMaterials/ViewMaterial'
 import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
@@ -43,6 +42,7 @@ import DetailedQuestionPage from './Pages/StudyMaterials/DetailedQuestionPage'
 import LiquidTextMainPage from './Pages/LiquidText/LiquidTextMainPage'
 import LiquidTextHomePage from './Pages/LiquidText/LiquidTextHomePage'
 import TermsAndConditionsPage from './Components/TermsAndConditionsPage'
+import ManageQA from './Pages/StudyMaterials/ManageQA'
 
 const App = () => {
   const { user } = useContext(UserContext)
@@ -113,7 +113,7 @@ const App = () => {
                     path='study-materials'
                     element={<StudyMaterialDashboard />}
                   />
-                  <Route path='create-material' element={<CreateMaterial />} />
+                  <Route path='manage-QA' element={<ManageQA />} />
                   <Route path='manage-topic' element={<ManageTopic />} />
                   <Route path='view-material' element={<ViewMaterial />} />
                   <Route

@@ -12,8 +12,8 @@ const StudyMaterialDashboard = () => {
           <Link to={'/admin-dashboard/manage-topic'}>
             <SLButton title={'Manage Topic & Chapter'} variant={'primary'} />
           </Link>
-          <Link to={'/admin-dashboard/create-material'}>
-            <SLButton title={'Create Material'} variant={'primary'} />
+          <Link to={'/admin-dashboard/manage-QA'}>
+            <SLButton title={'Manage QA'} variant={'primary'} />
           </Link>
           <Link to={'/admin-dashboard/view-material'}>
             <SLButton title={'View Material'} variant={'primary'} />
