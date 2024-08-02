@@ -16,14 +16,14 @@ const DetailedQuestionPage = () => {
     const fetchQuestionData = async () => {
       try {
         const response = await axios.get(
-          `${api}/api/solve_litigation/study-material/topics/${topicId}/question/${questionId}`,
+          `${api}/api/solve_litigation/study-material/question-answers/${questionId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('token')}`,
             },
           }
         )
-        setQuestionData(response.data.question)
+        setQuestionData(response.data)
         setRelatedQuestions(response.data.relatedQuestions)
       } catch (error) {
         enqueueSnackbar(error.response.data.error, {
@@ -61,16 +61,12 @@ const DetailedQuestionPage = () => {
   }
 
   return (
-    <div className='p-5 lg:p-5 max-md:text-base lg:px-[250px]'>
-      <div>
-        <h1 className='max-md:text-lg font-bold'>
-          <span className=' font-extrabold text-primary'>Q : </span>
+    <div className='p-5 lg:p-10 max-md:text-base lg:px-[250px]'>
+      <div className='border p-10 rounded-sm'>
+        <h1 className='max-md:text-lg text-3xl font-bold'>
           {questionData.question}
         </h1>
         <p className='mt-4 text-justify'>
-          <span className='text-2xl max-md:text-lg font-bold text-primary'>
-            Ans :{' '}
-          </span>
           <span
             className='text-justify'
             dangerouslySetInnerHTML={{
@@ -80,18 +76,20 @@ const DetailedQuestionPage = () => {
         </p>
       </div>
       <div className='mt-5'>
-        <p className='pb-1 text-primary'>Related Questions</p>
+        {/* <p className='pb-1 text-primary'>Related Questions</p> */}
         <div className='flex gap-2 gap-y-3 max-md:gap-3 max-md:gap-y-4 flex-wrap'>
-          {relatedQuestions.map((item, index) => (
-            <div key={index}>
-              <Link
-                to={`/detailed-question/${item.topicId}/${item._id}`}
-                className='p-2 text-sm rounded-sm px-3 bg-gray-300'
-              >
-                {item.question}
-              </Link>
-            </div>
-          ))}
+          {relatedQuestions &&
+            relatedQuestions.length > 0 &&
+            relatedQuestions.map((item, index) => (
+              <div key={index}>
+                <Link
+                  to={`/detailed-question/${item.topicId}/${item._id}`}
+                  className='p-2 text-sm rounded-sm px-3 bg-gray-300'
+                >
+                  {item.question}
+                </Link>
+              </div>
+            ))}
         </div>
       </div>
     </div>

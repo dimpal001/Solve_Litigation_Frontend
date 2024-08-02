@@ -17,6 +17,7 @@ const ManageQA = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [isEditMode, setIsEditMode] = useState(false)
   const [questions, setQuestions] = useState([])
+  const [selectedId, setSelectedId] = useState('')
   const [chapters, setChapters] = useState([])
   const [selectedChapters, setSelectedChapters] = useState([])
   const [questionText, setQuestionText] = useState('')
@@ -24,7 +25,9 @@ const ManageQA = () => {
   const [id, setId] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
   const [isViewModalOpen, setIsViewModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [viewedQuestion, setViewedQuestion] = useState(null)
   const { enqueueSnackbar } = useSnackbar()
 
@@ -74,7 +77,7 @@ const ManageQA = () => {
     try {
       setIsSubmitting(true)
       if (isEditMode && id) {
-        const response = await axios.patch(
+        await axios.patch(
           `${api}/api/solve_litigation/study-material/question-answers/${id}`,
           {
             question: questionText,
@@ -87,9 +90,9 @@ const ManageQA = () => {
             },
           }
         )
-        setQuestions(response.data)
+        // setQuestions(response.data)
       } else {
-        const response = await axios.post(
+        await axios.post(
           `${api}/api/solve_litigation/study-material/question-answers`,
           {
             question: questionText,
@@ -102,10 +105,10 @@ const ManageQA = () => {
             },
           }
         )
-        setQuestions([...questions, response.data])
+        // setQuestions([...questions, response.data])
       }
       resetModalState()
-      // fetchQuestions()
+      fetchQuestions()
     } catch (error) {
       console.error(error)
     } finally {
@@ -115,22 +118,27 @@ const ManageQA = () => {
   }
 
   const handleDelete = async (id) => {
-    const isDelete = confirm('Are you sure, you want to delete this?')
+    setSelectedId(id)
+    setIsDeleteModalOpen(true)
+  }
 
-    if (isDelete) {
-      try {
-        await axios.delete(
-          `${api}/api/solve_litigation/study-material/question-answers/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-          }
-        )
-        setQuestions(questions.filter((q) => q._id !== id))
-      } catch (error) {
-        console.error(error)
-      }
+  const confirmDelete = async () => {
+    try {
+      setIsDeleting(true)
+      await axios.delete(
+        `${api}/api/solve_litigation/study-material/question-answers/${selectedId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      fetchQuestions()
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsDeleting(false)
+      setIsDeleteModalOpen(false)
     }
   }
 
@@ -202,7 +210,7 @@ const ManageQA = () => {
                       {question.question}
                     </td>
                     <td className='px-4 py-2 border-r'>
-                      <div className='flex gap-3 justify-center items-center'>
+                      <div className='flex text-base gap-3 justify-center items-center'>
                         <p
                           className='cursor-pointer px-1 hover:underline'
                           onClick={() => {
@@ -258,14 +266,14 @@ const ManageQA = () => {
           <ModalBody>
             <textarea
               rows={3}
-              className='p-2 focus:outline-none focus:border focus:border-primary rounded-sm w-full mb-2'
+              className='p-2 border focus:outline-none focus:border focus:border-primary rounded-sm w-full mb-2'
               value={questionText}
               onChange={(e) => setQuestionText(e.target.value)}
               placeholder='Enter question'
             ></textarea>
             <textarea
               rows={7}
-              className='p-2 focus:outline-none focus:border focus:border-primary rounded-sm w-full mb-2'
+              className='p-2 border focus:outline-none focus:border focus:border-primary rounded-sm w-full mb-2'
               value={answerText}
               onChange={(e) => setAnswerText(e.target.value)}
               placeholder='Enter answer'
@@ -320,25 +328,27 @@ const ManageQA = () => {
           <ModalHeader>View Question</ModalHeader>
           <ModalCloseButton onClick={() => setIsViewModalOpen(false)} />
           <ModalBody>
-            <div className='mb-4'>
-              <p>
-                <strong>Question : </strong>
-                {viewedQuestion?.question}
-              </p>
-            </div>
-            <div className='mb-4'>
-              <p>
-                <strong>Answer : </strong>
-                {viewedQuestion?.answer}
-              </p>
-            </div>
-            <div>
-              <strong>Chapters:</strong>
-              <ul className='list-disc text-sm pl-5'>
-                {viewedQuestion?.chapters.map((chapter) => (
-                  <li key={chapter._id}>{chapter.name}</li>
-                ))}
-              </ul>
+            <div className='overflow-y-scroll'>
+              <div className='mb-4 text-base text-justify'>
+                <p>
+                  <strong>Question : </strong>
+                  {viewedQuestion?.question}
+                </p>
+              </div>
+              <div className='mb-4 text-base text-justify'>
+                <p>
+                  <strong>Answer : </strong>
+                  {viewedQuestion?.answer}
+                </p>
+              </div>
+              <div className='text-base'>
+                <strong>Chapters:</strong>
+                <ul className='list-disc text-sm pl-5'>
+                  {viewedQuestion?.chapters.map((chapter) => (
+                    <li key={chapter._id}>{chapter.name}</li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </ModalBody>
           <ModalFooter>
@@ -346,6 +356,30 @@ const ManageQA = () => {
               title='Close'
               onClick={() => setIsViewModalOpen(false)}
               variant='secondary'
+            />
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      {/* Delete Question Answer Modal  */}
+      <Modal size={'md'} isOpen={isDeleteModalOpen}>
+        <ModalContent>
+          <ModalCloseButton onClick={() => setIsDeleteModalOpen(false)} />
+          <ModalHeader>Delete question-answer ?</ModalHeader>
+          <ModalBody>This function cannot be undone</ModalBody>
+          <ModalFooter>
+            <SLButton
+              title='Cancel'
+              onClick={() => setIsDeleteModalOpen(false)}
+              variant='secondary'
+            />
+            <SLButton
+              isLoading={isDeleting}
+              loadingText={'Deleting...'}
+              iconColor={'white'}
+              onClick={() => confirmDelete()}
+              title='Delete'
+              variant='error'
             />
           </ModalFooter>
         </ModalContent>

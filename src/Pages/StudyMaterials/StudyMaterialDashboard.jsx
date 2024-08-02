@@ -10,13 +10,10 @@ const StudyMaterialDashboard = () => {
         </p> */}
         <div className='flex gap-5'>
           <Link to={'/admin-dashboard/manage-topic'}>
-            <SLButton title={'Manage Topic & Chapter'} variant={'primary'} />
+            <SLButton title={'Manage Subject & Chapter'} variant={'primary'} />
           </Link>
           <Link to={'/admin-dashboard/manage-QA'}>
             <SLButton title={'Manage QA'} variant={'primary'} />
-          </Link>
-          <Link to={'/admin-dashboard/view-material'}>
-            <SLButton title={'View Material'} variant={'primary'} />
           </Link>
         </div>
       </div>

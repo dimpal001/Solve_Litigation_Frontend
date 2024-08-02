@@ -212,7 +212,6 @@ const ManageTopicAndChapter = () => {
   }
 
   const resetChapterModalState = () => {
-    // setIsManageTopicModalOpen(false)
     setName('')
     setId(null)
     setIsEditMode(false)
@@ -220,7 +219,7 @@ const ManageTopicAndChapter = () => {
 
   const handleManageChapters = (topic) => {
     setSelectedItem(topic)
-    resetChapterModalState() // Ensure state is reset when switching topics
+    resetChapterModalState()
     setIsManageTopicModalOpen(true)
     fetchChapters(topic._id)
   }
@@ -229,7 +228,7 @@ const ManageTopicAndChapter = () => {
     <div>
       <div className='flex gap-5'>
         <SLButton
-          title={'Add Topic'}
+          title={'Add Subject'}
           onClick={() => {
             setIsAddModalOpen(true)
             setIsEditMode(false)
@@ -246,12 +245,12 @@ const ManageTopicAndChapter = () => {
       ) : (
         <div>
           <div>
-            <h3 className='text-xl font-bold my-4'>Topics</h3>
-            <table className='table-auto my-5 w-full mb-10 border-collapse border border-primary'>
-              <thead className='bg-primary'>
+            <h3 className='text-xl font-bold my-4'>Subjects</h3>
+            <table className='table-auto my-5 w-full mb-10 border-collapse border'>
+              <thead className='bg-primary border border-primary'>
                 <tr className='bg-gray-200 capitalize'>
                   <th className='px-4 bg-primary text-white py-2 border-r'>
-                    Topic Name
+                    Subject Name
                   </th>
                   <th className='px-4 bg-primary text-white py-2 border-r'>
                     No of Chapters
@@ -265,7 +264,7 @@ const ManageTopicAndChapter = () => {
                 {topics.length === 0 ? (
                   <tr className='text-center'>
                     <td colSpan='6' className='py-5'>
-                      No Topics Available
+                      No subjects available
                     </td>
                   </tr>
                 ) : (
@@ -316,14 +315,15 @@ const ManageTopicAndChapter = () => {
       {/* Add/Edit Topic Modal */}
       <Modal size={'md'} isOpen={isAddModalOpen} onClose={resetAddModalState}>
         <ModalContent>
-          <ModalHeader>{isEditMode ? 'Edit Topic' : 'Add Topic'}</ModalHeader>
+          <ModalHeader>
+            {isEditMode ? 'Edit Subject' : 'Add Subject'}
+          </ModalHeader>
           <ModalCloseButton onClick={resetAddModalState} />
           <ModalBody>
             <CustomInput
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder='Enter topic name'
-              label='Topic Name'
+              placeholder='Enter subject name'
             />
           </ModalBody>
           <ModalFooter>
@@ -373,8 +373,8 @@ const ManageTopicAndChapter = () => {
             </div>
             <div>
               <h3 className='text-xl font-bold my-4'>Chapters</h3>
-              <table className='table-auto text-sm my-5 w-full mb-10 border-collapse border border-primary'>
-                <thead className='bg-primary'>
+              <table className='table-auto text-sm my-5 w-full mb-10 border-collapse border'>
+                <thead className='bg-primary border border-primary'>
                   <tr className='bg-gray-200 capitalize'>
                     <th className='px-4 bg-primary text-white py-2 border-r'>
                       Chapter Name

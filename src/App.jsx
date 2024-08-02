@@ -36,7 +36,6 @@ import LawyerList from './Pages/ManageLawyer/LawyerList'
 import CreateLawyer from './Pages/ManageLawyer/CreateLawyer'
 import LawyerProfile from './Pages/ManageLawyer/LawyerProfile'
 import ManageTopic from './Pages/ManageTopic/ManageTopic'
-import ViewMaterial from './Pages/StudyMaterials/ViewMaterial'
 import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
 import DetailedQuestionPage from './Pages/StudyMaterials/DetailedQuestionPage'
 import LiquidTextMainPage from './Pages/LiquidText/LiquidTextMainPage'
@@ -115,7 +114,6 @@ const App = () => {
                   />
                   <Route path='manage-QA' element={<ManageQA />} />
                   <Route path='manage-topic' element={<ManageTopic />} />
-                  <Route path='view-material' element={<ViewMaterial />} />
                   <Route
                     path='profile-settings'
                     element={<ProfileSettingsPage />}
@@ -169,7 +167,7 @@ const App = () => {
             )}
             {user && (
               <Route
-                path='/detailed-question/:topicId/:questionId'
+                path='/detailed-question/:questionId'
                 element={<DetailedQuestionPage />}
               />
             )}

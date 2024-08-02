@@ -321,6 +321,7 @@ const CitationsPage = () => {
       <div className='md:px-32 py-3'>
         <div className='flex max-lg:hidden justify-center gap-5 pb-5'>
           <SLButton
+            className={'text-sm px-3 py-[7px]'}
             variant={selectedApellate === 'latest' ? 'primary' : 'outline'}
             onClick={handleLatest}
             title={'Latest'}
@@ -329,7 +330,7 @@ const CitationsPage = () => {
             fetchingApellates.map((data, index) => (
               <SLButton
                 key={index}
-                className={'capitalize'}
+                className={'text-sm px-3 py-[7px] capitalize'}
                 variant={selectedApellate === data.name ? 'primary' : 'outline'}
                 title={data.name}
                 onClick={() => handleChangeApellate(data.name)}
@@ -337,7 +338,7 @@ const CitationsPage = () => {
             ))}
           <SLButton
             variant={'outline'}
-            className={'focus:bg-primary focus:text-white'}
+            className={'focus:bg-primary text-sm py-[7px] focus:text-white'}
             title={'Acts'}
           />
         </div>

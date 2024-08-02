@@ -11,6 +11,8 @@ import { UserContext } from '../../UserContext'
 const StudyMaterialUser = () => {
   const { user, setUser } = useContext(UserContext)
   const [topics, setTopics] = useState([])
+  const [chapters, setChapters] = useState([])
+  const [selectedChapter, setSelectedChapter] = useState('')
   const [questions, setQuestions] = useState([])
   const [selectedTopic, setSelectedTopic] = useState('all')
   const [loading, setLoading] = useState(false)
@@ -63,14 +65,31 @@ const StudyMaterialUser = () => {
       console.error(error)
     }
   }
+
+  const fetchChapters = async (topicId) => {
+    try {
+      handleCheckAuth()
+      const response = await axios.get(
+        `${api}/api/solve_litigation/study-material/topics/${topicId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      setChapters(response.data.chapters)
+    } catch (error) {
+      console.error(error)
+    }
+  }
   const [query, setQuery] = useState('')
 
-  const fetchQuestions = async (topicId = null, page = 0) => {
+  const fetchQuestions = async (chapterId = null, page = 0) => {
     setLoading(true)
     try {
-      const url = topicId
-        ? `${api}/api/solve_litigation/study-material/topics/${topicId}/questions/${page}`
-        : `${api}/api/solve_litigation/study-material/questions/${page}`
+      const url = chapterId
+        ? `${api}/api/solve_litigation/study-material/chapter/${chapterId}/${page}`
+        : `${api}/api/solve_litigation/study-material/study-materials/${page}`
       const response = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -97,17 +116,26 @@ const StudyMaterialUser = () => {
   }, [])
 
   const handleTopicClick = (topicId) => {
+    setSelectedChapter('')
     setPageNo(0)
     setQuery('')
     setSelectedTopic(topicId)
     if (topicId === 'all') {
       fetchQuestions()
+      setChapters([])
     } else {
-      fetchQuestions(topicId)
+      fetchChapters(topicId)
     }
   }
+  const handleChapterClick = (chapterId) => {
+    setSelectedChapter(chapterId)
+    setPageNo(0)
+    setQuery('')
+    fetchQuestions(chapterId)
+  }
 
-  const searchQuestions = async (e) => {
+  const searchQuestions = async (e, page = 0) => {
+    setSelectedTopic('')
     e.preventDefault()
     if (query === '') {
       enqueueSnackbar('Type something in the search box', { variant: 'error' })
@@ -118,7 +146,7 @@ const StudyMaterialUser = () => {
       setIsLoading(true)
       const token = localStorage.getItem('token')
       const response = await axios.get(
-        `${api}/api/solve_litigation/study-material/search-questions`,
+        `${api}/api/solve_litigation/study-material/search-questions/${page}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -129,8 +157,7 @@ const StudyMaterialUser = () => {
         }
       )
       if (response) {
-        setQuestions(response.data)
-        setSelectedTopic('')
+        setQuestions(response.data.questions)
       }
     } catch (error) {
       fetchQuestions()
@@ -151,84 +178,20 @@ const StudyMaterialUser = () => {
   }
 
   return (
-    <div>
-      <p className='text-3xl font-extrabold pl-3 lg:text-center max-md:py-2 py-5'>
-        Study Material
-      </p>
-      <div className='flex pl-3 lg:justify-center flex-wrap gap-2 mb-4'>
-        <div
-          onClick={() => handleTopicClick('all')}
-          className={`bg-gray-200 px-3 text-sm rounded-sm p-2 cursor-pointer flex justify-center items-center ${
-            selectedTopic === 'all' && 'bg-primary text-white'
-          }`}
-        >
-          All
-        </div>
-        {(showAllTopics ? topics : topics.slice(0, 5)).map((topic) => (
-          <div
-            onClick={() => handleTopicClick(topic._id)}
-            key={topic._id}
-            className={`capitalize ${
-              selectedTopic === topic._id && 'bg-primary text-white'
-            } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
-          >
-            {topic.topic}
-          </div>
-        ))}
-        {!showAllTopics && topics.length > 5 && (
-          <p
-            onClick={() => setShowAllTopics(true)}
-            className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
-          >
-            Load more...
-          </p>
-        )}
-        {showAllTopics && (
-          <div
-            onClick={() => setShowAllTopics(false)}
-            className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
-          >
-            Load less...
-          </div>
-        )}
-      </div>
-      <div className='flex gap-2 justify-center'>
-        <form
-          onSubmit={searchQuestions}
-          className='flex lg:w-[40%] w-[95%] max-md:mb-2 gap-5 rounded-sm border px-3 items-center'
-        >
-          <FaSearch color={Colors.primary} />
-          <input
-            type='text'
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder='Search here ...'
-            className='p-2 w-full text-base group focus:outline-none bg-transparent'
-          />
-          {isLoading ? (
-            <SLSpinner width={'30px'} />
+    <div className='container p-3 mx-auto'>
+      <p className='text-2xl font-bold pb-2'>Study Materials</p>
+      <div className='flex gap-10'>
+        <div className='lg:w-2/3'>
+          {loading ? (
+            <p className='text-center'>Loading...</p>
+          ) : questions.length === 0 ? (
+            <p className='text-center py-5 text-red-500'>No questions found</p>
           ) : (
-            <FaArrowRight
-              type='submit'
-              onClick={searchQuestions}
-              className='cursor-pointer'
-              color={Colors.primary}
-            />
-          )}
-        </form>
-        {/* </div> */}
-      </div>
-      <div className='lg:px-[50px]'>
-        {loading ? (
-          <p className='text-center'>Loading...</p>
-        ) : questions.length === 0 ? (
-          <p className='text-center py-5 text-red-500'>No questions found</p>
-        ) : (
-          <div className='lg:px-[120px]'>
-            {questions.map((qa, index) => (
-              <Material key={index} data={qa} />
-            ))}
-            {!query && (
+            <div className=''>
+              {questions.map((qa, index) => (
+                <Material key={index} data={qa} />
+              ))}
+              {/* {!query && ( */}
               <div className='flex items-center max-md:px-4 justify-center gap-5 py-3 max-md:justify-between'>
                 {pageNo !== 0 && (
                   <SLButton
@@ -248,9 +211,93 @@ const StudyMaterialUser = () => {
                   />
                 )}
               </div>
-            )}
+              {/* )} */}
+            </div>
+          )}
+        </div>
+        <div className='lg:w-1/3 flex flex-col w-full gap-3'>
+          <div className='flex gap-2 justify-center'>
+            <form
+              onSubmit={searchQuestions}
+              className='flex lg:w-full w-[95%] max-md:mb-2 gap-5 rounded-sm border px-3 items-center'
+            >
+              <FaSearch color={Colors.primary} />
+              <input
+                type='text'
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder='Search here ...'
+                className='p-2 w-full text-base group focus:outline-none bg-transparent'
+              />
+              {isLoading ? (
+                <SLSpinner width={'30px'} />
+              ) : (
+                <FaArrowRight
+                  type='submit'
+                  onClick={searchQuestions}
+                  className='cursor-pointer'
+                  color={Colors.primary}
+                />
+              )}
+            </form>
           </div>
-        )}
+          <div className='lg:w-2/3'>
+            <div>
+              <div className='flex flex-wrap gap-2 mb-2'>
+                <div
+                  onClick={() => handleTopicClick('all')}
+                  className={`bg-gray-200 px-3 text-sm rounded-sm p-2 cursor-pointer flex justify-center items-center ${
+                    selectedTopic === 'all' && 'bg-primary text-white'
+                  }`}
+                >
+                  All
+                </div>
+                {(showAllTopics ? topics : topics.slice(0, 5)).map((topic) => (
+                  <div
+                    onClick={() => handleTopicClick(topic._id)}
+                    key={topic._id}
+                    className={`capitalize ${
+                      selectedTopic === topic._id && 'bg-primary text-white'
+                    } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
+                  >
+                    {topic.name}
+                  </div>
+                ))}
+                {!showAllTopics && topics.length > 5 && (
+                  <p
+                    onClick={() => setShowAllTopics(true)}
+                    className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
+                  >
+                    Load more...
+                  </p>
+                )}
+                {showAllTopics && (
+                  <div
+                    onClick={() => setShowAllTopics(false)}
+                    className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
+                  >
+                    Load less...
+                  </div>
+                )}
+              </div>
+              <div className='flex gap-2 mb-2'>
+                {chapters.length > 0 &&
+                  chapters.map((chapter, index) => (
+                    <div
+                      onClick={() => handleChapterClick(chapter._id)}
+                      key={index}
+                      className={`capitalize ${
+                        selectedChapter === chapter._id &&
+                        'bg-primary text-white'
+                      } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
+                    >
+                      {chapter.name}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -260,20 +307,23 @@ const Material = ({ data }) => {
   console.log(data)
   return (
     <div>
-      <Link to={`/detailed-question/${data.topicId}/${data._id}`}>
-        <div className='p-2 max-sm:px-5 lg:my-3 group max-md:mb-1 group hover:bg-slate-100 lg:border-b bg-slate-50'>
+      <Link to={`/detailed-question/${data._id}`}>
+        <div className='p-5 max-sm:px-5 mb-2 group max-md:mb-1 group hover:bg-slate-100 lg:border-b bg-slate-50'>
           <div className='flex items-center'>
             <Avatar />
             <div className='px-2'>
               <p className='text-base group-hover:underline group-hover:text-primary font-semibold capitalize'>
-                {data.question}
+                {data.question.substring(0, 90)}
+                {data.question.length >= 90 && '...'}
               </p>
             </div>
           </div>
           <div>
             <p className='text-sm'>
               {' '}
-              <span className='underline font-bold'>Ans : </span> {data.answer}
+              {/* <span className='underline font-bold'>Ans : </span>{' '} */}
+              {data.answer.substring(0, 200)}
+              {data.answer.length >= 200 && '...'}
             </p>
           </div>
         </div>
