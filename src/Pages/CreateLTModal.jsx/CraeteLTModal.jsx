@@ -33,7 +33,7 @@ const CreateLTModal = ({
       return
     }
 
-    if (liquidText.length < 20) {
+    if (liquidText.length < 2) {
       enqueueSnackbar(
         'It should have a minimum of 20 characters. Please select more text from the file!',
         {

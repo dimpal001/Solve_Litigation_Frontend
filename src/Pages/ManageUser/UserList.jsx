@@ -8,12 +8,14 @@ import { FaArrowLeft } from 'react-icons/fa'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
 import { SLButton } from '../../Components/Customs'
+import DetailedUserModal from './DetailedUserModal'
 
 const UserList = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
   const [isFetching, setIsFetching] = useState(false)
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [isUserModalOpen, setIsUserModalOpen] = useState(false)
   const [selectedFilter, setSelectedFilter] = useState('all')
   const [selectedUser, setSelectedUser] = useState('')
   const [fetchingList, setFetchingList] = useState([])
@@ -111,7 +113,7 @@ const UserList = () => {
         />
       </div>
       <div>
-        <table className='table-auto w-full mb-10 border-collapse border border-primary'>
+        <table className='table-auto w-full text-base mb-10 border-collapse border border-primary'>
           <thead className='bg-primary'>
             <tr className='bg-gray-200 capitalize'>
               <th className='px-4 bg-primary text-white py-2 border-r'>
@@ -135,7 +137,15 @@ const UserList = () => {
             {filteredList && filteredList.length > 0 ? (
               filteredList.map((data, index) => (
                 <tr fontSize={16} key={index}>
-                  <td className='border px-4 py-2'>{data.fullName}</td>
+                  <td
+                    onClick={() => {
+                      setIsUserModalOpen(true)
+                      setSelectedUser(data._id)
+                    }}
+                    className='border cursor-pointer px-4 py-2'
+                  >
+                    {data.fullName}
+                  </td>
                   <td className='border px-4 py-2'>{data.email}</td>
                   <td className='border px-4 py-2 text-center'>
                     {data.phoneNumber}
@@ -179,6 +189,14 @@ const UserList = () => {
           user={selectedUser}
         />
       )}
+      <DetailedUserModal
+        isOpen={isUserModalOpen}
+        onClose={() => {
+          setIsUserModalOpen(false)
+          setSelectedUser(null)
+        }}
+        id={selectedUser}
+      />
     </div>
   )
 }

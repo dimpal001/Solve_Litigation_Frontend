@@ -181,40 +181,6 @@ const StudyMaterialUser = () => {
     <div className='container p-3 mx-auto'>
       <p className='text-2xl font-bold pb-2'>Study Materials</p>
       <div className='flex gap-10'>
-        <div className='lg:w-2/3'>
-          {loading ? (
-            <p className='text-center'>Loading...</p>
-          ) : questions.length === 0 ? (
-            <p className='text-center py-5 text-red-500'>No questions found</p>
-          ) : (
-            <div className=''>
-              {questions.map((qa, index) => (
-                <Material key={index} data={qa} />
-              ))}
-              {/* {!query && ( */}
-              <div className='flex items-center max-md:px-4 justify-center gap-5 py-3 max-md:justify-between'>
-                {pageNo !== 0 && (
-                  <SLButton
-                    onClick={() => handlePageChange(pageNo - 1)}
-                    variant={'outline'}
-                    title={'Previous'}
-                  />
-                )}
-                <p className='text-primary'>
-                  {pageNo + 1} of {totalPage}
-                </p>
-                {totalPage !== pageNo + 1 && (
-                  <SLButton
-                    onClick={() => handlePageChange(pageNo + 1)}
-                    variant={'outline'}
-                    title={'Next'}
-                  />
-                )}
-              </div>
-              {/* )} */}
-            </div>
-          )}
-        </div>
         <div className='lg:w-1/3 flex flex-col w-full gap-3'>
           <div className='flex gap-2 justify-center'>
             <form
@@ -297,6 +263,40 @@ const StudyMaterialUser = () => {
               </div>
             </div>
           </div>
+        </div>
+        <div className='lg:w-2/3'>
+          {loading ? (
+            <p className='text-center'>Loading...</p>
+          ) : questions.length === 0 ? (
+            <p className='text-center py-5 text-red-500'>No questions found</p>
+          ) : (
+            <div className=''>
+              {questions.map((qa, index) => (
+                <Material key={index} data={qa} />
+              ))}
+              {/* {!query && ( */}
+              <div className='flex items-center max-md:px-4 justify-center gap-5 py-3 max-md:justify-between'>
+                {pageNo !== 0 && (
+                  <SLButton
+                    onClick={() => handlePageChange(pageNo - 1)}
+                    variant={'outline'}
+                    title={'Previous'}
+                  />
+                )}
+                <p className='text-primary'>
+                  {pageNo + 1} of {totalPage}
+                </p>
+                {totalPage !== pageNo + 1 && (
+                  <SLButton
+                    onClick={() => handlePageChange(pageNo + 1)}
+                    variant={'outline'}
+                    title={'Next'}
+                  />
+                )}
+              </div>
+              {/* )} */}
+            </div>
+          )}
         </div>
       </div>
     </div>

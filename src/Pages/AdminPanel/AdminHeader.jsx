@@ -47,9 +47,6 @@ const AdminHeader = ({ showSidebar, setShowSidebar }) => {
     if (location.pathname === '/admin-dashboard/manage-users') {
       setPageName('Manage Users')
     }
-    if (location.pathname === '/admin-dashboard/manage-users/users-list') {
-      setPageName('Users List')
-    }
     if (location.pathname === '/admin-dashboard/manage-users/create-staff') {
       setPageName('Create Staff')
     }

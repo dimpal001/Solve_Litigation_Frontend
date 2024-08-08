@@ -38,10 +38,10 @@ import LawyerProfile from './Pages/ManageLawyer/LawyerProfile'
 import ManageTopic from './Pages/ManageTopic/ManageTopic'
 import StudyMaterialUser from './Pages/StudyMaterials/StudyMaterialUser'
 import DetailedQuestionPage from './Pages/StudyMaterials/DetailedQuestionPage'
-import LiquidTextMainPage from './Pages/LiquidText/LiquidTextMainPage'
-import LiquidTextHomePage from './Pages/LiquidText/LiquidTextHomePage'
 import TermsAndConditionsPage from './Components/TermsAndConditionsPage'
 import ManageQA from './Pages/StudyMaterials/ManageQA'
+import LiquidTextMainPage from './Pages/CreateLTModal.jsx/LiquidTextMainPage'
+import LiquidTextHomePage from './Pages/CreateLTModal.jsx/LiquidTextHomePage'
 
 const App = () => {
   const { user } = useContext(UserContext)

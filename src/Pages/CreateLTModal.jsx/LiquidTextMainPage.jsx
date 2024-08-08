@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { pdfjs, Document, Page } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
-import { SLButton, SLSpinner } from '../../Components/Customs'
+import { CustomInput, SLButton, SLSpinner } from '../../Components/Customs'
 import { useNavigate, useParams } from 'react-router-dom'
 import { api } from '../../Components/Apis'
 import axios from 'axios'
@@ -10,6 +10,7 @@ import CreateArgumentModal from './CreateArgumentModal'
 import CreateLTModal from './CraeteLTModal'
 import ConfirmDeleteModal from './ConfirmDeleteModal'
 import ShareUserModal from './ShareUserModal'
+import { enqueueSnackbar } from 'notistack'
 
 // pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 //   'pdfjs-dist/build/pdf.worker.min.mjs',
@@ -42,12 +43,21 @@ const LiquidTextMainPage = () => {
   const [deleteLiquidText, setDeleteLiquidText] = useState('')
   const [allArguments, setAllArguments] = useState([])
   const [liquidTexts, setLiquidTexts] = useState([])
+  const [liquidTextTitle, setLiquidTextTitle] = useState('')
   const [selectedArgumentId, setSelectedArgumentId] = useState('')
   const [fetchedArgumentDetails, setFetchedArgumentDetails] = useState(null)
   const [isCreateArgumentModalOpen, setIsCreateArgumentModalOpen] =
     useState(false)
   const [isCreateLTModalOpen, setIsCreateLTModalOpen] = useState(false)
   const [isShareModalOpen, setIsShareodalOpen] = useState(false)
+
+  const [contextMenu, setContextMenu] = useState({
+    visible: false,
+    x: 0,
+    y: 0,
+    text: '',
+    page: '',
+  })
 
   useEffect(() => {
     fetchClientDetails(id)
@@ -128,8 +138,9 @@ const LiquidTextMainPage = () => {
     setLiquidTexts(liquidText)
   }
 
-  function findTextOnPageAndScroll(text) {
+  function findTextOnPageAndScroll(text, pageNo) {
     const elementsContainingText = []
+    console.log(pageNo)
 
     // Function to check if an element contains the search text
     function searchElement(element) {
@@ -151,13 +162,16 @@ const LiquidTextMainPage = () => {
       })
     }
 
+    console.log(elementsContainingText)
+
     return elementsContainingText
   }
 
-  const handleDelete = (title, type, clientId, argumentId, liquidText) => {
+  const handleDelete = (title, type, clientId, argumentId, liquidTextId) => {
+    console.log(liquidTextId)
     setDeleteClientId(clientId)
     setDeleteArgumentId(argumentId)
-    setDeleteLiquidText(liquidText)
+    setDeleteLiquidText(liquidTextId)
 
     setDeleteTitle(title)
     setDeleteType(type)
@@ -177,9 +191,109 @@ const LiquidTextMainPage = () => {
     }
   }
 
+  const handleTextSelection = useCallback((event) => {
+    event.preventDefault() // Prevent the default context menu from showing
+    const selectedText = window.getSelection().toString()
+    if (selectedText) {
+      let pageNumber = null
+      let node = event.target
+      while (node) {
+        if (node.hasAttribute && node.hasAttribute('data-page-number')) {
+          pageNumber = parseInt(node.getAttribute('data-page-number'), 10)
+          break
+        }
+        node = node.parentNode
+      }
+      // Adjust x and y to include offsets if needed
+      setContextMenu({
+        visible: true,
+        x: event.clientX + window.scrollX,
+        y: event.clientY + window.scrollY,
+        text: selectedText,
+        page: pageNumber,
+      })
+      console.log(`Selected text: ${selectedText}`)
+      console.log(`Page number: ${pageNumber}`)
+    } else {
+      setContextMenu({ visible: false, x: 0, y: 0, text: '' })
+    }
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('contextmenu', handleTextSelection)
+    return () => {
+      document.removeEventListener('contextmenu', handleTextSelection)
+    }
+  }, [handleTextSelection])
+
+  const handleAddLiquidText = async () => {
+    // e.preventDefault()
+
+    if (contextMenu.title === '') {
+      enqueueSnackbar('Invalid Title', {
+        variant: 'error',
+      })
+      return
+    }
+
+    try {
+      const response = await axios.post(
+        `${api}/api/solve_litigation/liquid-text/add-liquid-text/${id}/${selectedArgumentId}`,
+        {
+          title: liquidTextTitle,
+          text: contextMenu.text,
+          pageNo: contextMenu.page,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+        }
+      )
+      console.log(response.data)
+      setLiquidTexts(response.data.liquidText)
+      setContextMenu({ visible: false, text: '', page: '' })
+      setLiquidTextTitle('')
+    } catch (error) {
+      enqueueSnackbar(error.response.data.error, {
+        variant: 'error',
+      })
+    }
+  }
+
   return (
     <div className='w-full container mx-auto min-h-screen p-5'>
       {/* <p className='text-4xl font-bold text-center'>Client Details</p> */}
+      {contextMenu.visible && (
+        <div
+          className='absolute z-50 p-2 bg-white border border-gray-300 shadow-lg'
+          style={{ top: contextMenu.y, left: contextMenu.x }}
+        >
+          <p
+            className='absolute top-0 right-0 p-2 text-sm cursor-pointer'
+            onClick={() => setContextMenu(false)}
+          >
+            ❌
+          </p>
+          <div className=''>
+            <p className='font-bold p-1'>Add to liquid text</p>
+            <div className='flex gap-2'>
+              <CustomInput
+                name={liquidTextTitle}
+                value={liquidTextTitle}
+                onChange={(e) => setLiquidTextTitle(e.target.value)}
+                placeholder={'Enter a title...'}
+              />
+              <SLButton
+                onClick={() => handleAddLiquidText()}
+                title={'Add'}
+                variant={'primary'}
+              />
+            </div>
+          </div>
+        </div>
+      )}
       {clientDetails && (
         <div className='flex flex-col gap-5'>
           <div className='flex justify-center max-md:flex-col gap-3 pt-3'>
@@ -275,7 +389,7 @@ const LiquidTextMainPage = () => {
           type={deleteType}
           clientId={deleteClientId}
           argumentId={deleteArgumentId}
-          liquidText={deleteLiquidText}
+          liquidTextId={deleteLiquidText}
           reload={handleReload}
         />
       )}
@@ -298,6 +412,7 @@ const LiquidTextMainPage = () => {
                     key={`page_${index + 1}`}
                     pageNumber={index + 1}
                     width={maxWidth}
+                    data-page-number={index + 1}
                   />
                 ))}
               </Document>
@@ -369,25 +484,27 @@ const LiquidTextMainPage = () => {
                         liquidTexts.map((data, index) => (
                           <div key={index} className='flex w-full'>
                             <div
-                              onClick={() => findTextOnPageAndScroll(data)}
-                              className='w-full text-base px-2 py-1 hover:bg-primaryHover cursor-pointer bg-primary text-white'
+                              onClick={() =>
+                                findTextOnPageAndScroll(data.text, data.pageNo)
+                              }
+                              className='w-full rounded-sm text-sm px-2 py-1 cursor-pointer bg-gray-400 text-white'
                             >
-                              {data}
+                              {data.title}
                             </div>
                             <div
                               onClick={() =>
                                 handleDelete(
-                                  data,
+                                  data.title,
                                   'delete-liquid-text',
                                   id,
                                   selectedArgumentId,
-                                  data
+                                  data._id
                                 )
                               }
                               className='flex cursor-pointer hover:bg-errorHover justify-center px-2 items-center bg-error'
                             >
                               <svg
-                                className='w-7'
+                                className='w-5'
                                 viewBox='0 0 24 24'
                                 fill='none'
                                 xmlns='http://www.w3.org/2000/svg'

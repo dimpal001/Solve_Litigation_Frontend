@@ -18,10 +18,11 @@ const ConfirmDeleteModal = ({
   type,
   clientId,
   argumentId,
-  liquidText,
+  liquidTextId,
   reload,
 }) => {
   const [loading, setLoading] = useState(false)
+  console.log(liquidTextId)
 
   const handleSubmit = async () => {
     try {
@@ -36,7 +37,7 @@ const ConfirmDeleteModal = ({
           endpoint = `${api}/api/solve_litigation/liquid-text/delete-argument/${clientId}/${argumentId}`
           break
         case 'delete-liquid-text':
-          endpoint = `${api}/api/solve_litigation/liquid-text/delete-liquid-text/${clientId}/${argumentId}/${liquidText}`
+          endpoint = `${api}/api/solve_litigation/liquid-text/delete-liquid-text/${clientId}/${argumentId}/${liquidTextId}`
           break
         default:
           throw new Error('Invalid delete type')
