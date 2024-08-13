@@ -16,7 +16,6 @@ const StudyMaterialUser = () => {
   const [questions, setQuestions] = useState([])
   const [selectedTopic, setSelectedTopic] = useState('all')
   const [loading, setLoading] = useState(false)
-  const [showAllTopics, setShowAllTopics] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [pageNo, setPageNo] = useState(0)
   const [totalPage, setTotalPage] = useState()
@@ -180,8 +179,8 @@ const StudyMaterialUser = () => {
   return (
     <div className='container p-3 mx-auto'>
       <p className='text-2xl font-bold pb-2'>Study Materials</p>
-      <div className='flex gap-10'>
-        <div className='lg:w-1/3 flex flex-col w-full gap-3'>
+      <div className='flex gap-10 w-full'>
+        <div className='lg:w-2/4 flex flex-col w-full gap-3'>
           <div className='flex gap-2 justify-center'>
             <form
               onSubmit={searchQuestions}
@@ -207,64 +206,55 @@ const StudyMaterialUser = () => {
               )}
             </form>
           </div>
-          <div className='lg:w-2/3'>
-            <div>
-              <div className='flex flex-wrap gap-2 mb-2'>
-                <div
-                  onClick={() => handleTopicClick('all')}
-                  className={`bg-gray-200 px-3 text-sm rounded-sm p-2 cursor-pointer flex justify-center items-center ${
-                    selectedTopic === 'all' && 'bg-primary text-white'
-                  }`}
-                >
-                  All
+          <div className='w-full'>
+            <div className='flex justify-between w-full'>
+              {topics.length > 0 && (
+                <div className='flex flex-col gap-2 mb-2'>
+                  <p className='text-sm'>Select subject</p>
+                  <div
+                    onClick={() => handleTopicClick('all')}
+                    className={`bg-gray-200 px-3 text-sm rounded-sm p-2 cursor-pointer flex justify-center items-center ${
+                      selectedTopic === 'all' && 'bg-primary text-white'
+                    }`}
+                  >
+                    All
+                  </div>
+                  {topics &&
+                    topics.map((topic) => (
+                      <div
+                        onClick={() => handleTopicClick(topic._id)}
+                        key={topic._id}
+                        className={`capitalize ${
+                          selectedTopic === topic._id && 'bg-primary text-white'
+                        } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
+                      >
+                        {topic.name}
+                      </div>
+                    ))}
                 </div>
-                {(showAllTopics ? topics : topics.slice(0, 5)).map((topic) => (
-                  <div
-                    onClick={() => handleTopicClick(topic._id)}
-                    key={topic._id}
-                    className={`capitalize ${
-                      selectedTopic === topic._id && 'bg-primary text-white'
-                    } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
-                  >
-                    {topic.name}
-                  </div>
-                ))}
-                {!showAllTopics && topics.length > 5 && (
-                  <p
-                    onClick={() => setShowAllTopics(true)}
-                    className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
-                  >
-                    Load more...
-                  </p>
-                )}
-                {showAllTopics && (
-                  <div
-                    onClick={() => setShowAllTopics(false)}
-                    className='px-3 text-sm p-2 cursor-pointer text-primary hover:underline'
-                  >
-                    Load less...
-                  </div>
-                )}
-              </div>
-              <div className='flex gap-2 mb-2'>
-                {chapters.length > 0 &&
-                  chapters.map((chapter, index) => (
-                    <div
-                      onClick={() => handleChapterClick(chapter._id)}
-                      key={index}
-                      className={`capitalize ${
-                        selectedChapter === chapter._id &&
-                        'bg-primary text-white'
-                      } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
-                    >
-                      {chapter.name}
-                    </div>
-                  ))}
-              </div>
+              )}
+              {chapters.length > 0 && (
+                <div className='flex flex-col gap-2 mb-2'>
+                  <p className='text-sm'>Select chapter</p>
+                  {chapters.length > 0 &&
+                    chapters.map((chapter, index) => (
+                      <div
+                        onClick={() => handleChapterClick(chapter._id)}
+                        key={index}
+                        className={`capitalize ${
+                          selectedChapter === chapter._id &&
+                          'bg-primary text-white'
+                        } flex justify-center px-3 items-center cursor-pointer text-sm rounded-sm p-2 bg-gray-200`}
+                      >
+                        {chapter.name}
+                      </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
-        <div className='lg:w-2/3'>
+        <div className='lg:w-2/4'>
           {loading ? (
             <p className='text-center'>Loading...</p>
           ) : questions.length === 0 ? (

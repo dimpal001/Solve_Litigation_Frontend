@@ -224,6 +224,11 @@ const CitationsPage = () => {
       return
     }
 
+    if (query.length > 60) {
+      enqueueSnackbar('The query is too long.', { variant: 'error' })
+      return
+    }
+
     try {
       setIsPagination(false)
       setSelectedApellate('')
