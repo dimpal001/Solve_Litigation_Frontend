@@ -20,6 +20,8 @@ const CreateCitation = () => {
     partyNameAppealant: '',
     partyNameRespondent: '',
     title: '',
+    title1: '',
+    title2: '',
     judgements: '',
     diaryNo: '',
     dateOfOrder: '',

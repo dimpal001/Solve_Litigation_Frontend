@@ -9,6 +9,7 @@ const DetailedQuestionPage = () => {
   const { topicId, questionId } = useParams()
   const [questionData, setQuestionData] = useState(null)
   const [relatedQuestions, setRelatedQuestions] = useState([])
+  const [chapters, setChapters] = useState([])
   const [loading, setLoading] = useState(true)
   const { enqueueSnackbar } = useSnackbar()
 
@@ -23,8 +24,9 @@ const DetailedQuestionPage = () => {
             },
           }
         )
-        setQuestionData(response.data)
-        setRelatedQuestions(response.data.relatedQuestions)
+        setQuestionData(response.data.questionAnswer)
+        setRelatedQuestions(response.data.matchedQuestions)
+        setChapters(response.data.questionAnswer.chapters)
       } catch (error) {
         enqueueSnackbar(error.response.data.error, {
           variant: 'error',
@@ -74,17 +76,31 @@ const DetailedQuestionPage = () => {
             }}
           />
         </p>
+        <div className='mt-5'>
+          <p className='text-primary pb-1'>Chapters</p>
+          <div className='flex flex-wrap gap-2'>
+            {chapters.length > 0 &&
+              chapters.map((chapter) => (
+                <p
+                  className='text-sm p-[5px] rounded-sm px-3 bg-slate-100'
+                  key={chapter._id}
+                >
+                  {chapter.name}
+                </p>
+              ))}
+          </div>
+        </div>
       </div>
       <div className='mt-5'>
-        {/* <p className='pb-1 text-primary'>Related Questions</p> */}
+        <p className='pb-1 text-primary'>Related Questions</p>
         <div className='flex gap-2 gap-y-3 max-md:gap-3 max-md:gap-y-4 flex-wrap'>
           {relatedQuestions &&
             relatedQuestions.length > 0 &&
             relatedQuestions.map((item, index) => (
               <div key={index}>
                 <Link
-                  to={`/detailed-question/${item.topicId}/${item._id}`}
-                  className='p-2 text-sm rounded-sm px-3 bg-gray-300'
+                  to={`/detailed-question/${item._id}`}
+                  className='p-2 text-sm rounded-sm px-3 hover:bg-primary hover:text-white bg-gray-300'
                 >
                   {item.question}
                 </Link>

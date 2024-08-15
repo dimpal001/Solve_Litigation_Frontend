@@ -20,6 +20,8 @@ const EditCitation = () => {
     partyNameAppealant: '',
     partyNameRespondent: '',
     title: '',
+    title1: '',
+    title2: '',
     judgements: '',
     dateOfOrder: '',
     judgeName: '',

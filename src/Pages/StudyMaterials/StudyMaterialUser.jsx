@@ -143,6 +143,8 @@ const StudyMaterialUser = () => {
 
     try {
       setIsLoading(true)
+      setSelectedTopic('')
+      setChapters([])
       const token = localStorage.getItem('token')
       const response = await axios.get(
         `${api}/api/solve_litigation/study-material/search-questions/${page}`,
@@ -309,10 +311,16 @@ const Material = ({ data }) => {
             </div>
           </div>
           <div>
-            <p className='text-sm'>
+            <p className='text-sm pt-1'>
               {' '}
               {/* <span className='underline font-bold'>Ans : </span>{' '} */}
-              {data.answer.substring(0, 200)}
+              <span
+                className='text-justify'
+                dangerouslySetInnerHTML={{
+                  __html: data.answer.substring(0, 200),
+                }}
+              />
+              {/* {data.answer.substring(0, 200)} */}
               {data.answer.length >= 200 && '...'}
             </p>
           </div>

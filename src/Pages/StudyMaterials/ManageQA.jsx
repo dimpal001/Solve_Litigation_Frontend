@@ -12,6 +12,7 @@ import {
   SLSpinner,
 } from '../../Components/Customs'
 import { useSnackbar } from 'notistack'
+import Editor from '../CreateCitationPage/Editor'
 
 const ManageQA = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
@@ -271,13 +272,17 @@ const ManageQA = () => {
               onChange={(e) => setQuestionText(e.target.value)}
               placeholder='Enter question'
             ></textarea>
-            <textarea
+            <Editor
+              value={answerText}
+              onChange={(newContent) => setAnswerText(newContent)}
+            />
+            {/* <textarea
               rows={7}
               className='p-2 border focus:outline-none focus:border focus:border-primary rounded-sm w-full mb-2'
               value={answerText}
               onChange={(e) => setAnswerText(e.target.value)}
               placeholder='Enter answer'
-            ></textarea>
+            ></textarea> */}
             <div className='mt-4'>
               <label className='block mb-2'>Select Chapters</label>
               <div className='flex gap-4 flex-wrap'>
@@ -338,7 +343,13 @@ const ManageQA = () => {
               <div className='mb-4 text-base text-justify'>
                 <p>
                   <strong>Answer : </strong>
-                  {viewedQuestion?.answer}
+                  <div
+                    style={{ textAlign: 'center' }}
+                    className='pb-5 text-black text-center pt-5 text-2xl'
+                    dangerouslySetInnerHTML={{
+                      __html: viewedQuestion?.answer,
+                    }}
+                  />
                 </p>
               </div>
               <div className='text-base'>

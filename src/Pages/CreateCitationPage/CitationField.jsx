@@ -16,8 +16,6 @@ const CitationField = ({ data, setData }) => {
   const [listApellate, setListApellate] = useState([])
   const [apellateinputValue, setApellateinputValue] = useState('')
   const [lawinputValue, setLawinputValue] = useState('')
-  const [title1, setTitle1] = useState('')
-  const [title2, setTitle2] = useState('')
   const [POLinputValue, setPOLinputValue] = useState('')
   const {
     institutionName,
@@ -25,7 +23,8 @@ const CitationField = ({ data, setData }) => {
     caseNo,
     partyNameAppealant,
     partyNameRespondent,
-    title,
+    title1,
+    title2,
     judgements,
     diaryNo,
     dateOfOrder,
@@ -239,21 +238,25 @@ const CitationField = ({ data, setData }) => {
         </label>
         <div className='flex items-center gap-3'>
           <input
-            type='text'
             className='p-2 rounded-sm border'
             value={title1}
-            placeholder='Title 1'
-            name={title1}
-            onChange={(e) => setTitle1(e.target.value)}
+            onChange={(e) =>
+              setData((prevData) => ({
+                ...prevData,
+                title1: e.target.value,
+              }))
+            }
           />
           <p>Versus</p>
           <input
-            type='text'
             className='p-2 rounded-sm border'
             value={title2}
-            placeholder='Title 2'
-            name={title2}
-            onChange={(e) => setTitle2(e.target.value)}
+            onChange={(e) =>
+              setData((prevData) => ({
+                ...prevData,
+                title2: e.target.value,
+              }))
+            }
           />
         </div>
         {/* <input
