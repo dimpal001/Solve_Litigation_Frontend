@@ -9,7 +9,7 @@ import { enqueueSnackbar } from 'notistack'
 const Layout = () => {
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
-  const [showSidebar, setShowSidebar] = useState(true)
+  const [showSidebar, setShowSidebar] = useState(false)
 
   useEffect(() => {
     window.document.title = 'Admin Panel - Solve Litigation'

@@ -19,7 +19,8 @@ const ManageQA = () => {
   const [isEditMode, setIsEditMode] = useState(false)
   const [questions, setQuestions] = useState([])
   const [selectedId, setSelectedId] = useState('')
-  const [chapters, setChapters] = useState([])
+  const [subjects, setSubjects] = useState([])
+  // const [chapters, setChapters] = useState([])
   const [selectedChapters, setSelectedChapters] = useState([])
   const [questionText, setQuestionText] = useState('')
   const [answerText, setAnswerText] = useState('')
@@ -51,23 +52,43 @@ const ManageQA = () => {
     }
   }
 
-  const fetchChapters = async () => {
+  // const fetchChapters = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       `${api}/api/solve_litigation/study-material/chapters`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem('token')}`,
+  //         },
+  //       }
+  //     )
+  //     setChapters(response.data)
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
+
+  const fetchSubjects = async () => {
     try {
       const response = await axios.get(
-        `${api}/api/solve_litigation/study-material/chapters`,
+        `${api}/api/solve_litigation/study-material/topics`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         }
       )
-      setChapters(response.data)
+      setSubjects(response.data)
     } catch (error) {
       console.error(error)
     }
   }
 
   const handleAddOrUpdate = async () => {
+    if (selectedSubject === '') {
+      enqueueSnackbar('Please select a subject', { variant: 'error' })
+      return
+    }
     if (!questionText || !answerText || selectedChapters.length === 0) {
       enqueueSnackbar(
         'Please fill out all fields and select at least one chapter',
@@ -154,7 +175,6 @@ const ManageQA = () => {
 
   useEffect(() => {
     fetchQuestions()
-    fetchChapters()
   }, [])
 
   const handleCheckboxChange = (chapterId) => {
@@ -165,6 +185,23 @@ const ManageQA = () => {
     )
   }
 
+  const [selectedSubject, setSelectedSubject] = useState(null)
+  const [chapters, setChapters] = useState([])
+
+  const handleSubjectChange = (e) => {
+    const selectedSubjectId = e.target.value
+    const selectedSubject = subjects.find(
+      (subject) => subject._id === selectedSubjectId
+    )
+    if (selectedSubject) {
+      setSelectedSubject(selectedSubject)
+      setChapters(selectedSubject.chapters)
+    } else {
+      setSelectedSubject(null)
+      setChapters([])
+    }
+  }
+
   return (
     <div>
       <div className='flex gap-5 mb-4'>
@@ -172,6 +209,7 @@ const ManageQA = () => {
           title='Create Question Answer'
           onClick={() => {
             setIsAddModalOpen(true)
+            fetchSubjects()
             resetModalState()
           }}
           variant='primary'
@@ -283,26 +321,45 @@ const ManageQA = () => {
               onChange={(e) => setAnswerText(e.target.value)}
               placeholder='Enter answer'
             ></textarea> */}
-            <div className='mt-4'>
-              <label className='block mb-2'>Select Chapters</label>
-              <div className='flex gap-4 flex-wrap'>
-                {chapters.map((chapter) => (
-                  <div
-                    key={chapter._id}
-                    className='text-sm focus:text-primary flex gap-1'
-                  >
-                    <label htmlFor={chapter.name}>{chapter.name}</label>
-                    <input
-                      id={chapter.name}
-                      className=''
-                      type='checkbox'
-                      checked={selectedChapters.includes(chapter._id)}
-                      onChange={() => handleCheckboxChange(chapter._id)}
-                    />
-                  </div>
-                ))}
+            {subjects.length > 0 && (
+              <div className='mt-4'>
+                <select
+                  name=''
+                  id=''
+                  className='p-2 w-full'
+                  onChange={handleSubjectChange}
+                >
+                  <option value=''>Select a subject</option>
+                  {subjects.map((subject) => (
+                    <option key={subject._id} value={subject._id}>
+                      {subject.name}
+                    </option>
+                  ))}
+                </select>
               </div>
-            </div>
+            )}
+            {selectedSubject && chapters.length > 0 && (
+              <div className='mt-4'>
+                <label className='block mb-2'>Select Chapters</label>
+                <div className='flex gap-4 flex-wrap'>
+                  {chapters.map((chapter) => (
+                    <div
+                      key={chapter._id}
+                      className='text-sm focus:text-primary flex gap-1'
+                    >
+                      <label htmlFor={chapter.name}>{chapter.name}</label>
+                      <input
+                        id={chapter.name}
+                        className=''
+                        type='checkbox'
+                        checked={selectedChapters.includes(chapter._id)}
+                        onChange={() => handleCheckboxChange(chapter._id)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </ModalBody>
           <ModalFooter>
             <SLButton

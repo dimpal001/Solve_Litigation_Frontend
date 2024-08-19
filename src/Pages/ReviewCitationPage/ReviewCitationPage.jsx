@@ -12,6 +12,7 @@ import { enqueueSnackbar } from 'notistack'
 const ReviewCitationPage = () => {
   const { user, setUser } = useContext(UserContext)
   const navigate = useNavigate()
+  const [searchedJudgements, setSearchedJudgements] = useState([])
   const [pendingjudgements, setpendingjudgements] = useState([])
   const [approvedjudgements, setapprovedjudgements] = useState([])
   const [filterJudgements, setFilterJudgements] = useState([])
@@ -38,6 +39,7 @@ const ReviewCitationPage = () => {
 
   const fetchPendingjudgements = async () => {
     try {
+      setSearchedJudgements([])
       setIsLoading(true)
       setFilterJudgements([])
       setFilterType('all')
@@ -65,6 +67,7 @@ const ReviewCitationPage = () => {
 
   const fetchApprovedjudgements = async () => {
     try {
+      setSearchedJudgements([])
       setIsLoading(true)
       setFilterJudgements([])
       setFilterType('all')
@@ -123,6 +126,7 @@ const ReviewCitationPage = () => {
         }
       )
       setjudgementType('')
+      setSearchedJudgements(response.data)
       setFilterJudgements(response.data)
       setIsLoading(false)
     } catch (error) {
@@ -171,11 +175,20 @@ const ReviewCitationPage = () => {
   const handleFilerCourtName = (name) => {
     setFilterType('')
     let judgements = null
-    judgements =
-      judgementType === 'pending' ? pendingjudgements : approvedjudgements
-    judgements = judgements.filter(
-      (item) => item.institutionName.toLowerCase() === name.toLowerCase()
-    )
+    console.log(searchedJudgements.length)
+    if (searchedJudgements.length > 0) {
+      console.log('working')
+      judgements = searchedJudgements
+      judgements = judgements.filter(
+        (item) => item.institutionName.toLowerCase() === name.toLowerCase()
+      )
+    } else {
+      judgements =
+        judgementType === 'pending' ? pendingjudgements : approvedjudgements
+      judgements = judgements.filter(
+        (item) => item.institutionName.toLowerCase() === name.toLowerCase()
+      )
+    }
     setFilterJudgements(judgements)
   }
 
@@ -340,7 +353,7 @@ const ReviewCitationPage = () => {
                     iconColor={'white'}
                     loadingText={'Searching...'}
                     onClick={searchByDate}
-                    title={`Search by Date`}
+                    title={`Search by Date of Order`}
                     variant={'primary'}
                     width={5}
                   />

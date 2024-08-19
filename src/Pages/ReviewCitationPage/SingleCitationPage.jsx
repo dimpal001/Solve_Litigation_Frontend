@@ -506,13 +506,13 @@ const SingleCitationPage = ({ data }) => {
               </p>
             )}
 
-            {data.judgeName && (
+            {/* {data.judgeName && (
               <p className='text-lg capitalize'>
                 {' '}
                 <strong>Judge Name : </strong>
                 <span className='uppercase'>{data.judgeName}</span>
               </p>
-            )}
+            )} */}
 
             {data.index && (
               <div>

@@ -162,6 +162,7 @@ const CitationsPage = () => {
 
   const fetchActs = async () => {
     try {
+      setSelectedApellate('')
       setIsPagination(false)
       const token = localStorage.getItem('token')
       const response = await axios.get(
@@ -173,6 +174,7 @@ const CitationsPage = () => {
         }
       )
       setFetchingActs(response.data.acts)
+      setFilteredCitations([])
     } catch (error) {
       console.log(error)
     } finally {
@@ -342,6 +344,7 @@ const CitationsPage = () => {
               />
             ))}
           <SLButton
+            onClick={fetchActs}
             variant={'outline'}
             className={'focus:bg-primary text-sm py-[7px] focus:text-white'}
             title={'Acts'}
@@ -419,7 +422,7 @@ const CitationsPage = () => {
                         </div>
                       ))}
                     <div
-                      onClick={handleFetchActs}
+                      onClick={() => handleFetchActs()}
                       className={`${
                         selectedApellate === 'act'
                           ? 'bg-primary text-white'
@@ -533,7 +536,7 @@ const CitationsPage = () => {
                   {fetchCitations.length === 0 && fetchingActs.length === 0 && (
                     <p className='text-center p-3'>No citations found.</p>
                   )}
-                  {fetchingCitations.length !== 0 && (
+                  {filteredCitations.length > 0 && (
                     <div className='w-full'>
                       <div className='flex max-md:px-3 max-md:gap-2 gap-3 pb-3'>
                         <SLButton
