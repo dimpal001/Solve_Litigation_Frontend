@@ -184,6 +184,7 @@ const App = () => {
             user && user.userType === 'staff' && 'hidden'
           }`}
         >
+          {/* Footer Section  */}
           <Footer />
         </div>
       </BrowserRouter>

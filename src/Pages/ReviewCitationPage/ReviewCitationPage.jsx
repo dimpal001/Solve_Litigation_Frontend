@@ -172,23 +172,27 @@ const ReviewCitationPage = () => {
     setFilterJudgements(judgements)
   }
 
-  const handleFilerCourtName = (name) => {
+  const handleFilterCourtName = (event) => {
+    const name = event.target.value // Get the selected value
     setFilterType('')
+    console.log(name)
+
     let judgements = null
-    console.log(searchedJudgements.length)
+
     if (searchedJudgements.length > 0) {
-      console.log('working')
       judgements = searchedJudgements
-      judgements = judgements.filter(
-        (item) => item.institutionName.toLowerCase() === name.toLowerCase()
-      )
     } else {
       judgements =
         judgementType === 'pending' ? pendingjudgements : approvedjudgements
+    }
+
+    // Filter the judgements by the selected court name
+    if (name) {
       judgements = judgements.filter(
         (item) => item.institutionName.toLowerCase() === name.toLowerCase()
       )
     }
+
     setFilterJudgements(judgements)
   }
 
@@ -309,15 +313,15 @@ const ReviewCitationPage = () => {
                   {courtList && courtList.length > 0 && (
                     <div>
                       <select
-                        name=''
-                        id=''
+                        name='court'
+                        id='court'
                         className='py-[7px] focus:bg-primary focus:text-white capitalize px-5 text-sm font-semibold rounded-sm'
+                        onChange={handleFilterCourtName} // Use onChange instead of onClick
                       >
                         <option value=''>Select a Court</option>
                         {courtList.map((item, index) => (
                           <option
                             style={{ textTransform: 'capitalize' }}
-                            onClick={() => handleFilerCourtName(item.name)}
                             key={index}
                             value={item.name}
                           >
