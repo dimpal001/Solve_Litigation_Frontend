@@ -217,7 +217,7 @@ const SingleCitationPage = ({ data }) => {
     setTimeout(() => {
       iframe.contentWindow.print()
       document.body.removeChild(iframe)
-    }, 500) // Adjust the delay as needed
+    }, 500)
   }
 
   return (

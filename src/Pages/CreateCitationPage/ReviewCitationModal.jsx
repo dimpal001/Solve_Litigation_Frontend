@@ -10,7 +10,7 @@ import {
   ModalHeader,
   SLButton,
 } from '../../Components/Customs'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import { UserContext } from '../../UserContext'
 import { api } from '../../Components/Apis'
 import { useNavigate } from 'react-router-dom'
@@ -18,9 +18,11 @@ import { useNavigate } from 'react-router-dom'
 const ReviewCitationModal = ({ data, isOpen, onClose }) => {
   const { user } = useContext(UserContext)
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleUplaod = async () => {
     try {
+      setIsLoading(true)
       const token = localStorage.getItem('token')
       const response = await axios.post(
         `${api}/api/solve_litigation/citation/upload-citation`,
@@ -42,6 +44,8 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
       navigate('/admin-dashboard/review-citation')
     } catch (error) {
       enqueueSnackbar(error.response.data.error, { variant: 'error' })
+    } finally {
+      setIsLoading(false)
     }
   }
   return (
@@ -246,6 +250,8 @@ const ReviewCitationModal = ({ data, isOpen, onClose }) => {
         <ModalFooter>
           <SLButton variant={'error'} onClick={onClose} title={'Edit'} />
           <SLButton
+            isLoading={isLoading}
+            loadingText={'Uploading...'}
             variant={'success'}
             onClick={handleUplaod}
             title={'Upload'}
