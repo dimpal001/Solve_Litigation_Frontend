@@ -1,10 +1,10 @@
 import axios from 'axios'
-import { SLButton } from '../../Components/Customs'
+import { SLButton, SLSpinner } from '../../Components/Customs'
 import { FaArrowLeft } from 'react-icons/fa'
 import { api } from '../../Components/Apis'
 import { Link, useNavigate } from 'react-router-dom'
 import { Colors } from '../../Components/Colors'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import DeleteCitationModal from './DeleteCitationModal'
 import { UserContext } from '../../UserContext'
 import { enqueueSnackbar } from 'notistack'
@@ -218,6 +218,22 @@ const SingleCitationPage = ({ data }) => {
       iframe.contentWindow.print()
       document.body.removeChild(iframe)
     }, 500)
+  }
+
+  useEffect(() => {
+    window.document.title = data && data.title
+    window.document.metaDescription = data && data.title
+    window.document.metaKeywords = `legal questions, judgment, legal articles, law articles, law question, law questions, solve litigation, detailed legal solutions, ${
+      data && data.headNote
+    }`
+  }, [data])
+
+  if (data === '') {
+    return (
+      <div className='w-full h-[500px] flex justify-center items-center'>
+        <SLSpinner width={'50px'} />
+      </div>
+    )
   }
 
   return (

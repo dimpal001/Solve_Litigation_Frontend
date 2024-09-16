@@ -44,7 +44,12 @@ const DetailedQuestionPage = () => {
       top: 0,
       behavior: 'smooth',
     })
-  }, [])
+    window.document.title = questionData && questionData.question
+    window.document.metaDescription = questionData && questionData.answer
+    window.document.metaKeywords = `legal questions, law question, law questions, solve litigation, detailed legal solutions, ${
+      questionData && questionData.question
+    }`
+  }, [questionData])
 
   if (loading) {
     return (
