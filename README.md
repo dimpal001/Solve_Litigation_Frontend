@@ -1,11 +1,35 @@
-# React + Vite
+# Solve Litigation Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains the frontend code for the **Solve Litigation** platform, which simplifies legal solutions with various judgements.
 
-Currently, two official plugins are available:
+## Website
+[Visit Solve Litigation](https://solvelitigation.com)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-# solve_litigation
-# solve_litigation_frontend
-# solve_litigation_frontend
+## Project Description
+Solve Litigation is a platform designed to help users updated with judgements, manage and organize legal cases, legal advice, and study materials.
+
+## Technology Stack
+- **React** with **Vite** for fast development
+- **Tailwind CSS** for styling
+- **Axios** for API integration
+- **JWT** for session management
+- **Node.js** (Backend - separate repo)
+
+## Features
+- User registration and login
+- Case and document management
+- Study materials
+- Latest judgements
+- Responsive UI
+
+## Setup Instructions
+1. Clone the repo
+2. Run `npm install`
+3. Start development server with `npm run dev`
+
+## License
+MIT License
+4. Start development server with `npm run dev`
+
+## License
+MIT License
